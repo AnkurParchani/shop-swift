@@ -4,7 +4,7 @@ import { pgTable } from "drizzle-orm/pg-core";
 // Defining the users table
 export const users = pgTable("users", {
   id: serial("id").primaryKey().notNull(),
-  name: varchar("name", { length: 50 }),
-  email: varchar("email", { length: 50 }),
+  name: varchar("name", { length: 50 }).notNull(),
+  email: varchar("email", { length: 50 }).unique().notNull(),
   password: text("password").notNull(),
 });

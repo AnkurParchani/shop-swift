@@ -22,6 +22,13 @@
       "when": 1703722699766,
       "tag": "0002_panoramic_ironclad",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1703743835694,
+      "tag": "0003_easy_menace",
+      "breakpoints": true
     }
   ]
 }
