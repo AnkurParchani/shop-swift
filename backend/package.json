@@ -6,16 +6,26 @@
   "scripts": {
     "start": "nodemon src/server.ts",
     "start-without-nodemon": "ts-node src/server.ts",
-    "start-classic": "tsc.cmd && dist/server.js"
+    "start-classic": "tsc.cmd && dist/server.js",
+    "generate": "drizzle-kit generate:pg --config=drizzle.config.ts",
+    "push": "drizzle-kit push:pg --config=drizzle.config.ts",
+    "migration": "npm run generate & npm run push"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/express": "^4.17.21",
     "@types/node": "^20.10.5",
+    "@types/pg": "^8.10.9",
+    "drizzle-kit": "^0.20.9",
     "ts-node": "^10.9.2"
   },
   "dependencies": {
-    "nodemon": "^3.0.2"
+    "dotenv": "^16.3.1",
+    "drizzle-orm": "^0.29.2",
+    "express": "^4.18.2",
+    "nodemon": "^3.0.2",
+    "pg": "^8.11.3"
   }
 }

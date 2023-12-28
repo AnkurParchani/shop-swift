@@ -1,0 +1,27 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1703720909341,
+      "tag": "0000_thin_xorn",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1703721811484,
+      "tag": "0001_foamy_korvac",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1703722699766,
+      "tag": "0002_panoramic_ironclad",
+      "breakpoints": true
+    }
+  ]
+}
