@@ -9,6 +9,23 @@ export interface CustomRequest extends Request {
   user?: User;
 }
 
+// Getting all the addresses of a particular user
+export const getAllAddresses = async (req: CustomRequest, res: Response) => {
+  try {
+    const allAddresses = await db
+      .select()
+      .from(addresses)
+      .where(eq(addresses.userId, req.user?.id as number));
+
+    res.status(200).json({ status: "success", addresses: allAddresses });
+  } catch (err) {
+    res
+      .status(500)
+      .send("Something went wrong from Get all Addresses, check console");
+    console.log(err);
+  }
+};
+
 // Adding new Address
 export const addAddress = async (req: CustomRequest, res: Response) => {
   try {

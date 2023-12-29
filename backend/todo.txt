@@ -1,2 +1,1 @@
 - Make relationship between item and images
-- Get the Addresses of the user inside the getUser function

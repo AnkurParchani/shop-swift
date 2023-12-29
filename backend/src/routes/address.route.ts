@@ -1,10 +1,15 @@
 import express from "express";
-import { addAddress, deleteAddress } from "../controllers/address.controller";
+import {
+  addAddress,
+  deleteAddress,
+  getAllAddresses,
+} from "../controllers/address.controller";
 import { protect } from "../controllers/auth.controller";
 
 const router = express.Router();
 
 router.use(protect);
-router.route("/").post(addAddress).delete(deleteAddress);
+
+router.route("/").get(getAllAddresses).post(addAddress).delete(deleteAddress);
 
 export default router;
