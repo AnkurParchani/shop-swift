@@ -5,6 +5,7 @@ import { configDotenv } from "dotenv";
 
 import userRoutes from "./routes/user.route";
 import itemRoutes from "./routes/item.route";
+import addressRoutes from "./routes/address.route";
 
 const app = express();
 
@@ -23,5 +24,6 @@ app.use(cookieParser());
 // Routes
 app.use("/users", userRoutes);
 app.use("/items", itemRoutes);
+app.use("/addresses", addressRoutes);
 
 export default app;

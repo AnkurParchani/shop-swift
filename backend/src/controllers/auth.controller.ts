@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+
 import { NextFunction, Request, Response } from "express";
 import { db } from "../db/dbConnect";
 import { users } from "../db/schema/user.schema";
@@ -96,7 +97,8 @@ export const protect = async (
       .from(users)
       .where(eq(users.id, decode.userId));
 
-    if (!currentUser) throw new Error("There is no user in this database");
+    if (!currentUser || !currentUser.id)
+      throw new Error("There is no user in this database");
 
     req.user = currentUser;
     next();

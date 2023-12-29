@@ -11,7 +11,7 @@ export const getUser = async (req: CustomRequest, res: Response) => {
   try {
     if (!req.user) throw new Error("There is no user");
 
-    // Get the profile of the user
+    // Get the addresses of the user
 
     res.status(200).json({ status: "success", user: req.user });
   } catch (err) {
