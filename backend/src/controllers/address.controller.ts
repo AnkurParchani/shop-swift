@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { db } from "../db/dbConnect";
 import { addresses } from "../db/schema/address.schema";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { User } from "../../global";
 
 // CustomRequest for every request
@@ -40,6 +40,33 @@ export const addAddress = async (req: CustomRequest, res: Response) => {
     res
       .status(500)
       .send("Something went wrong from add Address, check console");
+    console.log(err);
+  }
+};
+
+// Deleting an Address
+export const deleteAddress = async (req: CustomRequest, res: Response) => {
+  try {
+    if (!req.body.addressId) throw new Error("No address Id provided");
+
+    // Deleting the address WHERE "userId=loggedIn User id" AND "addressId= provided address Id"
+    const [address] = await db
+      .delete(addresses)
+      .where(
+        and(
+          eq(addresses.id, req.body.addressId),
+          eq(addresses.userId, req.user?.id as number)
+        )
+      )
+      .returning();
+
+    if (!address) throw new Error("No address found");
+
+    res.status(200).json({ status: "success", message: "Address deleted" });
+  } catch (err) {
+    res
+      .status(500)
+      .send("Something went wrong from delete Address, check console");
     console.log(err);
   }
 };
