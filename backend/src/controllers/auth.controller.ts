@@ -106,6 +106,23 @@ export const protect = async (
   }
 };
 
+// Check if the user is Admin or not
+export const checkIsAdmin = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!(req.user?.email === process.env.ADMIN_EMAIL))
+      throw new Error("You are not admin");
+
+    next();
+  } catch (err) {
+    res.status(500).send("Error from authController isAdmin, check console");
+    console.log(err);
+  }
+};
+
 // Deleting the Account
 export const deleteAccount = async (req: CustomRequest, res: Response) => {
   try {
