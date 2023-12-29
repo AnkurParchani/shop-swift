@@ -1,6 +1,9 @@
 import { Pool } from "pg";
 import { drizzle } from "drizzle-orm/node-postgres";
-import * as userSchema from "./schema/userSchema";
+
+import * as userSchema from "./schema/user.schema";
+import * as itemSchema from "./schema/item.schema";
+import * as imgSchema from "./schema/img.schema";
 
 import { configDotenv } from "dotenv";
 
@@ -16,6 +19,8 @@ const pool = new Pool({
 
 const combinedSchema = {
   ...userSchema,
+  ...itemSchema,
+  ...imgSchema,
 };
 
 export const db = drizzle(pool, { schema: combinedSchema });

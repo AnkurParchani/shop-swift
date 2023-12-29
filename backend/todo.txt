@@ -1,0 +1,1 @@
+- Make relationship between item and images

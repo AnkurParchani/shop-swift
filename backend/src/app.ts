@@ -1,8 +1,10 @@
 import express from "express";
 import cors from "cors";
-import userRoutes from "./routes/user.route";
-import { configDotenv } from "dotenv";
 import cookieParser from "cookie-parser";
+import { configDotenv } from "dotenv";
+
+import userRoutes from "./routes/user.route";
+import itemRoutes from "./routes/item.route";
 
 const app = express();
 
@@ -20,5 +22,6 @@ app.use(cookieParser());
 
 // Routes
 app.use("/users", userRoutes);
+app.use("/items", itemRoutes);
 
 export default app;
