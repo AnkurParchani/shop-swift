@@ -17,6 +17,7 @@ export const orders = pgTable("orders", {
 export const order_items = pgTable("order_items", {
   id: serial("id").primaryKey().notNull(),
   quantity: integer("quantity").notNull(),
+  size: varchar("size", { length: 256 }),
   color: varchar("color", { length: 256 }),
   orderId: integer("order_id")
     .notNull()

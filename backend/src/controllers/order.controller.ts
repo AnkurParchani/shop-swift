@@ -13,6 +13,7 @@ type OrderItem = {
   itemId: number;
   quantity: number;
   color?: string;
+  size: string;
 };
 
 // Create Order Request
@@ -37,6 +38,7 @@ export const createOrder = async (req: CustomRequest, res: Response) => {
         itemId: order.itemId,
         quantity: order.quantity,
         color: order.color || undefined,
+        size: order.size,
       };
 
       return db.insert(order_items).values(orderItemValues).returning();

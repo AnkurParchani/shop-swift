@@ -9,6 +9,7 @@ import addressRoutes from "./routes/address.route";
 import reviewRoutes from "./routes/review.route";
 import orderRoutes from "./routes/order.route";
 import wishlistRoutes from "./routes/wishlist.route";
+import cartRoutes from "./routes/cart.route";
 
 const app = express();
 
@@ -31,5 +32,6 @@ app.use("/addresses", addressRoutes);
 app.use("/reviews", reviewRoutes);
 app.use("/wishlists", wishlistRoutes);
 app.use("/orders", orderRoutes);
+app.use("/cart", cartRoutes);
 
 export default app;

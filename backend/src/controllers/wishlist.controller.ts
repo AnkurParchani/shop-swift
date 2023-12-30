@@ -99,7 +99,7 @@ export const removeItemFromWishlist = async (
 };
 
 // Deleting the whole wishlist
-export const removeFullWishlist = async (req: CustomRequest, res: Response) => {
+export const clearWishlist = async (req: CustomRequest, res: Response) => {
   try {
     const deletedItems = await db
       .delete(wishlist)
@@ -116,7 +116,7 @@ export const removeFullWishlist = async (req: CustomRequest, res: Response) => {
   } catch (err) {
     res.status(500).json({
       status: "error",
-      message: "error from removeFullWishlist, check console",
+      message: "error from clearWishlist, check console",
     });
 
     console.log(err);

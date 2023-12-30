@@ -8,6 +8,7 @@ import * as addressSchema from "./schema/address.schema";
 import * as reviewSchema from "./schema/review.schema";
 import * as orderSchema from "./schema/order.schema";
 import * as wishlistSchema from "./schema/wishlist.schema";
+import * as cartSchema from "./schema/cart.schema";
 
 import { configDotenv } from "dotenv";
 
@@ -27,6 +28,7 @@ const combinedSchema = {
   ...reviewSchema,
   ...imgSchema,
   ...wishlistSchema,
+  ...cartSchema,
   ...orderSchema,
   ...addressSchema,
 };
