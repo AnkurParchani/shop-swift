@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import {
   serial,
   varchar,

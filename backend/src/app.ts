@@ -8,6 +8,7 @@ import itemRoutes from "./routes/item.route";
 import addressRoutes from "./routes/address.route";
 import reviewRoutes from "./routes/review.route";
 import orderRoutes from "./routes/order.route";
+import wishlistRoutes from "./routes/wishlist.route";
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use("/users", userRoutes);
 app.use("/items", itemRoutes);
 app.use("/addresses", addressRoutes);
 app.use("/reviews", reviewRoutes);
+app.use("/wishlists", wishlistRoutes);
 app.use("/orders", orderRoutes);
 
 export default app;
