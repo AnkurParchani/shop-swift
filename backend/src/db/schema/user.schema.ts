@@ -2,6 +2,7 @@ import { relations } from "drizzle-orm";
 import { serial, varchar, text } from "drizzle-orm/pg-core";
 import { pgTable } from "drizzle-orm/pg-core";
 import { addresses } from "./address.schema";
+import { reviews } from "./review.schema";
 
 // Defining the users table
 export const users = pgTable("users", {
@@ -14,4 +15,5 @@ export const users = pgTable("users", {
 // Defining the user relation
 export const userRelations = relations(users, ({ many }) => ({
   addresses: many(addresses),
+  reviews: many(reviews),
 }));

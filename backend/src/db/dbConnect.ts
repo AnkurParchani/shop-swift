@@ -5,6 +5,7 @@ import * as userSchema from "./schema/user.schema";
 import * as itemSchema from "./schema/item.schema";
 import * as imgSchema from "./schema/img.schema";
 import * as addressSchema from "./schema/address.schema";
+import * as reviewSchema from "./schema/review.schema";
 
 import { configDotenv } from "dotenv";
 
@@ -21,6 +22,7 @@ const pool = new Pool({
 const combinedSchema = {
   ...userSchema,
   ...itemSchema,
+  ...reviewSchema,
   ...imgSchema,
   ...addressSchema,
 };

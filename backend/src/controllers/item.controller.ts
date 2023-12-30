@@ -6,7 +6,9 @@ import { eq } from "drizzle-orm";
 // Getting all the items
 export const getItems = async (req: Request, res: Response) => {
   try {
-    res.status(200).json({ status: "success" });
+    const allItems = await db.select().from(items);
+
+    res.status(200).json({ status: "success", items: allItems });
   } catch (err) {
     res
       .status(500)
@@ -18,7 +20,16 @@ export const getItems = async (req: Request, res: Response) => {
 // Getting particular item
 export const getItem = async (req: Request, res: Response) => {
   try {
-    res.status(200).json({ status: "success" });
+    if (!req.params.itemId) throw new Error("Provide valid itemId");
+
+    const [item] = await db
+      .select()
+      .from(items)
+      .where(eq(items.id, Number(req.params.itemId)));
+
+    if (!item) throw new Error("No item found with that item ID");
+
+    res.status(200).json({ status: "success", item });
   } catch (err) {
     res
       .status(500)
@@ -42,6 +53,34 @@ export const createItem = async (req: Request, res: Response) => {
     res.status(500).json({
       status: "error",
       message: "error from create item, check console",
+    });
+    console.log(err);
+  }
+};
+
+// Update as Item
+export const updateItem = async (req: Request, res: Response) => {
+  try {
+    if (!req.params.itemId) throw new Error("Provide valid itemId");
+
+    const [item] = await db
+      .select()
+      .from(items)
+      .where(eq(items.id, Number(req.params.itemId)));
+
+    if (!item) throw new Error("No item found with provided ItemID");
+
+    const [updatedItem] = await db
+      .update(items)
+      .set({ ...req.body, id: item.id })
+      .where(eq(items.id, Number(req.params.itemId)))
+      .returning();
+
+    res.status(200).json({ status: "success", updatedItem });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: "Error from updateItem, check console",
     });
     console.log(err);
   }
