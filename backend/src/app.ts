@@ -7,6 +7,7 @@ import userRoutes from "./routes/user.route";
 import itemRoutes from "./routes/item.route";
 import addressRoutes from "./routes/address.route";
 import reviewRoutes from "./routes/review.route";
+import orderRoutes from "./routes/order.route";
 
 const app = express();
 
@@ -27,5 +28,6 @@ app.use("/users", userRoutes);
 app.use("/items", itemRoutes);
 app.use("/addresses", addressRoutes);
 app.use("/reviews", reviewRoutes);
+app.use("/orders", orderRoutes);
 
 export default app;
