@@ -24,12 +24,12 @@ export const reviews = pgTable("reviews", {
 // Defining the relationship
 export const reviewRelations = relations(reviews, ({ one }) => ({
   user: one(users, {
-    fields: [reviews.id],
+    fields: [reviews.userId],
     references: [users.id],
   }),
 
   item: one(items, {
-    fields: [reviews.id],
+    fields: [reviews.itemId],
     references: [items.id],
   }),
 }));

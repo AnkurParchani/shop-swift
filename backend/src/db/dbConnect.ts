@@ -3,12 +3,12 @@ import { drizzle } from "drizzle-orm/node-postgres";
 
 import * as userSchema from "./schema/user.schema";
 import * as itemSchema from "./schema/item.schema";
-import * as imgSchema from "./schema/img.schema";
 import * as addressSchema from "./schema/address.schema";
 import * as reviewSchema from "./schema/review.schema";
 import * as orderSchema from "./schema/order.schema";
 import * as wishlistSchema from "./schema/wishlist.schema";
 import * as cartSchema from "./schema/cart.schema";
+import * as imgSchema from "./schema/img.schema";
 
 import { configDotenv } from "dotenv";
 
@@ -25,12 +25,12 @@ const pool = new Pool({
 const combinedSchema = {
   ...userSchema,
   ...itemSchema,
+  ...addressSchema,
   ...reviewSchema,
-  ...imgSchema,
+  ...orderSchema,
   ...wishlistSchema,
   ...cartSchema,
-  ...orderSchema,
-  ...addressSchema,
+  ...imgSchema,
 };
 
 export const db = drizzle(pool, { schema: combinedSchema });
