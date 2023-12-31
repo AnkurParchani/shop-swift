@@ -74,7 +74,7 @@ export const removeItemFromWishlist = async (
   try {
     if (!req.params.wishlistId) throw new Error("Provide the wishlist item Id");
 
-    const itemToDelete = await db
+    const itemToRemove = await db
       .delete(wishlist)
       .where(
         and(
@@ -84,10 +84,12 @@ export const removeItemFromWishlist = async (
       )
       .returning();
 
-    if (!itemToDelete[0])
+    if (!itemToRemove[0])
       throw new Error("There is no item with the wishlist item id");
 
-    res.status(200).json({ status: "success", message: "item deleted" });
+    res
+      .status(200)
+      .json({ status: "success", message: "item removed from wishlist" });
   } catch (err) {
     res.status(500).json({
       status: "error",

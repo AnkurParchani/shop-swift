@@ -5,11 +5,12 @@ import { users } from "./user.schema";
 import { items } from "./item.schema";
 
 // Defining the cart table
-export const cart = pgTable("cart", {
+export const cart = pgTable("carts", {
   id: serial("id").primaryKey().notNull(),
   isChecked: boolean("is_checked").default(true),
   quantity: integer("quantity").notNull(),
   size: varchar("size", { length: 256 }),
+  price: integer("price").notNull(),
   color: varchar("color", { length: 256 }),
   userId: integer("user_id")
     .notNull()

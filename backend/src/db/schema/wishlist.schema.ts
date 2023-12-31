@@ -5,7 +5,7 @@ import { relations } from "drizzle-orm";
 import { items } from "./item.schema";
 
 // Defining the Wishlist table
-export const wishlist = pgTable("wishlist", {
+export const wishlist = pgTable("wishlists", {
   id: serial("id").primaryKey().notNull(),
   date: date("date", { mode: "date" }).defaultNow(),
   userId: integer("user_id")

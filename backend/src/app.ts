@@ -32,6 +32,6 @@ app.use("/addresses", addressRoutes);
 app.use("/reviews", reviewRoutes);
 app.use("/wishlists", wishlistRoutes);
 app.use("/orders", orderRoutes);
-app.use("/cart", cartRoutes);
+app.use("/carts", cartRoutes);
 
 export default app;
