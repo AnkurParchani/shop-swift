@@ -6,6 +6,7 @@ import { db } from "../db/dbConnect";
 import { users } from "../db/schema/user.schema";
 import { eq } from "drizzle-orm";
 import { User } from "../../global";
+import { images } from "../db/schema/img.schema";
 
 // CustomRequest for every request
 export interface CustomRequest extends Request {
@@ -15,7 +16,7 @@ export interface CustomRequest extends Request {
 // Signup
 export const signup = async (req: Request, res: Response) => {
   try {
-    const { name, email, password, passwordConfirm } = req.body;
+    const { name, email, password, passwordConfirm, img } = req.body;
 
     // If all details are not there
     if (!name || !email || !password || !passwordConfirm)
@@ -30,6 +31,17 @@ export const signup = async (req: Request, res: Response) => {
       .insert(users)
       .values({ email, name, password: encrpytedPassword })
       .returning();
+
+    // If image path is also provided
+    if (img) {
+      await db.insert(images).values({
+        path: img,
+        isUserImg: true,
+        isItemImg: false,
+        userId: user.id,
+        itemId: null,
+      });
+    }
 
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!);
 

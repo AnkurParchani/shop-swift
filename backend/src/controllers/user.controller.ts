@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { User } from "../../global";
 import { db } from "../db/dbConnect";
-import { addresses } from "../db/schema/address.schema";
 import { eq } from "drizzle-orm";
 import { users } from "../db/schema/user.schema";
 

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { db } from "../db/dbConnect";
 import { items } from "../db/schema/item.schema";
 import { eq } from "drizzle-orm";
+import { images } from "../db/schema/img.schema";
 
 // Getting all the items
 export const getItems = async (req: Request, res: Response) => {
@@ -41,6 +42,10 @@ export const getItem = async (req: Request, res: Response) => {
 // Creating an item
 export const createItem = async (req: Request, res: Response) => {
   try {
+    // @ts-ignore
+    console.log(req.files);
+
+    //  1). Creating the item
     const [item] = await db
       .insert(items)
       .values({
@@ -48,7 +53,23 @@ export const createItem = async (req: Request, res: Response) => {
       })
       .returning();
 
-    res.status(200).json({ status: "success", item });
+    // 2). Creating requests for images
+    if (req.body.images && Array.isArray(req.body.images)) {
+      const promises = req.body.images.map((img: string) => {
+        return db.insert(images).values({
+          isUserImg: false,
+          isItemImg: true,
+          path: img,
+          userId: null,
+          itemId: item.id,
+        });
+      });
+
+      await Promise.all(promises);
+    }
+
+    res.status(200).json({ status: "success" });
+    // res.status(200).json({ status: "success", item });
   } catch (err) {
     res.status(500).json({
       status: "error",

@@ -9,6 +9,7 @@ import {
   pgEnum,
 } from "drizzle-orm/pg-core";
 import { pgTable } from "drizzle-orm/pg-core";
+import { images } from "./img.schema";
 
 // Enum for gender
 export const genderEnum = pgEnum("for_gender", ["male", "female", "unisex"]);
@@ -25,3 +26,8 @@ export const items = pgTable("items", {
   about: text("about"),
   description: json("description"),
 });
+
+// Defining the item relations
+export const itemRelations = relations(items, ({ many }) => ({
+  images: many(images),
+}));
