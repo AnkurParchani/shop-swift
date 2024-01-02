@@ -1,4 +1,11 @@
-import { serial, text, integer, pgEnum, date } from "drizzle-orm/pg-core";
+import {
+  serial,
+  text,
+  integer,
+  pgEnum,
+  date,
+  boolean,
+} from "drizzle-orm/pg-core";
 import { pgTable } from "drizzle-orm/pg-core";
 import { users } from "./user.schema";
 import { relations } from "drizzle-orm";
@@ -13,6 +20,7 @@ export const reviews = pgTable("reviews", {
   stars: starEnum("stars").default("1").notNull(),
   content: text("content").notNull(),
   date: date("date", { mode: "date" }).defaultNow(),
+  isEdited: boolean("is_edited").notNull().default(false),
   userId: integer("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),

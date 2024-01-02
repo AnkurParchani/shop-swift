@@ -42,9 +42,6 @@ export const getItem = async (req: Request, res: Response) => {
 // Creating an item
 export const createItem = async (req: Request, res: Response) => {
   try {
-    // @ts-ignore
-    console.log(req.files);
-
     //  1). Creating the item
     const [item] = await db
       .insert(items)
@@ -68,7 +65,7 @@ export const createItem = async (req: Request, res: Response) => {
       await Promise.all(promises);
     }
 
-    res.status(200).json({ status: "success" });
+    res.status(200).json({ status: "success", item });
     // res.status(200).json({ status: "success", item });
   } catch (err) {
     res.status(500).json({

@@ -61,6 +61,34 @@ export const addAddress = async (req: CustomRequest, res: Response) => {
   }
 };
 
+// Updating an Address
+export const updateAddress = async (req: CustomRequest, res: Response) => {
+  try {
+    if (!req.body.addressId) throw new Error("No address Id provided");
+
+    // Updating the address WHERE "userId=loggedIn User id" AND "addressId= provided address Id"
+    const [updatedAddress] = await db
+      .update(addresses)
+      .set({ ...req.body, userId: req.user?.id })
+      .where(
+        and(
+          eq(addresses.id, req.body.addressId),
+          eq(addresses.userId, req.user?.id as number)
+        )
+      )
+      .returning();
+
+    if (!updatedAddress) throw new Error("No address found");
+
+    res.status(200).json({ status: "success", updatedAddress });
+  } catch (err) {
+    res
+      .status(500)
+      .send("Something went wrong from delete Address, check console");
+    console.log(err);
+  }
+};
+
 // Deleting an Address
 export const deleteAddress = async (req: CustomRequest, res: Response) => {
   try {
