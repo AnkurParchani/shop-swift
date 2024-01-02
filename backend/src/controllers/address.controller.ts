@@ -33,7 +33,7 @@ export const addAddress = async (req: CustomRequest, res: Response) => {
 
     // If this is NOT the default address
     if (!req.body.isDeliveryAddress) {
-      address = await db
+      [address] = await db
         .insert(addresses)
         .values({ ...req.body, userId: req.user?.id, isDeliveryAddress: false })
         .returning();
@@ -46,7 +46,7 @@ export const addAddress = async (req: CustomRequest, res: Response) => {
         .set({ isDeliveryAddress: false })
         .where(eq(addresses.userId, req.user?.id as number));
 
-      address = await db
+      [address] = await db
         .insert(addresses)
         .values({ ...req.body, userId: req.user?.id, isDeliveryAddress: true })
         .returning();
@@ -64,7 +64,7 @@ export const addAddress = async (req: CustomRequest, res: Response) => {
 // Updating an Address
 export const updateAddress = async (req: CustomRequest, res: Response) => {
   try {
-    if (!req.body.addressId) throw new Error("No address Id provided");
+    if (!req.params.addressId) throw new Error("No address Id provided");
 
     // Updating the address WHERE "userId=loggedIn User id" AND "addressId= provided address Id"
     const [updatedAddress] = await db
@@ -72,7 +72,7 @@ export const updateAddress = async (req: CustomRequest, res: Response) => {
       .set({ ...req.body, userId: req.user?.id })
       .where(
         and(
-          eq(addresses.id, req.body.addressId),
+          eq(addresses.id, Number(req.params.addressId)),
           eq(addresses.userId, req.user?.id as number)
         )
       )
@@ -82,9 +82,7 @@ export const updateAddress = async (req: CustomRequest, res: Response) => {
 
     res.status(200).json({ status: "success", updatedAddress });
   } catch (err) {
-    res
-      .status(500)
-      .send("Something went wrong from delete Address, check console");
+    res.status(500).send("error from delete Address, check console");
     console.log(err);
   }
 };
@@ -92,14 +90,14 @@ export const updateAddress = async (req: CustomRequest, res: Response) => {
 // Deleting an Address
 export const deleteAddress = async (req: CustomRequest, res: Response) => {
   try {
-    if (!req.body.addressId) throw new Error("No address Id provided");
+    if (!req.params.addressId) throw new Error("No address Id provided");
 
     // Deleting the address WHERE "userId=loggedIn User id" AND "addressId= provided address Id"
     const [address] = await db
       .delete(addresses)
       .where(
         and(
-          eq(addresses.id, req.body.addressId),
+          eq(addresses.id, Number(req.params.addressId)),
           eq(addresses.userId, req.user?.id as number)
         )
       )

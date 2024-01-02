@@ -107,11 +107,11 @@ export const updateItem = async (req: Request, res: Response) => {
 // Deleting an Item
 export const deleteItem = async (req: Request, res: Response) => {
   try {
-    if (!req.body.itemId) throw new Error("Provide item Id");
+    if (!req.params.itemId) throw new Error("Provide item Id");
 
     const [item] = await db
       .delete(items)
-      .where(eq(items.id, req.body.itemId))
+      .where(eq(items.id, Number(req.params.itemId)))
       .returning();
 
     if (!item) throw new Error("No item found with provided item Id");

@@ -83,7 +83,7 @@ export const createReview = async (req: CustomRequest, res: Response) => {
       })
       .returning();
 
-    res.status(200).json({ status: "success", review, user: userDetails });
+    res.status(200).json({ status: "success", review });
   } catch (err) {
     res.status(500).json({
       status: "error",
@@ -104,7 +104,7 @@ export const updateReview = async (req: CustomRequest, res: Response) => {
       .where(
         and(
           eq(reviews.userId, Number(req.user?.id)),
-          eq(reviews.id, req.body.reviewId)
+          eq(reviews.id, Number(req.params.reviewId))
         )
       )
       .returning();

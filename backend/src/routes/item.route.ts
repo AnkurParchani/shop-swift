@@ -11,12 +11,12 @@ import { checkIsAdmin, protect } from "../controllers/auth.controller";
 
 const router = express();
 
-router
-  .route("/")
-  .get(getItems)
-  .post(protect, checkIsAdmin, createItem)
-  .delete(protect, checkIsAdmin, deleteItem);
+router.route("/").get(getItems).post(protect, checkIsAdmin, createItem);
 
-router.route("/:itemId").get(getItem).patch(protect, checkIsAdmin, updateItem);
+router
+  .route("/:itemId")
+  .get(getItem)
+  .patch(protect, checkIsAdmin, updateItem)
+  .delete(protect, checkIsAdmin, deleteItem);
 
 export default router;

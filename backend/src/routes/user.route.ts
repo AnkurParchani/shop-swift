@@ -17,6 +17,7 @@ router.route("/sign-up").post(signup);
 router.route("/login").post(login);
 
 router.use(protect);
+
 router.route("/me").get(getUser);
 router.route("/update-me").patch(updateMe);
 router.route("/update-password").patch(updatePassword);
