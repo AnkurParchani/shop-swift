@@ -22,6 +22,11 @@ export const cart = pgTable("carts", {
 
 // Defining the cart Relations
 export const cartRelations = relations(cart, ({ one }) => ({
+  user: one(users, {
+    fields: [cart.userId],
+    references: [users.id],
+  }),
+
   item: one(items, {
     fields: [cart.itemId],
     references: [items.id],

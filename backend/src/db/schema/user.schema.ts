@@ -6,6 +6,7 @@ import { reviews } from "./review.schema";
 import { wishlist } from "./wishlist.schema";
 import { orders } from "./order.schema";
 import { images } from "./img.schema";
+import { cart } from "./cart.schema";
 
 // Defining the users table
 export const users = pgTable("users", {
@@ -22,6 +23,7 @@ export const userRelations = relations(users, ({ many, one }) => ({
     references: [images.userId],
   }),
 
+  cart: many(cart),
   addresses: many(addresses),
   reviews: many(reviews),
   wishlist: many(wishlist),
