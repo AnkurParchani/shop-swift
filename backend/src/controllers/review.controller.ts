@@ -1,10 +1,11 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { User } from "../../global";
 import { db } from "../db/dbConnect";
 import { reviews } from "../db/schema/review.schema";
 import { and, eq } from "drizzle-orm";
-import { orders } from "../db/schema/order.schema";
 import { users } from "../db/schema/user.schema";
+
+import AppError from "../utils/appError";
 
 // CustomRequest for every request
 export interface CustomRequest extends Request {
@@ -30,10 +31,14 @@ export const getReviews = async (req: CustomRequest, res: Response) => {
 };
 
 // Creating Review
-export const createReview = async (req: CustomRequest, res: Response) => {
+export const createReview = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     if (!req.body.itemId || !req.user?.id)
-      throw new Error("provide all the details");
+      return next(new AppError(400, "provide all the details"));
 
     // Getting details about user
     const userDetails = await db.query.users.findFirst({
@@ -48,7 +53,8 @@ export const createReview = async (req: CustomRequest, res: Response) => {
       },
     });
 
-    if (!userDetails) throw new Error("No user found with the userID");
+    if (!userDetails)
+      return next(new AppError(404, "No user found with the userID"));
 
     const { orders: userOrders, reviews: userReviews } = userDetails;
 
@@ -59,7 +65,7 @@ export const createReview = async (req: CustomRequest, res: Response) => {
           review.userId === req.user?.id && review.itemId === req.body.itemId
       )
     )
-      throw new Error("You have already reveiwed this item");
+      return next(new AppError(400, "You have already reveiwed this item"));
 
     // Checking If the user has ordered this item
     if (
@@ -69,7 +75,9 @@ export const createReview = async (req: CustomRequest, res: Response) => {
         )
       )
     ) {
-      throw new Error("You have to order this item to review it");
+      return next(
+        new AppError(400, "You have to order this item to review it")
+      );
     }
 
     // Creating the Review request
@@ -85,18 +93,20 @@ export const createReview = async (req: CustomRequest, res: Response) => {
 
     res.status(200).json({ status: "success", review });
   } catch (err) {
-    res.status(500).json({
-      status: "error",
-      message: "error from createReview, check console",
-    });
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };
 
 // Updating a Review
-export const updateReview = async (req: CustomRequest, res: Response) => {
+export const updateReview = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    if (!req.params.reviewId) throw new Error("Provide review ID");
+    if (!req.params.reviewId)
+      return next(new AppError(400, "Provide review ID"));
 
     const [updatedReview] = await db
       .update(reviews)
@@ -109,22 +119,25 @@ export const updateReview = async (req: CustomRequest, res: Response) => {
       )
       .returning();
 
-    if (!updatedReview) throw new Error("No Review found to update");
+    if (!updatedReview)
+      return next(new AppError(404, "No Review found to update"));
 
     res.status(200).json({ status: "success", updatedReview });
   } catch (err) {
-    res.status(500).json({
-      status: "error",
-      message: "error from updateReview, check console",
-    });
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };
 
 // Deleting a review
-export const deleteReview = async (req: CustomRequest, res: Response) => {
+export const deleteReview = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    if (!req.params.reviewId) throw new Error("Provide the all details");
+    if (!req.params.reviewId)
+      return next(new AppError(400, "Provide the all details"));
 
     const [review] = await db
       .delete(reviews)
@@ -136,14 +149,11 @@ export const deleteReview = async (req: CustomRequest, res: Response) => {
       )
       .returning();
 
-    if (!review) throw new Error("No review found to delete");
+    if (!review) return next(new AppError(404, "No review found to delete"));
 
     res.status(200).json({ status: "success", message: "review deleted" });
   } catch (err) {
-    res.status(500).json({
-      status: "error",
-      message: "error from deleteReview, check console",
-    });
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };

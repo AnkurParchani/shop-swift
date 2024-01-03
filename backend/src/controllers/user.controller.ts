@@ -1,9 +1,10 @@
 import bcrypt from "bcrypt";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { User } from "../../global";
 import { db } from "../db/dbConnect";
 import { eq } from "drizzle-orm";
 import { users } from "../db/schema/user.schema";
+import AppError from "../utils/appError";
 
 // CustomRequest for every request
 export interface CustomRequest extends Request {
@@ -11,9 +12,13 @@ export interface CustomRequest extends Request {
 }
 
 // Getting the current logged in user
-export const getUser = async (req: CustomRequest, res: Response) => {
+export const getUser = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    if (!req.user) throw new Error("There is no user");
+    if (!req.user) return next(new AppError(404, "There is no user"));
 
     const user = await db.query.users.findFirst({
       where: eq(users.id, req.user.id),
@@ -35,16 +40,20 @@ export const getUser = async (req: CustomRequest, res: Response) => {
       user,
     });
   } catch (err) {
-    res.status(500).send("Error from delete Account, check console");
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };
 
 // Updating the user
-export const updateMe = async (req: CustomRequest, res: Response) => {
+export const updateMe = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     if (req.body.password)
-      throw new Error("This route is not for updating password");
+      return next(new AppError(400, "This route is not for updating password"));
 
     const [user] = await db
       .update(users)
@@ -54,22 +63,24 @@ export const updateMe = async (req: CustomRequest, res: Response) => {
 
     res.status(200).json({ status: "success", updatedUser: user });
   } catch (err) {
-    res
-      .status(500)
-      .json({ status: "error", message: "error from updateMe, check console" });
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };
 
 // Update Password
-export const updatePassword = async (req: CustomRequest, res: Response) => {
+export const updatePassword = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     if (
       !req.body.newPassword ||
       !req.body.passwordConfirm ||
       !req.body.oldPassword
     )
-      throw new Error("Please provide all the details");
+      return next(new AppError(400, "Please provide all the details"));
 
     // Getting the user
     const [currentUser] = await db
@@ -77,7 +88,8 @@ export const updatePassword = async (req: CustomRequest, res: Response) => {
       .from(users)
       .where(eq(users.id, Number(req.user?.id)));
 
-    if (!currentUser) throw new Error("No usere found with user ID");
+    if (!currentUser)
+      return next(new AppError(404, "No usere found with user ID"));
 
     // Checking the old password
     const checkCredentials = await bcrypt.compare(
@@ -85,11 +97,14 @@ export const updatePassword = async (req: CustomRequest, res: Response) => {
       currentUser.password
     );
 
-    if (!checkCredentials) throw new Error("Invalid password, try again");
+    if (!checkCredentials)
+      return next(new AppError(401, "Invalid password, try again"));
 
     // Checking if both the new passwords match
     if (req.body.newPassword !== req.body.passwordConfirm)
-      throw new Error("Password and Confirm Password don't match");
+      return next(
+        new AppError(401, "Password and Confirm Password don't match")
+      );
 
     // Setting up the new password
     const newPassword = await bcrypt.hash(req.body.newPassword, 8);
@@ -102,10 +117,7 @@ export const updatePassword = async (req: CustomRequest, res: Response) => {
 
     res.status(200).json({ status: "success", updatedUser });
   } catch (err) {
-    res.status(500).json({
-      status: "error",
-      message: "error from updatePassword, check console",
-    });
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };

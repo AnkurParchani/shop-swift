@@ -1,8 +1,9 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { db } from "../db/dbConnect";
 import { addresses } from "../db/schema/address.schema";
 import { and, eq } from "drizzle-orm";
 import { User } from "../../global";
+import AppError from "../utils/appError";
 
 // CustomRequest for every request
 export interface CustomRequest extends Request {
@@ -10,7 +11,11 @@ export interface CustomRequest extends Request {
 }
 
 // Getting all the addresses of a particular user
-export const getAllAddresses = async (req: CustomRequest, res: Response) => {
+export const getAllAddresses = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const allAddresses = await db
       .select()
@@ -19,15 +24,17 @@ export const getAllAddresses = async (req: CustomRequest, res: Response) => {
 
     res.status(200).json({ status: "success", addresses: allAddresses });
   } catch (err) {
-    res
-      .status(500)
-      .send("Something went wrong from Get all Addresses, check console");
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };
 
 // Adding new Address
-export const addAddress = async (req: CustomRequest, res: Response) => {
+export const addAddress = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     let address;
 
@@ -54,17 +61,20 @@ export const addAddress = async (req: CustomRequest, res: Response) => {
 
     res.status(200).json({ status: "success", address });
   } catch (err) {
-    res
-      .status(500)
-      .send("Something went wrong from add Address, check console");
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };
 
 // Updating an Address
-export const updateAddress = async (req: CustomRequest, res: Response) => {
+export const updateAddress = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    if (!req.params.addressId) throw new Error("No address Id provided");
+    if (!req.params.addressId)
+      return next(new AppError(400, "No address Id provided"));
 
     // Updating the address WHERE "userId=loggedIn User id" AND "addressId= provided address Id"
     const [updatedAddress] = await db
@@ -78,19 +88,24 @@ export const updateAddress = async (req: CustomRequest, res: Response) => {
       )
       .returning();
 
-    if (!updatedAddress) throw new Error("No address found");
+    if (!updatedAddress) return next(new AppError(404, "No address found"));
 
     res.status(200).json({ status: "success", updatedAddress });
   } catch (err) {
-    res.status(500).send("error from delete Address, check console");
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };
 
 // Deleting an Address
-export const deleteAddress = async (req: CustomRequest, res: Response) => {
+export const deleteAddress = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    if (!req.params.addressId) throw new Error("No address Id provided");
+    if (!req.params.addressId)
+      return next(new AppError(400, "No address Id provided"));
 
     // Deleting the address WHERE "userId=loggedIn User id" AND "addressId= provided address Id"
     const [address] = await db
@@ -103,13 +118,11 @@ export const deleteAddress = async (req: CustomRequest, res: Response) => {
       )
       .returning();
 
-    if (!address) throw new Error("No address found");
+    if (!address) return next(new AppError(404, "No address found"));
 
     res.status(200).json({ status: "success", message: "Address deleted" });
   } catch (err) {
-    res
-      .status(500)
-      .send("Something went wrong from delete Address, check console");
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };

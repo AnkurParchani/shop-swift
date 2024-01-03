@@ -1,46 +1,57 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { db } from "../db/dbConnect";
 import { items } from "../db/schema/item.schema";
 import { eq } from "drizzle-orm";
 import { images } from "../db/schema/img.schema";
+import AppError from "../utils/appError";
 
 // Getting all the items
-export const getItems = async (req: Request, res: Response) => {
+export const getItems = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const allItems = await db.select().from(items);
 
     res.status(200).json({ status: "success", items: allItems });
   } catch (err) {
-    res
-      .status(500)
-      .json({ status: "error", message: "error from getItems, check console" });
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };
 
 // Getting particular item
-export const getItem = async (req: Request, res: Response) => {
+export const getItem = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    if (!req.params.itemId) throw new Error("Provide valid itemId");
+    if (!req.params.itemId)
+      return next(new AppError(400, "Provide valid itemId"));
 
     const [item] = await db
       .select()
       .from(items)
       .where(eq(items.id, Number(req.params.itemId)));
 
-    if (!item) throw new Error("No item found with that item ID");
+    if (!item)
+      return next(new AppError(400, "No item found with that item ID"));
 
     res.status(200).json({ status: "success", item });
   } catch (err) {
-    res
-      .status(500)
-      .json({ status: "error", message: "error from get item, check console" });
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };
 
 // Creating an item
-export const createItem = async (req: Request, res: Response) => {
+export const createItem = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     //  1). Creating the item
     const [item] = await db
@@ -66,27 +77,29 @@ export const createItem = async (req: Request, res: Response) => {
     }
 
     res.status(200).json({ status: "success", item });
-    // res.status(200).json({ status: "success", item });
   } catch (err) {
-    res.status(500).json({
-      status: "error",
-      message: "error from create item, check console",
-    });
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };
 
 // Update as Item
-export const updateItem = async (req: Request, res: Response) => {
+export const updateItem = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    if (!req.params.itemId) throw new Error("Provide valid itemId");
+    if (!req.params.itemId)
+      return next(new AppError(400, "Provide valid itemId"));
 
     const [item] = await db
       .select()
       .from(items)
       .where(eq(items.id, Number(req.params.itemId)));
 
-    if (!item) throw new Error("No item found with provided ItemID");
+    if (!item)
+      return next(new AppError(400, "No item found with provided ItemID"));
 
     const [updatedItem] = await db
       .update(items)
@@ -96,34 +109,33 @@ export const updateItem = async (req: Request, res: Response) => {
 
     res.status(200).json({ status: "success", updatedItem });
   } catch (err) {
-    res.status(500).json({
-      status: "error",
-      message: "Error from updateItem, check console",
-    });
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };
 
 // Deleting an Item
-export const deleteItem = async (req: Request, res: Response) => {
+export const deleteItem = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    if (!req.params.itemId) throw new Error("Provide item Id");
+    if (!req.params.itemId) return next(new AppError(400, "Provide item Id"));
 
     const [item] = await db
       .delete(items)
       .where(eq(items.id, Number(req.params.itemId)))
       .returning();
 
-    if (!item) throw new Error("No item found with provided item Id");
+    if (!item)
+      return next(new AppError(404, "No item found with provided item Id"));
 
     res
       .status(200)
       .json({ status: "success", message: "Item has been deleted" });
   } catch (err) {
-    res.status(500).json({
-      status: "error",
-      message: "error from deleteItem, check console",
-    });
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };

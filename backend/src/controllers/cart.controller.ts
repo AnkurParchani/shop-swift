@@ -1,8 +1,9 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { User } from "../../global";
 import { db } from "../db/dbConnect";
 import { cart } from "../db/schema/cart.schema";
 import { and, eq } from "drizzle-orm";
+import AppError from "../utils/appError";
 
 // CustomRequest for every request
 export interface CustomRequest extends Request {
@@ -10,9 +11,14 @@ export interface CustomRequest extends Request {
 }
 
 // Adding item to cart
-export const addItemToCart = async (req: CustomRequest, res: Response) => {
+export const addItemToCart = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    if (!req.body.itemId) throw new Error("Provide the itemId of the item");
+    if (!req.body.itemId)
+      return next(new AppError(400, "Provide the itemId of the item"));
 
     // Checking if the item is already in user's wishlist or not
     const checkItemInCart = await db
@@ -26,7 +32,9 @@ export const addItemToCart = async (req: CustomRequest, res: Response) => {
       );
 
     if (checkItemInCart[0])
-      throw new Error("You have already added this item in your wishlist");
+      return next(
+        new AppError(400, "You have already added this item in your wishlist")
+      );
 
     // Adding item to the cart
     const [item] = await db
@@ -36,18 +44,16 @@ export const addItemToCart = async (req: CustomRequest, res: Response) => {
 
     res.status(200).json({ status: "success", item });
   } catch (err) {
-    res.status(500).json({
-      status: "success",
-      message: "error from addItemToCart, check console",
-    });
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };
 
 // Get all cart items
 export const getAllItemsFromCart = async (
   req: CustomRequest,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   try {
     const itemsInCart = await db.query.cart.findMany({
@@ -59,18 +65,20 @@ export const getAllItemsFromCart = async (
 
     res.status(200).json({ status: "success", items: itemsInCart });
   } catch (err) {
-    res.status(500).json({
-      status: "success",
-      message: "error from getAllItemsFromCart, check console",
-    });
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };
 
 // Removing item from cart (one)
-export const removeItemFromCart = async (req: CustomRequest, res: Response) => {
+export const removeItemFromCart = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    if (!req.params.cartId) throw new Error("Please provide the cartId");
+    if (!req.params.cartId)
+      return next(new AppError(400, "Please provide the cartId"));
 
     const itemToRemove = await db
       .delete(cart)
@@ -82,38 +90,38 @@ export const removeItemFromCart = async (req: CustomRequest, res: Response) => {
       )
       .returning();
 
-    if (!itemToRemove[0]) throw new Error("There is no item with the cart id");
+    if (!itemToRemove[0])
+      return next(new AppError(404, "There is no item with the cart id"));
 
     res
       .status(200)
       .json({ status: "success", message: "item removed from cart" });
   } catch (err) {
-    res.status(500).json({
-      status: "success",
-      message: "error from removeItemFromCart, check console",
-    });
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };
 
 // Removing item from cart (all)
-export const clearCart = async (req: CustomRequest, res: Response) => {
+export const clearCart = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const itemsInCart = await db
       .delete(cart)
       .where(eq(cart.itemId, Number(req.user?.id)))
       .returning();
 
-    if (!itemsInCart[0]) throw new Error("You have no items in your cart");
+    if (!itemsInCart[0])
+      return next(new AppError(400, "You have no items in your cart"));
 
     res
       .status(200)
       .json({ status: "success", message: "Your cart is now empty" });
   } catch (err) {
-    res.status(500).json({
-      status: "success",
-      message: "error from clearCart, check console",
-    });
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };

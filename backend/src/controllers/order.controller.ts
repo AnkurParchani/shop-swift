@@ -1,8 +1,9 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { db } from "../db/dbConnect";
 import { order_items, orders } from "../db/schema/order.schema";
 import { User } from "../../global";
 import { and, eq } from "drizzle-orm";
+import AppError from "../utils/appError";
 
 // CustomRequest for every request
 export interface CustomRequest extends Request {
@@ -17,10 +18,14 @@ type OrderItem = {
 };
 
 // Create Order Request
-export const createOrder = async (req: CustomRequest, res: Response) => {
+export const createOrder = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     if (!req.body.orders || !req.user?.id)
-      throw new Error("Provide the order details");
+      return next(new AppError(400, "Provide the order details"));
 
     //  Getting all the orders
     const ordersFromClient: OrderItem[] = req.body.orders;
@@ -52,17 +57,17 @@ export const createOrder = async (req: CustomRequest, res: Response) => {
       orderItems: seperateOrder_item,
     });
   } catch (err) {
-    res.status(500).json({
-      status: "error",
-      message: "error from createOrder, check console",
-    });
-
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };
 
 // Get my Orders
-export const getMyOrders = async (req: CustomRequest, res: Response) => {
+export const getMyOrders = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const myOrders = await db.query.orders.findMany({
       where: eq(orders.userId, Number(req.user?.id)),
@@ -73,18 +78,20 @@ export const getMyOrders = async (req: CustomRequest, res: Response) => {
 
     res.status(200).json({ status: "success", myOrders });
   } catch (err) {
-    res.status(500).json({
-      status: "error",
-      message: "error from getMyOrders, check console",
-    });
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };
 
 // Get single order
-export const getSingleOrder = async (req: CustomRequest, res: Response) => {
+export const getSingleOrder = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    if (!req.params.orderId) throw new Error("Provide the order Id");
+    if (!req.params.orderId)
+      return next(new AppError(400, "Provide the order Id"));
 
     const order = await db.query.orders.findFirst({
       where: and(
@@ -96,15 +103,13 @@ export const getSingleOrder = async (req: CustomRequest, res: Response) => {
       },
     });
 
-    if (!order) throw new Error("No order found with the given ID");
+    if (!order)
+      return next(new AppError(404, "No order found with the given ID"));
 
     res.status(200).json({ status: "success", order });
   } catch (err) {
-    res.status(500).json({
-      status: "error",
-      message: "error from getSingleOrder, check console",
-    });
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };
 

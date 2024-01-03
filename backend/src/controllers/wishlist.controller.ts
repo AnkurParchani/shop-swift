@@ -1,8 +1,9 @@
 import { User } from "../../global";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { db } from "../db/dbConnect";
 import { wishlist } from "../db/schema/wishlist.schema";
 import { and, eq } from "drizzle-orm";
+import AppError from "../utils/appError";
 
 // CustomRequest for every request
 export interface CustomRequest extends Request {
@@ -10,9 +11,13 @@ export interface CustomRequest extends Request {
 }
 
 // Adding item to wishlist
-export const addItemToWishlist = async (req: CustomRequest, res: Response) => {
+export const addItemToWishlist = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    if (!req.body.itemId) throw new Error("Provide item Id");
+    if (!req.body.itemId) return next(new AppError(400, "Provide item Id"));
 
     // Checking if the item is already in user's wishlist or not
     const checkItemInWishlist = await db
@@ -26,7 +31,9 @@ export const addItemToWishlist = async (req: CustomRequest, res: Response) => {
       );
 
     if (checkItemInWishlist[0])
-      throw new Error("You have already added this item in your wishlist");
+      return next(
+        new AppError(400, "You have already added this item in your wishlist")
+      );
 
     // Adding the item to the wishlist
     const [item] = await db
@@ -36,17 +43,17 @@ export const addItemToWishlist = async (req: CustomRequest, res: Response) => {
 
     res.status(200).json({ status: "success", item });
   } catch (err) {
-    res.status(500).json({
-      status: "error",
-      message: "error from addItemToWishlist, check console",
-    });
-
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };
 
 // Getting all wishlist items
-export const getWishlistItems = async (req: CustomRequest, res: Response) => {
+export const getWishlistItems = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const items = await db.query.wishlist.findMany({
       where: eq(wishlist.userId, Number(req.user?.id)),
@@ -57,22 +64,20 @@ export const getWishlistItems = async (req: CustomRequest, res: Response) => {
 
     res.status(200).json({ status: "success", items });
   } catch (err) {
-    res.status(500).json({
-      status: "error",
-      message: "error from getWishlistItems, check console",
-    });
-
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };
 
 // Removing wishlist items (particular)
 export const removeItemFromWishlist = async (
   req: CustomRequest,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   try {
-    if (!req.params.wishlistId) throw new Error("Provide the wishlist item Id");
+    if (!req.params.wishlistId)
+      return next(new AppError(400, "Provide the wishlist item Id"));
 
     const itemToRemove = await db
       .delete(wishlist)
@@ -85,23 +90,25 @@ export const removeItemFromWishlist = async (
       .returning();
 
     if (!itemToRemove[0])
-      throw new Error("There is no item with the wishlist item id");
+      return next(
+        new AppError(404, "There is no item with the wishlist item id")
+      );
 
     res
       .status(200)
       .json({ status: "success", message: "item removed from wishlist" });
   } catch (err) {
-    res.status(500).json({
-      status: "error",
-      message: "error from removeItemFromWishlist, check console",
-    });
-
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };
 
 // Deleting the whole wishlist
-export const clearWishlist = async (req: CustomRequest, res: Response) => {
+export const clearWishlist = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const deletedItems = await db
       .delete(wishlist)
@@ -109,18 +116,14 @@ export const clearWishlist = async (req: CustomRequest, res: Response) => {
       .returning();
 
     if (!deletedItems[0])
-      throw new Error("There are no items in your wishlist");
+      return next(new AppError(404, "There are no items in your wishlist"));
 
     res.status(200).json({
       status: "success",
       message: "Your all wishlist items have been deleted",
     });
   } catch (err) {
-    res.status(500).json({
-      status: "error",
-      message: "error from clearWishlist, check console",
-    });
-
     console.log(err);
+    return next(new AppError(500, "Something went wrong, try again later"));
   }
 };
