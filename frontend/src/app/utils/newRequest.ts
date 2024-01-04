@@ -1,3 +1,4 @@
+// Global request for axios (baseURL)
 import axios from "axios";
 
 const newRequest = axios.create({

@@ -6,6 +6,7 @@ import { EyeSlashFilledIcon } from "../others/EyeSlashFilledIcon";
 import { EyeFilledIcon } from "../others/EyeFilledIcon";
 import { FieldValues, UseFormRegister } from "react-hook-form";
 
+// For Password inside form
 const InputPassword = ({
   register,
 }: {

@@ -11,6 +11,7 @@ type AuthFormTemplateType = {
   heading: string;
 };
 
+// Template for Auth Forms (login and signup)
 const AuthFormTemplate = ({
   children,
   heading,

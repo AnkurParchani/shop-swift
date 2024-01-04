@@ -1,5 +1,6 @@
 import { Button } from "@nextui-org/react";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 export default function Home() {
   return (
