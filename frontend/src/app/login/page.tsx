@@ -1,30 +1,41 @@
 "use client";
 
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { useCookies } from "next-client-cookies";
+import { FieldValues, useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
+
 import InputPassword from "../components/events/InputPassword";
 import AuthFormTemplate from "../components/form/AuthFormTemplate";
+import InputEmail from "../components/events/InputEmail";
 
 import { login } from "../services/apiUsers";
-import InputEmail from "../components/events/InputEmail";
-import { toast } from "react-toastify";
 
 const Page = () => {
-  const { register, handleSubmit } = useForm();
+  const router = useRouter();
+  const cookies = useCookies();
+  const { register, handleSubmit, reset } = useForm();
+
+  // react-query's useMutation
   const { mutate, isPending } = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      console.log(data);
-      return toast("Logged in successfully");
+      toast("Logged in successfully", { type: "success" });
+      reset();
+      cookies.set("token", data.token);
+      router.push("/");
     },
-    onError: () => {
-      toast("Invalid");
+    onError: (err) => {
+      toast(err.message, { type: "error", theme: "dark" });
     },
   });
 
+  // The onSubmit function for react-hook-form that will call mutate on react query
   const onSubmit = (data: FieldValues) => mutate(data);
 
+  // The JSX
   return (
     <AuthFormTemplate
       heading="Login"
@@ -32,10 +43,15 @@ const Page = () => {
       handleSubmit={handleSubmit}
     >
       <InputEmail register={register} />
-      <InputPassword register={register} />
+
+      <InputPassword
+        label="Password"
+        register={register}
+        registerName="password"
+      />
       <Button
         type="submit"
-        color="danger"
+        color="primary"
         variant="solid"
         isDisabled={isPending}
         isLoading={isPending}

@@ -6,22 +6,28 @@ import { EyeSlashFilledIcon } from "../others/EyeSlashFilledIcon";
 import { EyeFilledIcon } from "../others/EyeFilledIcon";
 import { FieldValues, UseFormRegister } from "react-hook-form";
 
+type InputPasswordType = {
+  register: UseFormRegister<FieldValues>;
+  registerName: string;
+  label: string;
+};
+
 // For Password inside form
 const InputPassword = ({
   register,
-}: {
-  register: UseFormRegister<FieldValues>;
-}) => {
+  registerName,
+  label,
+}: InputPasswordType) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
   return (
     <Input
-      {...register("password")}
-      label="Password"
+      {...register(registerName)}
+      label={label}
       variant="bordered"
-      size="lg"
+      size="md"
       endContent={
         <button
           className="focus:outline-none"

@@ -4,6 +4,7 @@ import { items } from "../db/schema/item.schema";
 import { eq } from "drizzle-orm";
 import { images } from "../db/schema/img.schema";
 import AppError from "../utils/appError";
+import { handleApiError } from "../utils/handleServerError";
 
 // Getting all the items
 export const getItems = async (
@@ -16,8 +17,7 @@ export const getItems = async (
 
     res.status(200).json({ status: "success", items: allItems });
   } catch (err) {
-    console.log(err);
-    return next(new AppError(500, "Something went wrong, try again later"));
+    return handleApiError(err, next);
   }
 };
 
@@ -41,8 +41,7 @@ export const getItem = async (
 
     res.status(200).json({ status: "success", item });
   } catch (err) {
-    console.log(err);
-    return next(new AppError(500, "Something went wrong, try again later"));
+    return handleApiError(err, next);
   }
 };
 
@@ -78,8 +77,7 @@ export const createItem = async (
 
     res.status(200).json({ status: "success", item });
   } catch (err) {
-    console.log(err);
-    return next(new AppError(500, "Something went wrong, try again later"));
+    return handleApiError(err, next);
   }
 };
 
@@ -109,8 +107,7 @@ export const updateItem = async (
 
     res.status(200).json({ status: "success", updatedItem });
   } catch (err) {
-    console.log(err);
-    return next(new AppError(500, "Something went wrong, try again later"));
+    return handleApiError(err, next);
   }
 };
 
@@ -135,7 +132,6 @@ export const deleteItem = async (
       .status(200)
       .json({ status: "success", message: "Item has been deleted" });
   } catch (err) {
-    console.log(err);
-    return next(new AppError(500, "Something went wrong, try again later"));
+    return handleApiError(err, next);
   }
 };

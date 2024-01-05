@@ -6,6 +6,7 @@ import { and, eq } from "drizzle-orm";
 import { users } from "../db/schema/user.schema";
 
 import AppError from "../utils/appError";
+import { handleApiError } from "../utils/handleServerError";
 
 // CustomRequest for every request
 export interface CustomRequest extends Request {
@@ -13,7 +14,11 @@ export interface CustomRequest extends Request {
 }
 
 // Getting all Reviews of a particular user
-export const getReviews = async (req: CustomRequest, res: Response) => {
+export const getReviews = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const allReviews = await db
       .select()
@@ -22,11 +27,7 @@ export const getReviews = async (req: CustomRequest, res: Response) => {
 
     res.status(200).json({ status: "success", reviews: allReviews });
   } catch (err) {
-    res.status(500).json({
-      status: "error",
-      message: "error from getReviews, check console",
-    });
-    console.log(err);
+    return handleApiError(err, next);
   }
 };
 
@@ -93,8 +94,7 @@ export const createReview = async (
 
     res.status(200).json({ status: "success", review });
   } catch (err) {
-    console.log(err);
-    return next(new AppError(500, "Something went wrong, try again later"));
+    return handleApiError(err, next);
   }
 };
 
@@ -124,8 +124,7 @@ export const updateReview = async (
 
     res.status(200).json({ status: "success", updatedReview });
   } catch (err) {
-    console.log(err);
-    return next(new AppError(500, "Something went wrong, try again later"));
+    return handleApiError(err, next);
   }
 };
 
@@ -153,7 +152,6 @@ export const deleteReview = async (
 
     res.status(200).json({ status: "success", message: "review deleted" });
   } catch (err) {
-    console.log(err);
-    return next(new AppError(500, "Something went wrong, try again later"));
+    return handleApiError(err, next);
   }
 };

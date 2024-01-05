@@ -1,54 +1,74 @@
-import { HiUserPlus } from "react-icons/hi2";
-import Button from "../components/events/Button";
-import FormInput from "../components/FormInput";
+"use client";
 
-const page = () => {
+import { toast } from "react-toastify";
+import { useCookies } from "next-client-cookies";
+import { FieldValues, useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import { Button } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
+
+import InputPassword from "../components/events/InputPassword";
+import AuthFormTemplate from "../components/form/AuthFormTemplate";
+import InputEmail from "../components/events/InputEmail";
+
+import { signup } from "../services/apiUsers";
+import InputText from "../components/events/InputText";
+
+const Page = () => {
+  const router = useRouter();
+  const cookies = useCookies();
+  const { register, handleSubmit, reset } = useForm();
+
+  // react-query's useMutation
+  const { mutate, isPending } = useMutation({
+    mutationFn: signup,
+    onSuccess: (data) => {
+      toast("Signed up successfully", { type: "success" });
+      reset();
+      cookies.set("token", data.token);
+      router.push("/");
+    },
+    onError: (err) => {
+      toast(err.message, { type: "error", theme: "dark" });
+    },
+  });
+
+  // The onSubmit function for react-hook-form that will call mutate on react query
+  const onSubmit = (data: FieldValues) => mutate(data);
+
+  // The JSX
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="w-full rounded bg-white p-8 shadow-md sm:w-96">
-        <h2 className="mb-4 text-2xl font-bold">Sign Up</h2>
-        <form>
-          <div className="mb-5 flex justify-center">
-            <HiUserPlus className="rounded-full bg-blue-500 p-3 text-6xl text-white" />
-          </div>
-          <FormInput
-            label="Name"
-            type="text"
-            id="name"
-            name="name"
-            placeholder="Enter your name"
-            required
-          />
-          <FormInput
-            label="Email"
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Enter your email"
-            required
-          />
-          <FormInput
-            label="Password"
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Enter your password"
-            required
-          />
-          <FormInput
-            label="Confirm Password"
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            placeholder="Confirm your password"
-            required
-          />
+    <AuthFormTemplate
+      heading="Signup"
+      onSubmit={onSubmit}
+      handleSubmit={handleSubmit}
+    >
+      <InputText label="Name" register={register} registerName="name" />
 
-          <Button type="submit" text="Sign Up" />
-        </form>
-      </div>
-    </div>
+      <InputEmail register={register} />
+
+      <InputPassword
+        register={register}
+        registerName="password"
+        label="Password"
+      />
+
+      <InputPassword
+        register={register}
+        registerName="passwordConfirm"
+        label="Confirm Password"
+      />
+      <Button
+        type="submit"
+        color="primary"
+        variant="solid"
+        isDisabled={isPending}
+        isLoading={isPending}
+      >
+        Signup
+      </Button>
+    </AuthFormTemplate>
   );
 };
 
-export default page;
+export default Page;

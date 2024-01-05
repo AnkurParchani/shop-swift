@@ -8,6 +8,7 @@ import { eq } from "drizzle-orm";
 import { User } from "../../global";
 import { images } from "../db/schema/img.schema";
 import AppError from "../utils/appError";
+import { handleApiError } from "../utils/handleServerError";
 
 // CustomRequest for every request
 export interface CustomRequest extends Request {
@@ -53,11 +54,9 @@ export const signup = async (
 
     // Setting cookie and returning response
     res.cookie("token", token);
-    res.status(200).json({ status: "success", user });
+    res.status(200).json({ status: "success", user, token });
   } catch (err) {
-    return next(
-      new AppError(500, "Something went wrong, please try again later")
-    );
+    return handleApiError(err, next);
   }
 };
 
@@ -89,11 +88,14 @@ export const login = async (
     const token = jwt.sign({ userId: foundUser.id }, process.env.JWT_SECRET!);
 
     res.cookie("token", token);
-    res.status(200).json({ status: "success", message: "Logged in" });
+    res.status(200).json({
+      status: "success",
+      message: "Logged in",
+      user: foundUser,
+      token,
+    });
   } catch (err) {
-    return next(
-      new AppError(500, "Something went wrong, please try again later")
-    );
+    return handleApiError(err, next);
   }
 };
 
@@ -131,9 +133,7 @@ export const protect = async (
     req.user = currentUser;
     next();
   } catch (err) {
-    return next(
-      new AppError(500, "Something went wrong, please try again later!")
-    );
+    return handleApiError(err, next);
   }
 };
 
@@ -149,9 +149,7 @@ export const checkIsAdmin = async (
 
     next();
   } catch (err) {
-    return next(
-      new AppError(500, "Something went wrong, please try again later!")
-    );
+    return handleApiError(err, next);
   }
 };
 
@@ -183,8 +181,6 @@ export const deleteAccount = async (
       .status(200)
       .json({ status: "success", message: "Account has been removed" });
   } catch (err) {
-    return next(
-      new AppError(500, "Something went wrong, please try again later!")
-    );
+    return handleApiError(err, next);
   }
 };

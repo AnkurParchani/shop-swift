@@ -4,6 +4,7 @@ import { db } from "../db/dbConnect";
 import { images } from "../db/schema/img.schema";
 import { and, eq } from "drizzle-orm";
 import AppError from "../utils/appError";
+import { handleApiError } from "../utils/handleServerError";
 
 // CustomRequest for every request
 export interface CustomRequest extends Request {
@@ -33,8 +34,7 @@ export const addItemImage = async (
 
     res.status(200).json({ status: "success", image });
   } catch (err) {
-    console.log(err);
-    return next(new AppError(500, "Something went wrong, try again later"));
+    return handleApiError(err, next);
   }
 };
 
@@ -74,8 +74,7 @@ export const deleteItemImg = async (
 
     res.status(200).json({ status: "success", message: "Image deleted" });
   } catch (err) {
-    console.log(err);
-    return next(new AppError(500, "Something went wrong, try again later"));
+    return handleApiError(err, next);
   }
 };
 
@@ -118,8 +117,7 @@ export const addUserImg = async (
 
     res.status(200).json({ status: "success", image: image[0] });
   } catch (err) {
-    console.log(err);
-    return next(new AppError(500, "Something went wrong, try again later"));
+    return handleApiError(err, next);
   }
 };
 
@@ -142,7 +140,6 @@ export const removeUserImg = async (
       .status(200)
       .json({ status: "success", message: "Image has been removed" });
   } catch (err) {
-    console.log(err);
-    return next(new AppError(500, "Something went wrong, try again later"));
+    return handleApiError(err, next);
   }
 };

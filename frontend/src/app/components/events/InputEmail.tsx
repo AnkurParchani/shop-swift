@@ -25,6 +25,7 @@ export default function InputEmail({
       value={value}
       type="email"
       label="Email"
+      size="md"
       variant="bordered"
       isInvalid={isInvalid}
       color={isInvalid ? "danger" : "success"}

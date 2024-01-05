@@ -24,7 +24,12 @@ configDotenv({ path: ".env" });
 app.use(express.json());
 
 // To implement CORS
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 // For reading cookies
 app.use(cookieParser());
