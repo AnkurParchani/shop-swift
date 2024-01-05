@@ -12,6 +12,7 @@ import AuthFormTemplate from "../components/form/AuthFormTemplate";
 import InputEmail from "../components/events/InputEmail";
 
 import { login } from "../services/apiUsers";
+import Link from "next/link";
 
 const Page = () => {
   const router = useRouter();
@@ -24,6 +25,7 @@ const Page = () => {
     onSuccess: (data) => {
       toast("Logged in successfully", { type: "success" });
       reset();
+      localStorage.setItem("user", JSON.stringify(data.user));
       cookies.set("token", data.token);
       router.push("/");
     },
@@ -58,6 +60,13 @@ const Page = () => {
       >
         Login
       </Button>
+
+      <p className="text-center text-sm text-gray-400">
+        Don&apos;t have an account?{" "}
+        <Link className="text-blue-500 hover:underline" href="/sign-up">
+          Sign up
+        </Link>
+      </p>
     </AuthFormTemplate>
   );
 };

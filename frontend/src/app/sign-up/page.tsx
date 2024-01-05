@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { toast } from "react-toastify";
 import { useCookies } from "next-client-cookies";
 import { FieldValues, useForm } from "react-hook-form";
@@ -10,9 +11,9 @@ import { useRouter } from "next/navigation";
 import InputPassword from "../components/events/InputPassword";
 import AuthFormTemplate from "../components/form/AuthFormTemplate";
 import InputEmail from "../components/events/InputEmail";
+import InputText from "../components/events/InputText";
 
 import { signup } from "../services/apiUsers";
-import InputText from "../components/events/InputText";
 
 const Page = () => {
   const router = useRouter();
@@ -25,8 +26,9 @@ const Page = () => {
     onSuccess: (data) => {
       toast("Signed up successfully", { type: "success" });
       reset();
-      cookies.set("token", data.token);
       router.push("/");
+      localStorage.setItem("user", JSON.stringify(data.user));
+      cookies.set("token", data.token);
     },
     onError: (err) => {
       toast(err.message, { type: "error", theme: "dark" });
@@ -67,6 +69,12 @@ const Page = () => {
       >
         Signup
       </Button>
+      <p className="text-center text-sm text-gray-400">
+        Already a memeber?{" "}
+        <Link className="text-blue-500 hover:underline" href="/login">
+          Login
+        </Link>
+      </p>
     </AuthFormTemplate>
   );
 };

@@ -54,7 +54,11 @@ export const signup = async (
 
     // Setting cookie and returning response
     res.cookie("token", token);
-    res.status(200).json({ status: "success", user, token });
+    res.status(200).json({
+      status: "success",
+      token,
+      user: { ...user, password: undefined },
+    });
   } catch (err) {
     return handleApiError(err, next);
   }
@@ -91,7 +95,7 @@ export const login = async (
     res.status(200).json({
       status: "success",
       message: "Logged in",
-      user: foundUser,
+      user: { ...foundUser, password: undefined },
       token,
     });
   } catch (err) {

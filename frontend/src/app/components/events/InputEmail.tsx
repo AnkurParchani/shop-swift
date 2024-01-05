@@ -8,7 +8,7 @@ export default function InputEmail({
 }: {
   register: UseFormRegister<FieldValues>;
 }) {
-  const [value, setValue] = React.useState<string>("someone@example.com");
+  const [value, setValue] = React.useState<string>("");
 
   const validateEmail = (value: string) =>
     value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i);
@@ -26,6 +26,7 @@ export default function InputEmail({
       type="email"
       label="Email"
       size="md"
+      placeholder="someone@example.com"
       variant="bordered"
       isInvalid={isInvalid}
       color={isInvalid ? "danger" : "success"}
