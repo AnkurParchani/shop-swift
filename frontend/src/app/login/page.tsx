@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { toast } from "react-toastify";
 import { useCookies } from "next-client-cookies";
 import { FieldValues, useForm } from "react-hook-form";
@@ -12,7 +13,6 @@ import AuthFormTemplate from "../components/form/AuthFormTemplate";
 import InputEmail from "../components/events/InputEmail";
 
 import { login } from "../services/apiUsers";
-import Link from "next/link";
 
 const Page = () => {
   const router = useRouter();
@@ -23,10 +23,21 @@ const Page = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
+      // Showing success notification and resetting the form
       toast("Logged in successfully", { type: "success" });
       reset();
+
+      // Setting the user in localstorage
       localStorage.setItem("user", JSON.stringify(data.user));
+
+      // For Nav's useEffect run
+      const storageEvent = new Event("storage");
+      window.dispatchEvent(storageEvent);
+
+      // Setting the cookie
       cookies.set("token", data.token);
+
+      // Redirection to home page
       router.push("/");
     },
     onError: (err) => {

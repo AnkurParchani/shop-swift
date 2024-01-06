@@ -9,7 +9,6 @@ import {
   DropdownTrigger,
   Input,
   Navbar,
-  NavbarBrand,
   NavbarContent,
   NavbarItem,
   NavbarMenu,
@@ -19,17 +18,45 @@ import {
 import Link from "next/link";
 import { CiSearch } from "react-icons/ci";
 import { getUser } from "../utils/helpers";
+import { useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { useCookies } from "next-client-cookies";
 
 const Nav = () => {
-  const user = getUser();
+  const [user, setUser] = useState(getUser());
+  const cookies = useCookies();
+
+  //   Setting useEffect to change navbar according to the user logged in or not
+  useEffect(() => {
+    function handleStorageChange() {
+      setUser(getUser());
+    }
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
+  // Logout function
+  function handleLogout() {
+    toast("Logged out successfully", { type: "success" });
+
+    // Setting the user in localstorage
+    localStorage.removeItem("user");
+
+    setUser(null);
+
+    // Removing the cookie
+    cookies.remove("token");
+  }
 
   const navJSX = user ? (
     <Navbar isBordered>
       <NavbarContent justify="start">
-        <NavbarBrand className="mr-4">
-          <p>S_S</p>
-          <p className="hidden font-bold text-inherit sm:block">Shop_Swift</p>
-        </NavbarBrand>
+        <Link href="/" className="font-bold text-inherit">
+          Shop_Swift
+        </Link>
       </NavbarContent>
 
       <NavbarContent as="div" className="items-center" justify="end">
@@ -61,10 +88,14 @@ const Nav = () => {
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownItem key="profile" className="h-14 gap-2">
               <p className="font-semibold">Signed in as</p>
-              <p className="font-semibold">{user.email}</p>
+              <p className="font-semibold">hello@gmail.com</p>
             </DropdownItem>
             <DropdownItem key="settings">My Settings</DropdownItem>
-            <DropdownItem key="logout" className="text-red-500">
+            <DropdownItem
+              onClick={handleLogout}
+              key="logout"
+              className="text-red-500"
+            >
               Log Out
             </DropdownItem>
           </DropdownMenu>
@@ -75,9 +106,9 @@ const Nav = () => {
     // If the user is not logged in
     <Navbar isBordered>
       <NavbarContent className="sm:hidden">
-        <NavbarBrand>
-          <p className="font-bold text-inherit">Shop_Swift</p>
-        </NavbarBrand>
+        <Link href="/" className="font-bold text-inherit">
+          Shop_Swift
+        </Link>
       </NavbarContent>
 
       <NavbarContent className="pr-3 sm:hidden" justify="center">
@@ -85,24 +116,20 @@ const Nav = () => {
       </NavbarContent>
 
       <NavbarContent className="hidden gap-4 sm:flex" justify="center">
-        <NavbarBrand>
-          <p>S_S 1</p>
-          <p className="font-bold text-inherit">Shop_Swift</p>
-        </NavbarBrand>
+        <Link href="/" className="font-bold text-inherit">
+          Shop_Swift
+        </Link>
       </NavbarContent>
 
       <div className="hidden sm:block">
         <NavbarContent justify="end">
-          <NavbarItem className="hidden lg:flex">
-            <Link href="#">Login</Link>
-          </NavbarItem>
           <NavbarItem>
-            <Button as={Link} color="primary" href="#" variant="flat">
+            <Button as={Link} color="primary" href="/sign-up" variant="flat">
               Sign Up
             </Button>
           </NavbarItem>
           <NavbarItem>
-            <Button as={Link} color="primary" href="#" variant="solid">
+            <Button as={Link} color="primary" href="/login" variant="solid">
               Login
             </Button>
           </NavbarItem>

@@ -24,11 +24,22 @@ const Page = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: signup,
     onSuccess: (data) => {
+      // Showing success notification and resetting the form
       toast("Signed up successfully", { type: "success" });
       reset();
-      router.push("/");
+
+      // Setting the user in localstorage
       localStorage.setItem("user", JSON.stringify(data.user));
+
+      // For Nav's useEffect run
+      const storageEvent = new Event("storage");
+      window.dispatchEvent(storageEvent);
+
+      // Setting the cookie
       cookies.set("token", data.token);
+
+      // Redirection to home page
+      router.push("/");
     },
     onError: (err) => {
       toast(err.message, { type: "error", theme: "dark" });

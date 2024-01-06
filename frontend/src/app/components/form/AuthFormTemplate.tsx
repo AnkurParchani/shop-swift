@@ -19,7 +19,7 @@ const AuthFormTemplate = ({
   handleSubmit,
 }: AuthFormTemplateType) => {
   return (
-    <div className="flex min-h-screen items-center justify-center ">
+    <div className="flex min-h-screen justify-center ">
       <div className="p-8 sm:w-96">
         <h2 className="mb-4 text-2xl font-bold">{heading}</h2>
         <form
