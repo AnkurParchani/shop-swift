@@ -9,3 +9,10 @@ export type Item = {
   for_gender: "male" | "female" | "unisex";
   description: object;
 };
+
+export type User = {
+  id: number;
+  name: string;
+  email: string;
+  password?: string;
+};

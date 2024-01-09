@@ -1,0 +1,5 @@
+- to correct signup function, get userid and do something
+- to solve refrenceError: localstorage on at nav
+- ts error for fieldValues
+- update img after implementing
+- showing img after implementing

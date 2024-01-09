@@ -18,11 +18,21 @@ export const login = async (data: FieldValues) => {
 };
 
 // Signup Request
-export const signup = async (data: FieldValues) => {
+export const signup = async (data: FieldValues, userImg: string | null) => {
   try {
+    console.log("Logging userimg from signup function ", userImg);
     const res = await newRequest.post("/users/sign-up", data, {
       withCredentials: true,
     });
+
+    // If there is user image
+    if (userImg) {
+      await newRequest.post(
+        "/images/user",
+        { path: userImg },
+        { withCredentials: true },
+      );
+    }
 
     if (res.data.status === "success") {
       return res.data;

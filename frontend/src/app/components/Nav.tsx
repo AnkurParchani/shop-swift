@@ -19,12 +19,12 @@ import Link from "next/link";
 import { CiSearch } from "react-icons/ci";
 import { getUser } from "../utils/helpers";
 import { useEffect, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useCookies } from "next-client-cookies";
+import { User } from "./../../../global";
 
 const Nav = () => {
-  const [user, setUser] = useState(getUser());
+  const [user, setUser] = useState<User | null>(null);
   const cookies = useCookies();
 
   //   Setting useEffect to change navbar according to the user logged in or not
