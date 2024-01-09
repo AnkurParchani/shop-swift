@@ -11,6 +11,27 @@ export interface CustomRequest extends Request {
   user?: User;
 }
 
+// Get user img
+export const getUserImg = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.params.userId)
+      return next(new AppError(400, "Please provide user id first"));
+
+    const [img] = await db
+      .select()
+      .from(images)
+      .where(eq(images.userId, +req.params.userId));
+
+    res.status(200).json({ status: "success", img });
+  } catch (err) {
+    return handleApiError(err, next);
+  }
+};
+
 // Adding an image request (Item)
 export const addItemImage = async (
   req: CustomRequest,
@@ -93,7 +114,7 @@ export const addUserImg = async (
     const checkAlreadyImg = await db
       .select()
       .from(images)
-      .where(eq(images.userId, Number(req.user?.id)));
+      .where(eq(images.userId, Number(req.user?.id) || req.body.userId));
 
     if (checkAlreadyImg[0]) {
       // Means we have to update the Image
@@ -110,7 +131,7 @@ export const addUserImg = async (
           ...req.body,
           isItemImg: false,
           isUserImg: true,
-          userId: req.user?.id,
+          userId: req.user?.id || req.body.userId,
         })
         .returning();
     }

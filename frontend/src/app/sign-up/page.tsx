@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { toast } from "react-toastify";
-import { useCookies } from "next-client-cookies";
+import { useCookies } from "react-cookie";
 import { FieldValues, useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@nextui-org/react";
@@ -18,13 +18,16 @@ import InputText from "../components/events/InputText";
 import { signup } from "../services/apiUsers";
 import { ChangeEvent, useRef, useState } from "react";
 import { supabase, supabaseUrl } from "../services/supabase";
+import { getUserImg } from "../utils/helpers";
 
 const Page = () => {
   const router = useRouter();
-  const cookies = useCookies();
-  const preImg = localStorage.getItem("user-img");
+  const [cookies, setCookie] = useCookies();
+  const preImg = getUserImg();
   const [userImg, setUserImg] = useState<null | string>(
-    `https://plgvwkkuqxvmjvnjiybq.supabase.co/storage/v1/object/public/users/${preImg}`,
+    preImg
+      ? `https://plgvwkkuqxvmjvnjiybq.supabase.co/storage/v1/object/public/users/${preImg}`
+      : null,
   );
   const { register, handleSubmit, reset } = useForm();
   const userImgRef = useRef<HTMLInputElement | null>(null);
@@ -37,15 +40,21 @@ const Page = () => {
       toast("Signed up successfully", { type: "success" });
       reset();
 
+      setUserImg(null);
+
       // Setting the user in localstorage
-      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ ...data.user, img: userImg }),
+      );
+      localStorage.removeItem("user-img");
 
       // For Nav's useEffect run
       const storageEvent = new Event("storage");
       window.dispatchEvent(storageEvent);
 
       // Setting the cookie
-      cookies.set("token", data.token);
+      setCookie("token", data.token);
 
       // Redirection to home page
       router.push("/");
@@ -123,7 +132,7 @@ const Page = () => {
           onClick={() => userImgRef.current?.click()}
           src={userImg}
           alt="User-Img"
-          className="m-auto h-20 w-auto rounded-full"
+          className="m-auto h-20 w-auto cursor-pointer rounded-full"
           height={1000}
           width={1000}
         />

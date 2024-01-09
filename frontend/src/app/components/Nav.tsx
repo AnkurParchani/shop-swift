@@ -20,14 +20,14 @@ import { CiSearch } from "react-icons/ci";
 import { getUser } from "../utils/helpers";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { useCookies } from "next-client-cookies";
+import { useCookies } from "react-cookie";
 import { User } from "./../../../global";
 
 const Nav = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const cookies = useCookies();
+  const [user, setUser] = useState<User | null>(getUser());
+  const [cookies, setCookie, removeCookie] = useCookies();
 
-  //   Setting useEffect to change navbar according to the user logged in or not
+  // Setting useEffect to change navbar according to the user logged in or not
   useEffect(() => {
     function handleStorageChange() {
       setUser(getUser());
@@ -48,7 +48,7 @@ const Nav = () => {
     setUser(null);
 
     // Removing the cookie
-    cookies.remove("token");
+    removeCookie("token");
   }
 
   const navJSX = user ? (
@@ -82,7 +82,7 @@ const Nav = () => {
               color="secondary"
               name="Jason Hughes"
               size="sm"
-              src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+              src={`${user.img ? user.img : "/images/default-user.jpg"}`}
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">

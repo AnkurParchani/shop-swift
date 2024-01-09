@@ -16,7 +16,6 @@ export default function Home() {
     queryFn: getItems,
   });
 
-  console.log(items);
   if (isLoading) return <Loading />;
 
   return (

@@ -1,6 +1,6 @@
 import { FieldValues } from "react-hook-form";
-import newRequest from "../utils/newRequest";
 import { handleApiError } from "../utils/handleApiError";
+import newRequest from "../utils/newRequest";
 
 // Login request
 export const login = async (data: FieldValues) => {
@@ -10,7 +10,13 @@ export const login = async (data: FieldValues) => {
     });
 
     if (res.data.status === "success") {
-      return res.data;
+      const imgRes = await newRequest.get(`/images/user/${res.data.user.id}`);
+
+      if (imgRes.data.img?.path) {
+        return { ...res.data, img: imgRes.data.img.path };
+      } else {
+        return res.data;
+      }
     }
   } catch (err) {
     return handleApiError(err);
@@ -20,16 +26,18 @@ export const login = async (data: FieldValues) => {
 // Signup Request
 export const signup = async (data: FieldValues, userImg: string | null) => {
   try {
-    console.log("Logging userimg from signup function ", userImg);
     const res = await newRequest.post("/users/sign-up", data, {
       withCredentials: true,
     });
 
     // If there is user image
-    if (userImg) {
+    if (res.data.status === "success" && userImg) {
       await newRequest.post(
         "/images/user",
-        { path: userImg },
+        {
+          path: userImg,
+          userId: res.data.user.id,
+        },
         { withCredentials: true },
       );
     }

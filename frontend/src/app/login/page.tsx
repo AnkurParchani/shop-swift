@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { toast } from "react-toastify";
-import { useCookies } from "next-client-cookies";
+import { useCookies } from "react-cookie";
 import { FieldValues, useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@nextui-org/react";
@@ -16,7 +16,7 @@ import { login } from "../services/apiUsers";
 
 const Page = () => {
   const router = useRouter();
-  const cookies = useCookies();
+  const [cookies, setCookie, removeCookie] = useCookies();
   const { register, handleSubmit, reset } = useForm();
 
   // react-query's useMutation
@@ -28,14 +28,17 @@ const Page = () => {
       reset();
 
       // Setting the user in localstorage
-      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ ...data.user, img: data.img || undefined }),
+      );
 
       // For Nav's useEffect run
       const storageEvent = new Event("storage");
       window.dispatchEvent(storageEvent);
 
       // Setting the cookie
-      cookies.set("token", data.token);
+      setCookie("token", data.token);
 
       // Redirection to home page
       router.push("/");
