@@ -7,7 +7,8 @@ import { relations } from "drizzle-orm";
 // Defining the users table
 export const images = pgTable("images", {
   id: serial("id").primaryKey().notNull(),
-  isItemImg: boolean("isItem_img").default(false),
+  isItemMainImg: boolean("isItem_mainImg").default(false),
+  isItemExtraImg: boolean("isItem_extraImg").default(false),
   isUserImg: boolean("isUser_img").default(false),
   path: text("path").notNull(),
   userId: integer("user_id").references(() => users.id, {

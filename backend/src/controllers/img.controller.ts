@@ -34,6 +34,29 @@ export const getUserImg = async (
   }
 };
 
+// Get main item images
+export const getMainItemImgs = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const mainImages = await db
+      .select()
+      .from(images)
+      .where(eq(images.isItemMainImg, true));
+
+    const imgsToSend = mainImages.map((img) => {
+      const { itemId, path } = img;
+      return { itemId, path };
+    });
+
+    res.status(200).json({ status: "success", mainImages: imgsToSend });
+  } catch (err) {
+    return handleApiError(err, next);
+  }
+};
+
 // Adding an image request (Item)
 export const addItemImage = async (
   req: CustomRequest,
@@ -55,7 +78,8 @@ export const addItemImage = async (
       );
 
       await db.insert(images).values({
-        isItemImg: true,
+        isItemExtraImg: false,
+        isItemMainImg: true,
         isUserImg: false,
         path: `https://plgvwkkuqxvmjvnjiybq.supabase.co/storage/v1/object/public/items/${data.path}`,
         userId: null,
@@ -73,7 +97,8 @@ export const addItemImage = async (
         );
 
         await db.insert(images).values({
-          isItemImg: true,
+          isItemExtraImg: true,
+          isItemMainImg: false,
           isUserImg: false,
           path: `https://plgvwkkuqxvmjvnjiybq.supabase.co/storage/v1/object/public/items/${data.path}`,
           userId: null,
@@ -82,7 +107,7 @@ export const addItemImage = async (
       }
     }
 
-    res.status(200).json({ status: "success", image: "Image" });
+    res.status(200).json({ status: "success", message: "Images uploaded" });
   } catch (err) {
     return handleApiError(err, next);
   }

@@ -44,7 +44,8 @@ export const signup = async (
       await db.insert(images).values({
         path: img,
         isUserImg: true,
-        isItemImg: false,
+        isItemExtraImg: false,
+        isItemMainImg: false,
         userId: user.id,
         itemId: null,
       });

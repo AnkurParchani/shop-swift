@@ -60,21 +60,6 @@ export const createItem = async (
       })
       .returning();
 
-    // 2). Creating requests for images
-    if (req.body.images && Array.isArray(req.body.images)) {
-      const promises = req.body.images.map((img: string) => {
-        return db.insert(images).values({
-          isUserImg: false,
-          isItemImg: true,
-          path: img,
-          userId: null,
-          itemId: item.id,
-        });
-      });
-
-      await Promise.all(promises);
-    }
-
     res.status(200).json({ status: "success", item });
   } catch (err) {
     return handleApiError(err, next);

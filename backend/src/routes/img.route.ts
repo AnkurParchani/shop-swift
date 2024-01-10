@@ -6,6 +6,7 @@ import {
   removeUserImg,
   deleteItemImg,
   getUserImg,
+  getMainItemImgs,
 } from "../controllers/img.controller";
 import { checkIsAdmin, protect } from "../controllers/auth.controller";
 import multer from "multer";
@@ -19,7 +20,7 @@ const upload = multer({ storage: storage });
 router.route("/user").post(addUserImg).delete(protect, removeUserImg);
 
 router.get("/user/:userId", getUserImg);
-
+router.get("/items/main-img", getMainItemImgs);
 router.use(protect);
 router
   .route("/item")
