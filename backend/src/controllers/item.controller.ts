@@ -13,9 +13,20 @@ export const getItems = async (
   next: NextFunction
 ) => {
   try {
-    const allItems = await db.select().from(items);
+    const allItems = await db.query.items.findMany({
+      with: {
+        images: { where: eq(images.isItemMainImg, true) },
+      },
+    });
 
-    res.status(200).json({ status: "success", items: allItems });
+    const itemsToSend = allItems.map((item) => {
+      const { images, ...restOfThem } = item;
+      const imgPath = images.map((img) => img.path)[0] || undefined;
+
+      return { ...restOfThem, image: imgPath };
+    });
+
+    res.status(200).json({ status: "success", items: itemsToSend });
   } catch (err) {
     return handleApiError(err, next);
   }

@@ -9,6 +9,7 @@ import { Item } from "../../../../global";
 type Props = {};
 
 const ProductItems = (props: Props) => {
+  // Getting all the items
   const {
     isLoading,
     error,
