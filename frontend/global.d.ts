@@ -1,3 +1,4 @@
+// For Items
 export type Item = {
   id: number;
   name: string;
@@ -10,6 +11,7 @@ export type Item = {
   description: object;
 };
 
+// For users
 export type User = {
   id: number;
   name: string;

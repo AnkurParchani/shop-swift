@@ -1,10 +1,12 @@
 import { NextFunction, Request, Response } from "express";
-import { User } from "../../global";
+import { ImgFile, User } from "../../global";
 import { db } from "../db/dbConnect";
 import { images } from "../db/schema/img.schema";
 import { and, eq } from "drizzle-orm";
-import AppError from "../utils/appError";
 import { handleApiError } from "../utils/handleServerError";
+
+import AppError from "../utils/appError";
+import { uploadItemImgToSupabase } from "../utils/helpers";
 
 // CustomRequest for every request
 export interface CustomRequest extends Request {
@@ -41,19 +43,46 @@ export const addItemImage = async (
   try {
     if (!req.body.itemId) return next(new AppError(400, "Provide item ID"));
 
-    if (!req.body.path)
-      return next(new AppError(400, "Provide the path for the image"));
+    // @ts-ignore
+    const { mainImg, extraImg } = req.files;
 
-    const [image] = await db
-      .insert(images)
-      .values({
-        ...req.body,
+    // If there is main image for the item
+    if (mainImg) {
+      const data = await uploadItemImgToSupabase(
+        "items",
+        mainImg[0],
+        req.body.itemId
+      );
+
+      await db.insert(images).values({
         isItemImg: true,
         isUserImg: false,
-      })
-      .returning();
+        path: `https://plgvwkkuqxvmjvnjiybq.supabase.co/storage/v1/object/public/items/${data.path}`,
+        userId: null,
+        itemId: req.body.itemId,
+      });
+    }
 
-    res.status(200).json({ status: "success", image });
+    // If there are extra images for the item
+    if (extraImg) {
+      for (const img of extraImg) {
+        const data = await uploadItemImgToSupabase(
+          "items",
+          img,
+          req.body.itemId
+        );
+
+        await db.insert(images).values({
+          isItemImg: true,
+          isUserImg: false,
+          path: `https://plgvwkkuqxvmjvnjiybq.supabase.co/storage/v1/object/public/items/${data.path}`,
+          userId: null,
+          itemId: req.body.itemId,
+        });
+      }
+    }
+
+    res.status(200).json({ status: "success", image: "Image" });
   } catch (err) {
     return handleApiError(err, next);
   }

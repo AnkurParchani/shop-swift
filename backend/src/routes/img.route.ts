@@ -8,8 +8,13 @@ import {
   getUserImg,
 } from "../controllers/img.controller";
 import { checkIsAdmin, protect } from "../controllers/auth.controller";
+import multer from "multer";
 
 const router = express.Router();
+
+// Set up the storage engine for multer
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 router.route("/user").post(addUserImg).delete(protect, removeUserImg);
 
@@ -18,7 +23,14 @@ router.get("/user/:userId", getUserImg);
 router.use(protect);
 router
   .route("/item")
-  .post(checkIsAdmin, addItemImage)
+  .post(
+    checkIsAdmin,
+    upload.fields([
+      { name: "mainImg", maxCount: 1 },
+      { name: "extraImg", maxCount: 10 },
+    ]),
+    addItemImage
+  )
   .delete(checkIsAdmin, deleteItemImg);
 
 export default router;
