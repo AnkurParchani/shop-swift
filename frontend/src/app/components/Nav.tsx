@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   Avatar,
   Button,
@@ -15,7 +16,6 @@ import {
   NavbarMenuItem,
   NavbarMenuToggle,
 } from "@nextui-org/react";
-import Link from "next/link";
 import { CiSearch } from "react-icons/ci";
 import { getUser } from "../utils/helpers";
 import { useEffect, useState } from "react";

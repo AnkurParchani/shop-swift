@@ -3,8 +3,8 @@ import { db } from "../db/dbConnect";
 import { items } from "../db/schema/item.schema";
 import { eq } from "drizzle-orm";
 import { images } from "../db/schema/img.schema";
-import AppError from "../utils/appError";
 import { handleApiError } from "../utils/handleServerError";
+import AppError from "../utils/appError";
 
 // Getting all the items
 export const getItems = async (
@@ -16,14 +16,22 @@ export const getItems = async (
     const allItems = await db.query.items.findMany({
       with: {
         images: { where: eq(images.isItemMainImg, true) },
+        reviews: true,
       },
     });
 
     const itemsToSend = allItems.map((item) => {
-      const { images, ...restOfThem } = item;
+      const { images, reviews, ...restOfThem } = item;
       const imgPath = images.map((img) => img.path)[0] || undefined;
+      const rating =
+        reviews.reduce((acc, cur) => +cur.stars + acc, 0) || undefined;
 
-      return { ...restOfThem, image: imgPath };
+      return {
+        ...restOfThem,
+        image: imgPath,
+        numReviews: reviews.length,
+        ratings: (rating && rating / reviews.length) || 1,
+      };
     });
 
     res.status(200).json({ status: "success", items: itemsToSend });

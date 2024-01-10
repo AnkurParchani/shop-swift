@@ -6,9 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import ProductItem from "./ProductItem";
 import { Item } from "../../../../global";
 
-type Props = {};
-
-const ProductItems = (props: Props) => {
+const ProductItems = () => {
   // Getting all the items
   const {
     isLoading,
@@ -22,7 +20,7 @@ const ProductItems = (props: Props) => {
   if (isLoading) return <Loading />;
 
   return (
-    <div className="mx-auto grid max-w-5xl grid-cols-2 gap-4 px-5 sm:grid-cols-3 sm:gap-10">
+    <div className="mx-auto grid max-w-5xl grid-cols-2 gap-4 px-5 py-10 sm:grid-cols-3 sm:gap-10">
       {items.map((item: Item) => (
         <ProductItem key={item.id} item={item} />
       ))}

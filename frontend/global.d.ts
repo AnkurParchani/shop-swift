@@ -9,6 +9,9 @@ export type Item = {
   about: string;
   for_gender: "male" | "female" | "unisex";
   description: object;
+  numReviews: number;
+  ratings: number;
+  image?: string;
 };
 
 // For users
