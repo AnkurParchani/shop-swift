@@ -7,6 +7,7 @@ const ProductItem = ({ item }: { item: Item }) => {
     id,
     name,
     discountedPrice,
+    company,
     image,
     originalPrice,
     numReviews,
@@ -49,7 +50,8 @@ const ProductItem = ({ item }: { item: Item }) => {
           !inStock && "opacity-50"
         }`}
       >
-        <b>{name}</b>
+        <b>{company}</b>
+        <p className="text-gray-6500 text-xs font-light">{name}</p>
         <div className="flex items-center gap-1 text-xs">
           <p>{ratings}.0</p>
           <ReviewStars star={ratings} />

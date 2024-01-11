@@ -11,6 +11,7 @@ export type Item = {
   description: object;
   numReviews: number;
   ratings: number;
+  company: string;
   image?: string;
 };
 

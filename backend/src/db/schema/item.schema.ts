@@ -19,13 +19,15 @@ export const genderEnum = pgEnum("for_gender", ["male", "female", "unisex"]);
 export const items = pgTable("items", {
   id: serial("id").primaryKey().notNull(),
   name: varchar("name", { length: 250 }).notNull(),
+  company: varchar("company", { length: 250 }).notNull(),
   originalPrice: integer("original_price").notNull(),
   discountedPrice: integer("dicounted_price"),
   forGender: genderEnum("for_gender").notNull().default("unisex"),
   category: varchar("category", { length: 250 }).notNull(),
   inStock: boolean("inStock").default(true),
-  about: text("about"),
+  about: text("about").notNull(),
   description: json("description"),
+  extraDetails: json("extra_details"),
 });
 
 // Defining the item relations
