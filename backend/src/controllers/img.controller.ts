@@ -3,7 +3,7 @@ import { ImgFile, User } from "../../global";
 import { db } from "../db/dbConnect";
 import { images } from "../db/schema/img.schema";
 import { and, eq } from "drizzle-orm";
-import { handleApiError } from "../utils/handleServerError";
+import { handleServerError } from "../utils/handleServerError";
 
 import AppError from "../utils/appError";
 import { uploadItemImgToSupabase } from "../utils/helpers";
@@ -30,7 +30,7 @@ export const getUserImg = async (
 
     res.status(200).json({ status: "success", img });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -53,7 +53,7 @@ export const getMainItemImgs = async (
 
     res.status(200).json({ status: "success", mainImages: imgsToSend });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -109,7 +109,7 @@ export const addItemImage = async (
 
     res.status(200).json({ status: "success", message: "Images uploaded" });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -149,7 +149,7 @@ export const deleteItemImg = async (
 
     res.status(200).json({ status: "success", message: "Image deleted" });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -192,7 +192,7 @@ export const addUserImg = async (
 
     res.status(200).json({ status: "success", image: image[0] });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -215,6 +215,6 @@ export const removeUserImg = async (
       .status(200)
       .json({ status: "success", message: "Image has been removed" });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };

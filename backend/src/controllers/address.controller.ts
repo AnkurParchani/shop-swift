@@ -4,7 +4,7 @@ import { addresses } from "../db/schema/address.schema";
 import { and, eq } from "drizzle-orm";
 import { User } from "../../global";
 import AppError from "../utils/appError";
-import { handleApiError } from "../utils/handleServerError";
+import { handleServerError } from "../utils/handleServerError";
 
 // CustomRequest for every request
 export interface CustomRequest extends Request {
@@ -25,7 +25,7 @@ export const getAllAddresses = async (
 
     res.status(200).json({ status: "success", addresses: allAddresses });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -61,7 +61,7 @@ export const addAddress = async (
 
     res.status(200).json({ status: "success", address });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -91,7 +91,7 @@ export const updateAddress = async (
 
     res.status(200).json({ status: "success", updatedAddress });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -120,6 +120,6 @@ export const deleteAddress = async (
 
     res.status(200).json({ status: "success", message: "Address deleted" });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };

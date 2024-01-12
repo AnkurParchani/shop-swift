@@ -12,3 +12,16 @@ export const getItems = async () => {
     return handleApiError(err);
   }
 };
+
+// Getting particular item
+export const getSingleItem = async (itemId: string) => {
+  try {
+    const res = await newRequest.get(`/items/${itemId}`);
+
+    if (res.data.status === "success") {
+      return res.data;
+    }
+  } catch (err) {
+    return handleApiError(err);
+  }
+};

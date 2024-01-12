@@ -4,7 +4,7 @@ import { order_items, orders } from "../db/schema/order.schema";
 import { User } from "../../global";
 import { and, eq } from "drizzle-orm";
 import AppError from "../utils/appError";
-import { handleApiError } from "../utils/handleServerError";
+import { handleServerError } from "../utils/handleServerError";
 
 // CustomRequest for every request
 export interface CustomRequest extends Request {
@@ -58,7 +58,7 @@ export const createOrder = async (
       orderItems: seperateOrder_item,
     });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -78,7 +78,7 @@ export const getMyOrders = async (
 
     res.status(200).json({ status: "success", myOrders });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -107,7 +107,7 @@ export const getSingleOrder = async (
 
     res.status(200).json({ status: "success", order });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 

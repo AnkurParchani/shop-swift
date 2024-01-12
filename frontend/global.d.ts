@@ -9,6 +9,7 @@ export type Item = {
   about: string;
   for_gender: "male" | "female" | "unisex";
   description: object;
+  extraDetails: object;
   numReviews: number;
   ratings: number;
   company: string;
@@ -22,4 +23,11 @@ export type User = {
   email: string;
   img?: string;
   password?: string;
+};
+
+// Description for item Description
+export type Description = {
+  genericName: string;
+  modelNumber: string;
+  packer?: string;
 };

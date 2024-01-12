@@ -6,7 +6,7 @@ import { and, eq } from "drizzle-orm";
 import { users } from "../db/schema/user.schema";
 
 import AppError from "../utils/appError";
-import { handleApiError } from "../utils/handleServerError";
+import { handleServerError } from "../utils/handleServerError";
 
 // CustomRequest for every request
 export interface CustomRequest extends Request {
@@ -27,7 +27,7 @@ export const getReviews = async (
 
     res.status(200).json({ status: "success", reviews: allReviews });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -94,7 +94,7 @@ export const createReview = async (
 
     res.status(200).json({ status: "success", review });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -124,7 +124,7 @@ export const updateReview = async (
 
     res.status(200).json({ status: "success", updatedReview });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -152,6 +152,6 @@ export const deleteReview = async (
 
     res.status(200).json({ status: "success", message: "review deleted" });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };

@@ -3,7 +3,7 @@ import { db } from "../db/dbConnect";
 import { items } from "../db/schema/item.schema";
 import { eq } from "drizzle-orm";
 import { images } from "../db/schema/img.schema";
-import { handleApiError } from "../utils/handleServerError";
+import { handleServerError } from "../utils/handleServerError";
 import AppError from "../utils/appError";
 
 // Getting all the items
@@ -36,7 +36,7 @@ export const getItems = async (
 
     res.status(200).json({ status: "success", items: itemsToSend });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -50,17 +50,20 @@ export const getItem = async (
     if (!req.params.itemId)
       return next(new AppError(400, "Provide valid itemId"));
 
-    const [item] = await db
-      .select()
-      .from(items)
-      .where(eq(items.id, Number(req.params.itemId)));
+    const item = await db.query.items.findFirst({
+      where: eq(items.id, +req.params.itemId),
+      with: {
+        images: true,
+        reviews: true,
+      },
+    });
 
     if (!item)
-      return next(new AppError(400, "No item found with that item ID"));
+      return next(new AppError(404, "No item found with that item ID"));
 
     res.status(200).json({ status: "success", item });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -81,7 +84,7 @@ export const createItem = async (
 
     res.status(200).json({ status: "success", item });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -111,7 +114,7 @@ export const updateItem = async (
 
     res.status(200).json({ status: "success", updatedItem });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -136,6 +139,6 @@ export const deleteItem = async (
       .status(200)
       .json({ status: "success", message: "Item has been deleted" });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };

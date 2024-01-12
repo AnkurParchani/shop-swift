@@ -4,7 +4,7 @@ import { db } from "../db/dbConnect";
 import { wishlist } from "../db/schema/wishlist.schema";
 import { and, eq } from "drizzle-orm";
 import AppError from "../utils/appError";
-import { handleApiError } from "../utils/handleServerError";
+import { handleServerError } from "../utils/handleServerError";
 
 // CustomRequest for every request
 export interface CustomRequest extends Request {
@@ -44,7 +44,7 @@ export const addItemToWishlist = async (
 
     res.status(200).json({ status: "success", item });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -64,7 +64,7 @@ export const getWishlistItems = async (
 
     res.status(200).json({ status: "success", items });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -97,7 +97,7 @@ export const removeItemFromWishlist = async (
       .status(200)
       .json({ status: "success", message: "item removed from wishlist" });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -121,6 +121,6 @@ export const clearWishlist = async (
       message: "Your all wishlist items have been deleted",
     });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };

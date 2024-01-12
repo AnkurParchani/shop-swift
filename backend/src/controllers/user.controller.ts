@@ -5,7 +5,7 @@ import { db } from "../db/dbConnect";
 import { eq } from "drizzle-orm";
 import { users } from "../db/schema/user.schema";
 import AppError from "../utils/appError";
-import { handleApiError } from "../utils/handleServerError";
+import { handleServerError } from "../utils/handleServerError";
 
 // CustomRequest for every request
 export interface CustomRequest extends Request {
@@ -41,7 +41,7 @@ export const getUser = async (
       user,
     });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -63,7 +63,7 @@ export const updateMe = async (
 
     res.status(200).json({ status: "success", updatedUser: user });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -116,6 +116,6 @@ export const updatePassword = async (
 
     res.status(200).json({ status: "success", updatedUser });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };

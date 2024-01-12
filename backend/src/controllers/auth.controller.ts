@@ -8,7 +8,7 @@ import { eq } from "drizzle-orm";
 import { User } from "../../global";
 import { images } from "../db/schema/img.schema";
 import AppError from "../utils/appError";
-import { handleApiError } from "../utils/handleServerError";
+import { handleServerError } from "../utils/handleServerError";
 
 // CustomRequest for every request
 export interface CustomRequest extends Request {
@@ -61,7 +61,7 @@ export const signup = async (
       user: { ...user, password: undefined },
     });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -100,7 +100,7 @@ export const login = async (
       token,
     });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -138,7 +138,7 @@ export const protect = async (
     req.user = currentUser;
     next();
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -154,7 +154,7 @@ export const checkIsAdmin = async (
 
     next();
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };
 
@@ -186,6 +186,6 @@ export const deleteAccount = async (
       .status(200)
       .json({ status: "success", message: "Account has been removed" });
   } catch (err) {
-    return handleApiError(err, next);
+    return handleServerError(err, next);
   }
 };

@@ -1,11 +1,13 @@
+import { useRouter } from "next/navigation";
 import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 import { Item } from "../../../../global";
 import ReviewStars from "../others/ReviewStars";
+import { Description } from "../../../../global";
 
 const ProductItem = ({ item }: { item: Item }) => {
+  const router = useRouter();
   const {
     id,
-    name,
     discountedPrice,
     company,
     image,
@@ -13,7 +15,11 @@ const ProductItem = ({ item }: { item: Item }) => {
     numReviews,
     inStock,
     ratings,
+    description,
   } = item;
+
+  const { genericName } = description as Description;
+
   const discount = Math.round(
     ((originalPrice - discountedPrice) / originalPrice) * 100,
   );
@@ -26,7 +32,7 @@ const ProductItem = ({ item }: { item: Item }) => {
       className="relative"
       onPress={() => {
         if (inStock) {
-          console.log("item pressed");
+          router.push(`/items/${id}`);
         }
       }}
     >
@@ -40,18 +46,20 @@ const ProductItem = ({ item }: { item: Item }) => {
           shadow="sm"
           radius="lg"
           width="100%"
-          alt={name}
+          alt={genericName}
           className="h-auto w-full object-cover"
           src={image || "/images/no-product.png"}
         />
       </CardBody>
       <CardFooter
-        className={`flex flex-col items-start gap-0.5 text-small ${
+        className={`flex flex-col items-start gap-1 text-small ${
           !inStock && "opacity-50"
         }`}
       >
-        <b>{company}</b>
-        <p className="text-gray-6500 text-xs font-light">{name}</p>
+        <b className="uppercase">{company}</b>
+        <p className="text-gray-650 text-left text-xs font-light capitalize">
+          {genericName}
+        </p>
         <div className="flex items-center gap-1 text-xs">
           <p>{ratings}.0</p>
           <ReviewStars star={ratings} />
