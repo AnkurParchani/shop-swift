@@ -19,7 +19,7 @@ export const getSingleItem = async (itemId: string) => {
     const res = await newRequest.get(`/items/${itemId}`);
 
     if (res.data.status === "success") {
-      return res.data;
+      return res.data.item;
     }
   } catch (err) {
     return handleApiError(err);
