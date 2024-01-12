@@ -19,6 +19,8 @@ const ProductItems = () => {
 
   if (isLoading) return <Loading />;
 
+  console.log(items);
+
   return (
     <div className="mx-auto grid max-w-5xl grid-cols-2 gap-4 px-5 py-10 sm:grid-cols-3 sm:gap-10">
       {items.map((item: Item) => (

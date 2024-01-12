@@ -61,7 +61,7 @@ const ProductItem = ({ item }: { item: Item }) => {
           {genericName}
         </p>
         <div className="flex items-center gap-1 text-xs">
-          <p>{ratings}.0</p>
+          <p>{ratings}</p>
           <ReviewStars star={ratings} />
           <p className="text-gray-400">({numReviews})</p>
         </div>

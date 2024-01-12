@@ -21,8 +21,18 @@ export type User = {
   id: number;
   name: string;
   email: string;
-  img?: string;
+  image: Image;
   password?: string;
+};
+
+// Seperate ImageType
+export type Image = {
+  id: number;
+  isItemExtraImg: boolean;
+  isItemMainImg: boolean;
+  isUserImg: boolean;
+  path: string;
+  userId: number;
 };
 
 // Description for item Description

@@ -19,15 +19,7 @@ import {
   Thumbs,
 } from "swiper/modules";
 import SwiperCore from "swiper/core";
-
-type ImageType = {
-  id: number;
-  isItemMainImg: boolean;
-  isItemExtraImg: boolean;
-  isUserImg?: boolean;
-  itemId: number;
-  path: string;
-};
+import { Image as ImageType } from "../../../../global";
 
 const CarouselImgs = ({ images }: { images: ImageType[] }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);

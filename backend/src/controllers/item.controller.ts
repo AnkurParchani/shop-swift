@@ -30,7 +30,7 @@ export const getItems = async (
         ...restOfThem,
         image: imgPath,
         numReviews: reviews.length,
-        ratings: (rating && rating / reviews.length) || 1,
+        ratings: (rating && rating / reviews.length)?.toFixed(1) || "1.0",
       };
     });
 
@@ -54,14 +54,31 @@ export const getItem = async (
       where: eq(items.id, +req.params.itemId),
       with: {
         images: true,
-        reviews: true,
+        reviews: {
+          with: {
+            user: {
+              with: {
+                image: true,
+              },
+            },
+          },
+        },
       },
     });
 
     if (!item)
       return next(new AppError(404, "No item found with that item ID"));
 
-    res.status(200).json({ status: "success", item });
+    const rating =
+      item.reviews.reduce((acc, cur) => +cur.stars + acc, 0) || undefined;
+
+    const itemToSend = {
+      ...item,
+      numReviews: item.reviews.length,
+      ratings: (rating && rating / item.reviews.length)?.toFixed(1) || "1.0",
+    };
+
+    res.status(200).json({ status: "success", item: itemToSend });
   } catch (err) {
     return handleServerError(err, next);
   }
