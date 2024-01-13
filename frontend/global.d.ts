@@ -23,6 +23,7 @@ export type User = {
   email: string;
   image: Image;
   password?: string;
+  img?: string;
 };
 
 // Seperate ImageType

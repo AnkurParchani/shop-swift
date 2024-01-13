@@ -10,6 +10,8 @@ import AboutBox from "./AboutBox";
 import ReviewContainer from "./ReviewContainer";
 import ExtraDetailsTable from "./ExtraDetailsTable";
 import SellerInfo from "./SellerInfo";
+import ItemConfigurations from "./ItemConfigurations";
+import ActionBtn from "./ActionBtn";
 
 type PageType = {
   params: { itemId: string };
@@ -56,6 +58,9 @@ const Page = ({ params }: PageType) => {
           originalPrice={originalPrice}
           discountedPrice={discountedPrice}
         />
+
+        <ItemConfigurations extraDetails={extraDetails} />
+        <ActionBtn />
 
         <AboutBox about={about} />
         <ReviewContainer reviews={reviews} />

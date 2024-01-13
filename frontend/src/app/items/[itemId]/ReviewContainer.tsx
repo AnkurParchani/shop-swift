@@ -24,6 +24,13 @@ const ReviewContainer = ({ reviews }: { reviews: ReviewType[] }) => {
   return (
     <div className="px-1 py-5">
       <h2 className="mb-2 text-lg font-semibold text-white">Reviews</h2>
+
+      {reviews.length === 0 && (
+        <p className="-mt-2 mb-2 text-sm text-orange-400">
+          (This product has no reviews yet)
+        </p>
+      )}
+
       <Swiper
         slidesPerView={1}
         loop={true}
