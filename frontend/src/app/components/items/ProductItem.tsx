@@ -4,6 +4,8 @@ import { Item } from "../../../../global";
 import ReviewStars from "../others/ReviewStars";
 import { Description } from "../../../../global";
 
+import AddToWishlistBtn from "./AddToWishlistBtn";
+
 const ProductItem = ({ item }: { item: Item }) => {
   const router = useRouter();
   const {
@@ -19,7 +21,6 @@ const ProductItem = ({ item }: { item: Item }) => {
   } = item;
 
   const { genericName } = description as Description;
-
   const discount = Math.round(
     ((originalPrice - discountedPrice) / originalPrice) * 100,
   );
@@ -30,7 +31,7 @@ const ProductItem = ({ item }: { item: Item }) => {
       key={id}
       isPressable={inStock}
       className="relative"
-      onPress={() => {
+      onClick={() => {
         if (inStock) {
           router.push(`/items/${id}`);
         }
@@ -41,6 +42,9 @@ const ProductItem = ({ item }: { item: Item }) => {
           Out of Stock
         </p>
       )}
+
+      <AddToWishlistBtn />
+
       <CardBody className={`overflow-visible p-0 ${!inStock && "opacity-50"}`}>
         <Image
           shadow="sm"

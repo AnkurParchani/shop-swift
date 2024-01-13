@@ -11,7 +11,7 @@ const ItemConfigurations = ({ extraDetails }: ConfigurationType) => {
   const { color, hexColor, maxOrderQuantity, size } = extraDetails;
 
   return (
-    <div className="mb-5 flex flex-col gap-2 py-4">
+    <div className=" flex flex-col gap-2 py-4">
       <Color color={color} hexColor={hexColor} />
       <Sizes size={size} />
       <SelectQuantity totalQuantity={maxOrderQuantity} />
@@ -22,7 +22,6 @@ const ItemConfigurations = ({ extraDetails }: ConfigurationType) => {
 // Displaying the sizes available
 const Sizes = ({ size }: { size: string }) => {
   const sizeArr = size.split(",");
-  console.log("Logging sizeArr, ", sizeArr);
 
   return (
     <>
@@ -45,7 +44,7 @@ const Sizes = ({ size }: { size: string }) => {
 // Selecting the quantity of items to be purchased
 const SelectQuantity = ({ totalQuantity }: { totalQuantity: number }) => {
   return (
-    <div className="mt-3 flex items-center gap-3">
+    <div className="mt-1 flex items-center gap-3">
       <p className="font-semibold">Quantity: </p>
 
       <select
