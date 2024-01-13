@@ -34,6 +34,7 @@ const ReviewContainer = ({ reviews }: { reviews: ReviewType[] }) => {
         pagination={{ clickable: true }}
         speed={3000}
         modules={[Pagination]}
+        className="bg-trasnparent rounded-lg border-3 border-gray-600"
       >
         {reviews.map((review) => {
           const { id, content, isEdited, stars, date, user } = review;
@@ -41,7 +42,7 @@ const ReviewContainer = ({ reviews }: { reviews: ReviewType[] }) => {
 
           return (
             <SwiperSlide key={id} className="cursor-pointer">
-              <Card className=" border-3 border-gray-600 bg-transparent pb-8">
+              <Card className="bg-transparent pb-8">
                 <CardHeader className="flex items-start gap-3">
                   <Image
                     alt={`${userName} image`}

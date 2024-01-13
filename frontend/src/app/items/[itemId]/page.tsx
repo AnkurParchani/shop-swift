@@ -8,6 +8,8 @@ import ReviewSummary from "./ReviewSummary";
 import PriceSummary from "./PriceSummary";
 import AboutBox from "./AboutBox";
 import ReviewContainer from "./ReviewContainer";
+import ExtraDetailsTable from "./ExtraDetailsTable";
+import SellerInfo from "./SellerInfo";
 
 type PageType = {
   params: { itemId: string };
@@ -57,6 +59,13 @@ const Page = ({ params }: PageType) => {
 
         <AboutBox about={about} />
         <ReviewContainer reviews={reviews} />
+        <ExtraDetailsTable
+          category={category}
+          company={company}
+          description={description}
+        />
+
+        <SellerInfo sellerLink={extraDetails.visitLink} />
       </div>
     </>
   );

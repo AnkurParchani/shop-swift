@@ -5,17 +5,9 @@ export default function ReviewStars({ star }: { star: number }) {
   const starElements = [];
   for (let i = 1; i <= 5; i++) {
     if (i <= star) {
-      starElements.push(
-        <span className="text-yellow-500">
-          <FaStar />
-        </span>,
-      );
+      starElements.push(<FaStar key={i} style={{ color: "#eab308" }} />);
     } else {
-      starElements.push(
-        <span className="text-yellow-500">
-          <CiStar />
-        </span>,
-      );
+      starElements.push(<CiStar key={i} style={{ color: "#eab308" }} />);
     }
   }
 
