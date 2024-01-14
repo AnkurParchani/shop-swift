@@ -14,7 +14,7 @@ function Providers({ children }: { children: React.ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <CookiesProvider>
         <NextUIProvider>
-          <div className="bg-background text-foreground pink-dark">
+          <div className="min-h-screen bg-background text-foreground pink-dark">
             {children}
           </div>
           <ToastContainer

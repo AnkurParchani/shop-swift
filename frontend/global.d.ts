@@ -42,3 +42,12 @@ export type Description = {
   modelNumber: string;
   packer?: string;
 };
+
+// Wishlist item type
+export type WishlistItem = {
+  date: string;
+  id: number;
+  item: Item;
+  itemId: number;
+  userId: number;
+};

@@ -111,7 +111,14 @@ export const protect = async (
   next: NextFunction
 ) => {
   try {
-    const token = req.cookies.token;
+    let token;
+    if (req.cookies.token) {
+      token = req.cookies.token;
+    } else if (req.headers.authorization?.startsWith("Bearer")) {
+      token = req.headers.authorization.split(" ")[1];
+    } else {
+      token = undefined;
+    }
 
     if (!token) return next(new AppError(400, "Login first to continue"));
 

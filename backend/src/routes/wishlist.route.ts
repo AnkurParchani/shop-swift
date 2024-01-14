@@ -12,7 +12,7 @@ const router = express.Router();
 router.use(protect);
 router.route("/").get(getWishlistItems).post(addItemToWishlist);
 
+router.delete("/:wishlistItemId", removeItemFromWishlist);
 router.route("/delete-all").delete(clearWishlist);
-router.route("/:wishlistId").delete(removeItemFromWishlist);
 
 export default router;

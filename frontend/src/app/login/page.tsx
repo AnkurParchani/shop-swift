@@ -4,7 +4,7 @@ import Link from "next/link";
 import { toast } from "react-toastify";
 import { useCookies } from "react-cookie";
 import { FieldValues, useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 
@@ -16,6 +16,7 @@ import { login } from "../services/apiUsers";
 
 const Page = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [cookies, setCookie, removeCookie] = useCookies();
   const { register, handleSubmit, reset } = useForm();
 

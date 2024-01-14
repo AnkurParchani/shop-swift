@@ -22,10 +22,12 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useCookies } from "react-cookie";
 import { User } from "./../../../global";
+import { useRouter } from "next/navigation";
 
 const Nav = () => {
   const [user, setUser] = useState<User | null>(getUser());
   const [cookies, setCookie, removeCookie] = useCookies();
+  const router = useRouter();
 
   // Setting useEffect to change navbar according to the user logged in or not
   useEffect(() => {
@@ -41,12 +43,10 @@ const Nav = () => {
   // Logout function
   function handleLogout() {
     toast("Logged out successfully", { type: "success" });
-
     // Setting the user in localstorage
     localStorage.removeItem("user");
 
     setUser(null);
-
     // Removing the cookie
     removeCookie("token");
   }
@@ -90,7 +90,12 @@ const Nav = () => {
               <p className="font-semibold">Signed in as</p>
               <p className="font-semibold">{user.email}</p>
             </DropdownItem>
-            <DropdownItem key="settings">My Settings</DropdownItem>
+            <DropdownItem
+              onClick={() => router.push("/my-wishlist")}
+              key="wishlist"
+            >
+              My Wishlist
+            </DropdownItem>
             <DropdownItem
               onClick={handleLogout}
               key="logout"

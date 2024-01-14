@@ -11,6 +11,26 @@ export interface CustomRequest extends Request {
   user?: User;
 }
 
+// Getting all wishlist items
+export const getWishlistItems = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const items = await db.query.wishlist.findMany({
+      where: eq(wishlist.userId, Number(req.user?.id)),
+      with: {
+        item: true,
+      },
+    });
+
+    res.status(200).json({ status: "success", items });
+  } catch (err) {
+    return handleServerError(err, next);
+  }
+};
+
 // Adding item to wishlist
 export const addItemToWishlist = async (
   req: CustomRequest,
@@ -48,26 +68,6 @@ export const addItemToWishlist = async (
   }
 };
 
-// Getting all wishlist items
-export const getWishlistItems = async (
-  req: CustomRequest,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const items = await db.query.wishlist.findMany({
-      where: eq(wishlist.userId, Number(req.user?.id)),
-      with: {
-        item: true,
-      },
-    });
-
-    res.status(200).json({ status: "success", items });
-  } catch (err) {
-    return handleServerError(err, next);
-  }
-};
-
 // Removing wishlist items (particular)
 export const removeItemFromWishlist = async (
   req: CustomRequest,
@@ -75,7 +75,7 @@ export const removeItemFromWishlist = async (
   next: NextFunction
 ) => {
   try {
-    if (!req.params.wishlistId)
+    if (!req.params.wishlistItemId)
       return next(new AppError(400, "Provide the wishlist item Id"));
 
     const itemToRemove = await db
@@ -83,7 +83,7 @@ export const removeItemFromWishlist = async (
       .where(
         and(
           eq(wishlist.userId, Number(req.user?.id)),
-          eq(wishlist.id, Number(req.params.wishlistId))
+          eq(wishlist.itemId, Number(req.params.wishlistItemId))
         )
       )
       .returning();
