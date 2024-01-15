@@ -1,0 +1,42 @@
+import React from "react";
+import { Select, SelectItem } from "@nextui-org/react";
+import { FieldValues, UseFormRegister } from "react-hook-form";
+
+type InputSelectType = {
+  options: { label: string; value: string }[];
+  label: string;
+  variant: "flat" | "bordered" | "underlined" | "faded";
+  placeholder?: string;
+  register?: UseFormRegister<FieldValues>;
+  registerName?: string;
+  onChange?: React.ChangeEventHandler<HTMLSelectElement>;
+};
+
+const InputSelect = ({
+  options,
+  label,
+  variant,
+  onChange,
+  registerName,
+  register,
+  placeholder,
+}: InputSelectType) => {
+  return (
+    <Select
+      label={label}
+      variant={variant}
+      placeholder={placeholder}
+      onChange={onChange}
+      className="text-white"
+      {...(register && register(registerName as string))}
+    >
+      {options.map((option) => (
+        <SelectItem key={option.value} value={option.value}>
+          {option.label}
+        </SelectItem>
+      ))}
+    </Select>
+  );
+};
+
+export default InputSelect;
