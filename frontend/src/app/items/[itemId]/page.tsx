@@ -40,7 +40,6 @@ const Page = ({ params }: PageType) => {
     numReviews,
   } = data;
 
-  console.log(data);
 
   return (
     <>

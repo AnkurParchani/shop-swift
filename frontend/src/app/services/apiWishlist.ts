@@ -15,11 +15,7 @@ export const getMyWishlist = async () => {
 // Adding item to wishlist
 export const addToWishlist = async (itemId: number) => {
   try {
-    const res = await newRequest.post(
-      "/wishlists",
-      { itemId },
-      { withCredentials: true },
-    );
+    await newRequest.post("/wishlists", { itemId }, { withCredentials: true });
   } catch (err) {
     return handleApiError(err);
   }
@@ -28,7 +24,16 @@ export const addToWishlist = async (itemId: number) => {
 // Removing item from wishlist
 export const removeFromWishlist = async (itemId: number) => {
   try {
-    const res = await newRequest.delete(`/wishlists/${itemId}`);
+    await newRequest.delete(`/wishlists/${itemId}`);
+  } catch (err) {
+    return handleApiError(err);
+  }
+};
+
+// Removing all items from wishlist
+export const clearFullWishlist = async () => {
+  try {
+    await newRequest.delete("/wishlists/delete-all");
   } catch (err) {
     return handleApiError(err);
   }

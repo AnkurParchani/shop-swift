@@ -14,6 +14,7 @@ export type Item = {
   ratings: number;
   company: string;
   image?: string;
+  images?: Image[];
 };
 
 // For users

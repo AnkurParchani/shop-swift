@@ -23,11 +23,13 @@ import { toast } from "react-toastify";
 import { useCookies } from "react-cookie";
 import { User } from "./../../../global";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Nav = () => {
   const [user, setUser] = useState<User | null>(getUser());
   const [cookies, setCookie, removeCookie] = useCookies();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   // Setting useEffect to change navbar according to the user logged in or not
   useEffect(() => {
@@ -47,6 +49,9 @@ const Nav = () => {
     localStorage.removeItem("user");
 
     setUser(null);
+
+    // Invalidating queries
+    queryClient.invalidateQueries({ queryKey: ["my-wishlist"] });
     // Removing the cookie
     removeCookie("token");
   }

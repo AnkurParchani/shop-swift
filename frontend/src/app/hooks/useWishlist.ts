@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import {
   addToWishlist,
+  clearFullWishlist,
   getMyWishlist,
   removeFromWishlist,
 } from "../services/apiWishlist";
@@ -43,6 +44,25 @@ export const useRemoveFromWishlist = () => {
       queryClient.invalidateQueries({
         queryKey: ["my-wishlist"],
       });
+    },
+    onError: (err: Error) => toast(err.message, { type: "error" }),
+  });
+
+  return mutation;
+};
+
+// To clear all the items from the wishlist
+export const useClearFullWishlist = () => {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: clearFullWishlist,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["my-wishlist"],
+      });
+
+      toast("Wishlist Cleared", { type: "success" });
     },
     onError: (err: Error) => toast(err.message, { type: "error" }),
   });

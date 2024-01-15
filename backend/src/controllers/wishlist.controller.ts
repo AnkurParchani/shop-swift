@@ -5,6 +5,7 @@ import { wishlist } from "../db/schema/wishlist.schema";
 import { and, eq } from "drizzle-orm";
 import AppError from "../utils/appError";
 import { handleServerError } from "../utils/handleServerError";
+import { images } from "../db/schema/img.schema";
 
 // CustomRequest for every request
 export interface CustomRequest extends Request {
@@ -21,7 +22,11 @@ export const getWishlistItems = async (
     const items = await db.query.wishlist.findMany({
       where: eq(wishlist.userId, Number(req.user?.id)),
       with: {
-        item: true,
+        item: {
+          with: {
+            images: { where: eq(images.isItemMainImg, true) },
+          },
+        },
       },
     });
 
