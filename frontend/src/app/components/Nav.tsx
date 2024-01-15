@@ -102,6 +102,12 @@ const Nav = () => {
               My Wishlist
             </DropdownItem>
             <DropdownItem
+              onClick={() => router.push("/my-addresses")}
+              key="address"
+            >
+              My Addresses
+            </DropdownItem>
+            <DropdownItem
               onClick={handleLogout}
               key="logout"
               className="text-red-500"

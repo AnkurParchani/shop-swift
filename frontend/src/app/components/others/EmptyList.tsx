@@ -1,12 +1,15 @@
 import { Button } from "@nextui-org/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { MouseEventHandler } from "react";
 
 type EmptyListType = {
   description: string;
   iconSrc: string;
   heading: string;
   backButton?: boolean;
+  actionButtonTxt?: string;
+  handleActionFn?: MouseEventHandler<HTMLButtonElement> | undefined;
 };
 
 export default function EmptyList({
@@ -14,6 +17,8 @@ export default function EmptyList({
   heading,
   backButton,
   description,
+  actionButtonTxt,
+  handleActionFn,
 }: EmptyListType) {
   const router = useRouter();
 
@@ -24,16 +29,28 @@ export default function EmptyList({
         alt="Empty List Image"
         height={1000}
         width={1000}
-        className="h-32 opacity-60"
+        className="h-32 w-auto opacity-80"
       />
       <h1 className=" text-sm font-bold uppercase">{heading}</h1>
       <h3 className="mb-2 text-center text-xs text-[#767676]">{description}</h3>
 
-      {backButton && (
-        <Button variant="solid" onClick={() => router.back()} color="primary">
-          Go Back
-        </Button>
-      )}
+      <div className="flex gap-3">
+        {backButton && (
+          <Button
+            variant={actionButtonTxt ? "flat" : "solid"}
+            onClick={() => router.back()}
+            color="primary"
+          >
+            Go Back
+          </Button>
+        )}
+
+        {actionButtonTxt && (
+          <Button variant="solid" onClick={handleActionFn} color="primary">
+            {actionButtonTxt}
+          </Button>
+        )}
+      </div>
     </div>
   );
 }
