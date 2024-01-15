@@ -23,11 +23,11 @@ export const useAddToWishlist = () => {
   const mutation = useMutation({
     mutationFn: addToWishlist,
     onSuccess: () => {
-      toast("Added to Wishlist", { type: "success" });
       queryClient.invalidateQueries({
         queryKey: ["my-wishlist"],
       });
     },
+    onError: (err: Error) => toast(err.message, { type: "error" }),
   });
 
   return mutation;
@@ -40,11 +40,11 @@ export const useRemoveFromWishlist = () => {
   const mutation = useMutation({
     mutationFn: removeFromWishlist,
     onSuccess: () => {
-      toast("Removed from wishlist", { type: "success" });
       queryClient.invalidateQueries({
         queryKey: ["my-wishlist"],
       });
     },
+    onError: (err: Error) => toast(err.message, { type: "error" }),
   });
 
   return mutation;

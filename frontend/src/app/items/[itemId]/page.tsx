@@ -60,7 +60,7 @@ const Page = ({ params }: PageType) => {
         />
 
         <ItemConfigurations extraDetails={extraDetails} />
-        <ActionBtn />
+        <ActionBtn itemId={params.itemId} />
 
         <AboutBox about={about} />
         <ReviewContainer reviews={reviews} />

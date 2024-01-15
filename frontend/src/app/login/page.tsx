@@ -41,6 +41,11 @@ const Page = () => {
       // Setting the cookie
       setCookie("token", data.token);
 
+      // Invalidating all the essential tags
+      queryClient.invalidateQueries({
+        queryKey: ["my-wishlist"],
+      });
+
       // Redirection to home page
       router.push("/");
     },

@@ -11,8 +11,8 @@ import { WishlistItem } from "../../../../global";
 const AddToWishlistBtn = ({ itemId }: { itemId: number }) => {
   const [isAdded, setIsAdded] = useState<boolean>(false);
   const { data: wishlist } = useGetMyWishlist();
-  const addWishlistMutation = useAddToWishlist();
-  const removeWishlistMutation = useRemoveFromWishlist();
+  const addToWishlistMutation = useAddToWishlist();
+  const removeFromWishlistMutation = useRemoveFromWishlist();
 
   const isItemInWishlist =
     wishlist && wishlist.some((item: WishlistItem) => item.itemId === itemId);
@@ -28,13 +28,13 @@ const AddToWishlistBtn = ({ itemId }: { itemId: number }) => {
   function handleToggleItem(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     e.stopPropagation();
 
-    if (isItemInWishlist) {
-      setIsAdded(false);
-      removeWishlistMutation.mutate(itemId);
-    } else {
-      setIsAdded(true);
-      addWishlistMutation.mutate(itemId);
-    }
+    isItemInWishlist
+      ? removeFromWishlistMutation.mutate(itemId, {
+          onSuccess: () => setIsAdded(false),
+        })
+      : addToWishlistMutation.mutate(itemId, {
+          onSuccess: () => setIsAdded(true),
+        });
   }
 
   return (
