@@ -53,7 +53,7 @@ const ActionBtn = ({ itemId }: { itemId: string }) => {
           color="primary"
           variant="bordered"
         >
-          <FaHeart style={{ fontSize: "20px" }} />
+          <FaHeart style={{ fontSize: "25px" }} />
           See my Wishlist
         </Button>
       )}
