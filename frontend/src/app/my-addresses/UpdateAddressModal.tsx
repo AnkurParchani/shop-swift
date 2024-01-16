@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useUpdateAddress } from "../hooks/useAddress";
 import { toast } from "react-toastify";
 import { Address } from "../../../global";
@@ -28,22 +28,32 @@ const UpdateAddressModal = ({
   address,
   onOpenChange,
 }: UpdateAddressProps) => {
-  const [addressData, setAddressData] = useState({ ...address });
-  const [selectedCountryCode, setSelectedCountryCode] = useState<
-    string | null
-  >();
-  const [selectedStateCode, setSelectedStateCode] = useState<string | null>();
   const updateAddressMutation = useUpdateAddress();
+  const [addressData, setAddressData] = useState({ ...address });
+  const selectedCountry = Country.getAllCountries().find(
+    (country) => country.name === addressData.country,
+  );
+  const selectedState = State.getStatesOfCountry(selectedCountry?.isoCode).find(
+    (state) => state.name === addressData.state,
+  );
+  const [selectedCountryCode, setSelectedCountryCode] = useState<
+    string | undefined
+  >(selectedCountry?.isoCode);
+  const [selectedStateCode, setSelectedStateCode] = useState<
+    string | undefined
+  >(selectedState?.isoCode);
 
-  //   const handleUpdateAddress = () => {
-  //     updateAddressMutation.mutate({addressId, address}, {
-  //       onSuccess: () => {
-  //         toast("Address added", { type: "success" });
-  //         onClose();
-  //       },
-  //     });
-  //   };
-  const handleUpdateAddress = () => {};
+  const handleUpdateAddress = () => {
+    updateAddressMutation.mutate(
+      { addressId: addressData.id, address: addressData },
+      {
+        onSuccess: () => {
+          toast("Address added", { type: "success" });
+          onClose();
+        },
+      },
+    );
+  };
 
   return (
     <Modal
@@ -70,10 +80,11 @@ const UpdateAddressModal = ({
                   })
                 }
                 autoFocus
-                defaultValue={address.firstName}
+                defaultValue={addressData.firstName}
                 label="First Name"
                 placeholder="Enter your First name"
               />
+
               <InputText
                 onChange={(e) =>
                   setAddressData({
@@ -81,14 +92,15 @@ const UpdateAddressModal = ({
                     lastName: e.target.value,
                   })
                 }
-                defaultValue={address.lastName}
+                defaultValue={addressData.lastName}
                 label="Last Name"
                 placeholder="Enter your Last name"
               />
+
               <InputText
                 label="Phone Number"
                 type="number"
-                defaultValue={String(address.phoneNumber)}
+                defaultValue={String(addressData.phoneNumber)}
                 placeholder="Enter your Phone number"
                 onChange={(e) =>
                   setAddressData({
@@ -101,8 +113,8 @@ const UpdateAddressModal = ({
               <InputSelect
                 variant="bordered"
                 label="Select Gender"
+                defaultSelectedKey={addressData.gender}
                 placeholder="Select your Gender"
-                defaultSelectedKey={address.gender}
                 options={[
                   { label: "Male", value: "male" },
                   { label: "Female", value: "female" },
@@ -118,11 +130,11 @@ const UpdateAddressModal = ({
               <InputSelect
                 variant="bordered"
                 label="Select Country"
-                defaultSelectedKey={address.country}
                 placeholder="Select your Country"
                 options={Country.getAllCountries().map((country) => {
                   return { label: country.name, value: country.isoCode };
                 })}
+                defaultSelectedKey={selectedCountry?.isoCode}
                 onChange={(e) => {
                   setSelectedCountryCode(e.target.value);
                   setAddressData({
@@ -133,12 +145,13 @@ const UpdateAddressModal = ({
                 }}
               />
 
-              {selectedCountryCode &&
+              {selectedCountry &&
+                selectedCountryCode &&
                 State.getStatesOfCountry(selectedCountryCode).length > 0 && (
                   <InputSelect
                     variant="bordered"
-                    defaultSelectedKey={address.state}
                     label="Select State"
+                    defaultSelectedKey={selectedStateCode}
                     placeholder="Select your State"
                     options={State.getStatesOfCountry(selectedCountryCode).map(
                       (state) => {
@@ -166,8 +179,8 @@ const UpdateAddressModal = ({
                 ).length > 0 && (
                   <InputSelect
                     variant="bordered"
-                    defaultSelectedKey={address.city}
                     label="Select City"
+                    defaultSelectedKey={addressData.city}
                     placeholder="Select your City"
                     options={City.getCitiesOfState(
                       selectedCountryCode as string,
@@ -183,7 +196,7 @@ const UpdateAddressModal = ({
 
               <InputText
                 label="Street Address"
-                defaultValue={address.street}
+                defaultValue={addressData.street}
                 placeholder="Enter your Street address"
                 onChange={(e) =>
                   setAddressData({
@@ -194,7 +207,7 @@ const UpdateAddressModal = ({
               />
               <InputText
                 label="Flat Number"
-                defaultValue={address.flatNumber}
+                defaultValue={addressData.flatNumber}
                 placeholder="Flat no."
                 onChange={(e) =>
                   setAddressData({
@@ -212,7 +225,7 @@ const UpdateAddressModal = ({
                   })
                 }
                 color="warning"
-                defaultSelected={address.isDeliveryAddress}
+                defaultSelected={addressData.isDeliveryAddress}
               >
                 <span className="text-sm text-yellow-500">
                   Set this as your default Address
@@ -236,7 +249,7 @@ const UpdateAddressModal = ({
                 type="submit"
                 onClick={handleUpdateAddress}
               >
-                {updateAddressMutation.isPending ? "Adding..." : "Add"}
+                {updateAddressMutation.isPending ? "Updating..." : "Update"}
               </Button>
             </ModalFooter>
           </>
