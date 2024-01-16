@@ -94,7 +94,7 @@ const Page = () => {
               </div>
             </CardHeader>
             <Divider />
-            <CardBody className="flex flex-col gap-1 text-sm">
+            <CardBody className="flex flex-col gap-1 text-sm capitalize">
               {flatNumber && <p>{flatNumber},</p>}
               {street && <p>{street},</p>}
               <p>{city},</p>
