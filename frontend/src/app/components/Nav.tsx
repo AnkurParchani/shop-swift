@@ -101,6 +101,9 @@ const Nav = () => {
               <p className="font-semibold">Signed in as</p>
               <p className="font-semibold">{user.email}</p>
             </DropdownItem>
+            <DropdownItem onClick={() => router.push("/my-cart")} key="cart">
+              My Cart
+            </DropdownItem>
             <DropdownItem
               onClick={() => router.push("/my-wishlist")}
               key="wishlist"

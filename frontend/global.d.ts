@@ -68,3 +68,15 @@ export type Address = {
   isDeliveryAddress: boolean;
   state: string;
 };
+
+// Cart type
+export type CartItem = {
+  id: number;
+  isChecked: boolean;
+  quantity: number;
+  size?: string;
+  price: number;
+  color?: string;
+  userId: number;
+  itemId: number;
+};

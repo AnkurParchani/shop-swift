@@ -1,6 +1,6 @@
 type ConfigurationType = {
   extraDetails: {
-    color?: string;
+    colors?: { color: string; hex: string }[];
     hexColor?: string;
     maxOrderQuantity: number;
     size: string;
@@ -8,11 +8,19 @@ type ConfigurationType = {
 };
 
 const ItemConfigurations = ({ extraDetails }: ConfigurationType) => {
-  const { color, hexColor, maxOrderQuantity, size } = extraDetails;
+  const { colors, maxOrderQuantity, size } = extraDetails;
 
   return (
     <div className=" flex flex-col gap-2 py-4">
-      <Color color={color} hexColor={hexColor} />
+      <div className="flex gap-1">
+        <span className="font-semibold">Colors: </span>
+        {colors?.map((color) => {
+          return (
+            <Color color={color.color} hexColor={color.hex} key={color.color} />
+          );
+        })}
+      </div>
+
       <Sizes size={size} />
       <SelectQuantity totalQuantity={maxOrderQuantity} />
     </div>
@@ -45,20 +53,7 @@ const Sizes = ({ size }: { size: string }) => {
 const SelectQuantity = ({ totalQuantity }: { totalQuantity: number }) => {
   return (
     <div className="mt-1 flex items-center gap-3">
-      <p className="font-semibold">Quantity: </p>
-
-      <select
-        defaultValue={1}
-        className="cursor-pointer rounded-md border border-primary bg-transparent px-3 py-2 text-sm"
-      >
-        {Array.from({ length: totalQuantity }, (_, index) => index + 1).map(
-          (quantity) => (
-            <option className="bg-black text-white" key={quantity}>
-              {quantity}
-            </option>
-          ),
-        )}
-      </select>
+      <p className="font-semibold">Items in Stock: {totalQuantity}</p>
     </div>
   );
 };
@@ -71,18 +66,12 @@ const Color = ({
   color: string | undefined;
   hexColor: string | undefined;
 }) => {
-  let itemColor = hexColor ? `bg-[${hexColor}]` : `bg-${color}-500`;
-
-  if (color === "black") itemColor = "bg-black";
-  if (color === "white") itemColor = "bg-white";
-
-  // The JSX
   return (
     <>
       {color && (
-        <div className="flex items-center gap-2 capitalize">
-          <p className="font-semibold">Color: {color} </p>
-          <p className={`h-3 w-3 rounded-full ${itemColor}`} />
+        <div className="py0.5 flex items-center gap-2 rounded-md border border-primary px-2 capitalize">
+          <p className="font-semibold">{color}</p>
+          <p className={`h-3 w-3 rounded-full bg-[#${hexColor}]`} />
         </div>
       )}
     </>
