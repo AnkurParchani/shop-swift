@@ -1,16 +1,39 @@
 "use client";
 
+import { useState } from "react";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Divider,
+  useDisclosure,
+} from "@nextui-org/react";
+
 import Loading from "../loading";
 import EmptyAddresses from "./EmptyAddresses";
+import AddAddressForm from "./AddAddressForm";
+import DeleteAddressModal from "./DeleteAddressModal";
 
 import { useGetAddresses } from "../hooks/useAddress";
-import { useState } from "react";
-import { Button, useDisclosure } from "@nextui-org/react";
-import AddAddressForm from "./AddAddressForm";
+import { Address } from "../../../global";
 
 const Page = () => {
+  const [addressId, setAddressId] = useState<number>(0);
   const { data: addresses, isLoading, error } = useGetAddresses();
-  const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
+  const {
+    isOpen: addAddressIsOpen,
+    onOpen: addAddressOnOpen,
+    onClose: addAddressOnClose,
+    onOpenChange: addAddressOnOpenChange,
+  } = useDisclosure();
+  const {
+    isOpen: deleteAddressIsOpen,
+    onOpen: deleteAddressOnOpen,
+    onClose: deleteAddressOnClose,
+    onOpenChange: deleteAddressOnOpenChange,
+  } = useDisclosure();
 
   if (isLoading) return <Loading />;
   if (addresses && addresses.length === 0) return <EmptyAddresses />;
@@ -19,22 +42,93 @@ const Page = () => {
     <div className="mx-auto flex max-w-5xl flex-col gap-6 px-5 py-5">
       <div className="flex justify-between">
         <p className="flex items-center gap-1 text-lg font-semibold text-primary">
-          {/* Wishlist <span className="text-sm">({wishlist.length} addresses)</span> */}
-          You have address
+          Address{" "}
+          <span className="text-sm">({addresses.length} addresses)</span>
         </p>
+
+        <Button color="secondary" size="sm" onPress={addAddressOnOpen}>
+          Add new Address
+        </Button>
       </div>
 
       {/* @ts-ignore */}
-      {addresses.map((address, i) => {
-        return <p key={i}> This is a new Adress</p>;
+      {addresses.map((address: Address) => {
+        const {
+          id,
+          firstName,
+          lastName,
+          phoneNumber,
+          street,
+          country,
+          flatNumber,
+          city,
+          gender,
+          isDeliveryAddress,
+          state,
+        } = address;
+
+        return (
+          <Card key={id} className="relative max-w-[400px]">
+            <CardHeader className="flex gap-3">
+              <div
+                className={`h-8 w-8 rounded-md ${
+                  isDeliveryAddress ? "bg-green-600" : "bg-red-700"
+                }`}
+              />
+              <div className="flex flex-col">
+                <p className="text-md capitalize">
+                  {firstName} {lastName}{" "}
+                  <span className="text-sm text-gray-500">
+                    ({gender === "female" ? "F" : "M"})
+                  </span>
+                </p>
+                <p className="text-small text-default-500">{phoneNumber}</p>
+              </div>
+            </CardHeader>
+            <Divider />
+            <CardBody className="flex flex-col gap-1 text-sm">
+              <p>{flatNumber},</p>
+              <p>{street},</p>
+              <p>{city},</p>
+              <p>
+                {state}, {country}
+              </p>
+            </CardBody>
+            <Divider />
+            <CardFooter className="flex justify-end gap-3">
+              <Button color="default">Edit</Button>
+              <Button
+                onPress={() => {
+                  setAddressId(id);
+                  deleteAddressOnOpen();
+                }}
+                color="danger"
+              >
+                Delete
+              </Button>
+            </CardFooter>
+          </Card>
+        );
       })}
 
-      <Button onClick={onOpen}>Add Address</Button>
-      {isOpen && (
+      <Button color="secondary" onPress={addAddressOnOpen}>
+        Add new Address
+      </Button>
+
+      {addAddressIsOpen && (
         <AddAddressForm
-          isOpen={isOpen}
-          onClose={onClose}
-          onOpenChange={onOpenChange}
+          isOpen={addAddressIsOpen}
+          onClose={addAddressOnClose}
+          onOpenChange={addAddressOnOpenChange}
+        />
+      )}
+
+      {deleteAddressIsOpen && (
+        <DeleteAddressModal
+          addressId={addressId}
+          isOpen={deleteAddressIsOpen}
+          onClose={deleteAddressOnClose}
+          onOpenChange={deleteAddressOnOpenChange}
         />
       )}
     </div>

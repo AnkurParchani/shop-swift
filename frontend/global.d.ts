@@ -52,3 +52,19 @@ export type WishlistItem = {
   itemId: number;
   userId: number;
 };
+
+// Address type
+export type Address = {
+  city: string;
+  country: string;
+  firstName: string;
+  lastName?: string;
+  flatNumber: string;
+  gender: "male" | "female";
+  phoneNumber: number;
+  street: string;
+  userId: number;
+  id: number;
+  isDeliveryAddress: boolean;
+  state: string;
+};

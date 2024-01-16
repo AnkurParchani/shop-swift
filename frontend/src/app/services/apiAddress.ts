@@ -25,3 +25,16 @@ export const addAddress = async (data: FieldValues) => {
     return handleApiError(err);
   }
 };
+
+// To Delete an Address
+export const deleteAddress = async (addressId: number) => {
+  try {
+    const res = await newRequest.delete(`/addresses/${addressId}`, {
+      withCredentials: true,
+    });
+
+    return res.data;
+  } catch (err) {
+    return handleApiError(err);
+  }
+};

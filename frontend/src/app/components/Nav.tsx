@@ -50,8 +50,14 @@ const Nav = () => {
 
     setUser(null);
 
-    // Invalidating queries
-    queryClient.invalidateQueries({ queryKey: ["my-wishlist"] });
+    // Invalidating all the essential tags
+    queryClient.invalidateQueries({
+      queryKey: ["my-wishlist"],
+    });
+    queryClient.refetchQueries({
+      queryKey: ["my-wishlist"],
+    });
+
     // Removing the cookie
     removeCookie("token");
   }

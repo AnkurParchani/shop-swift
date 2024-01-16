@@ -45,6 +45,9 @@ const Page = () => {
       queryClient.invalidateQueries({
         queryKey: ["my-wishlist"],
       });
+      queryClient.refetchQueries({
+        queryKey: ["my-wishlist"],
+      });
 
       // Redirection to home page
       router.push("/");

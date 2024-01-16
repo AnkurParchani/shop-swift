@@ -13,7 +13,6 @@ import { useState } from "react";
 import InputText from "../components/events/InputText";
 import { useAddAddress } from "../hooks/useAddress";
 import { toast } from "react-toastify";
-import { useQueryClient } from "@tanstack/react-query";
 
 type AddAddressFormType = {
   isOpen: boolean;
@@ -26,7 +25,6 @@ const AddAddressForm = ({
   onOpenChange,
   onClose,
 }: AddAddressFormType) => {
-  const queryClient = useQueryClient();
   const [addressData, setAddressData] = useState({
     firstName: "",
     lastName: "",
@@ -48,7 +46,6 @@ const AddAddressForm = ({
   const handleAddAddress = () => {
     addAddressMutation.mutate(addressData, {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["my-address"] });
         toast("Address added", { type: "success" });
         onClose();
       },
@@ -215,7 +212,7 @@ const AddAddressForm = ({
                 color="warning"
                 defaultSelected={false}
               >
-                <span className="text-yellow-500">
+                <span className="text-sm text-yellow-500">
                   Set this as your default Address
                 </span>
               </Checkbox>
