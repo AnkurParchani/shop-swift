@@ -48,7 +48,7 @@ const UpdateAddressModal = ({
       { addressId: addressData.id, address: addressData },
       {
         onSuccess: () => {
-          toast("Address added", { type: "success" });
+          toast("Your address has been updated", { type: "success" });
           onClose();
         },
       },

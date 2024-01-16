@@ -28,7 +28,7 @@ const DeleteAddressModal = ({
   function handleDeleteAddress() {
     deleteAddressMutation.mutate(addressId, {
       onSuccess: () => {
-        toast("Address added", { type: "success" });
+        toast("Your Address has been deleted", { type: "success" });
         onClose();
       },
     });

@@ -75,6 +75,19 @@ export const updateAddress = async (
     if (!req.params.addressId)
       return next(new AppError(400, "No address Id provided"));
 
+    const userAddresses = await db
+      .select()
+      .from(addresses)
+      .where(eq(addresses.userId, req.user?.id as number));
+
+    // If this is new deliveryAddress then removing the old delivery one
+    if (req.body.isDeliveryAddress) {
+      await db
+        .update(addresses)
+        .set({ isDeliveryAddress: false })
+        .where(eq(addresses.userId, req.user?.id as number));
+    }
+
     // Updating the address WHERE "userId=loggedIn User id" AND "addressId= provided address Id"
     const [updatedAddress] = await db
       .update(addresses)
@@ -105,18 +118,31 @@ export const deleteAddress = async (
     if (!req.params.addressId)
       return next(new AppError(400, "No address Id provided"));
 
+    const [addressToDelete] = await db
+      .select()
+      .from(addresses)
+      .where(
+        and(
+          eq(addresses.id, Number(req.params.addressId)),
+          eq(addresses.userId, req.user?.id as number)
+        )
+      );
+
+    if (!addressToDelete) return next(new AppError(404, "No address found"));
+
+    if (addressToDelete.isDeliveryAddress) {
+      return next(new AppError(400, "You can't delete your default Address"));
+    }
+
     // Deleting the address WHERE "userId=loggedIn User id" AND "addressId= provided address Id"
-    const [address] = await db
+    await db
       .delete(addresses)
       .where(
         and(
           eq(addresses.id, Number(req.params.addressId)),
           eq(addresses.userId, req.user?.id as number)
         )
-      )
-      .returning();
-
-    if (!address) return next(new AppError(404, "No address found"));
+      );
 
     res.status(200).json({ status: "success", message: "Address deleted" });
   } catch (err) {
