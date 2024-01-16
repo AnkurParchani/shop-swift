@@ -10,6 +10,7 @@ type InputTextType = {
   autoFocus?: boolean;
   registerName?: string;
   className?: string;
+  defaultValue?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
 };
 
@@ -20,6 +21,7 @@ export default function InputText({
   placeholder,
   className,
   onChange,
+  defaultValue,
   type,
   autoFocus,
 }: InputTextType) {
@@ -33,6 +35,7 @@ export default function InputText({
         type={type || "text"}
         label={label}
         className={className}
+        defaultValue={defaultValue}
         onChange={onChange}
         {...(register && register(registerName as string))}
       />

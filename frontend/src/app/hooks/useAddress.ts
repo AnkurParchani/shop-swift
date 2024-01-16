@@ -3,6 +3,7 @@ import {
   addAddress,
   deleteAddress,
   getAllAddresses,
+  updateAddress,
 } from "../services/apiAddress";
 import { toast } from "react-toastify";
 
@@ -36,7 +37,22 @@ export const useAddAddress = () => {
 };
 
 // To update an address of the user
-export const useUpdateAddress = () => {};
+export const useUpdateAddress = () => {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: updateAddress,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["my-address"] });
+      queryClient.refetchQueries({ queryKey: ["my-address"] });
+    },
+    onError(err: Error) {
+      toast(err.message, { type: "error" });
+    },
+  });
+
+  return mutation;
+};
 
 // To delete an address of the user
 export const useDeleteAddress = () => {

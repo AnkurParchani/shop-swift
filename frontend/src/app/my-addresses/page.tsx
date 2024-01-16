@@ -18,8 +18,10 @@ import DeleteAddressModal from "./DeleteAddressModal";
 
 import { useGetAddresses } from "../hooks/useAddress";
 import { Address } from "../../../global";
+import UpdateAddressModal from "./UpdateAddressModal";
 
 const Page = () => {
+  const [address, setAddress] = useState<Address | null>();
   const [addressId, setAddressId] = useState<number>(0);
   const { data: addresses, isLoading, error } = useGetAddresses();
   const {
@@ -27,6 +29,12 @@ const Page = () => {
     onOpen: addAddressOnOpen,
     onClose: addAddressOnClose,
     onOpenChange: addAddressOnOpenChange,
+  } = useDisclosure();
+  const {
+    isOpen: updateAddressIsOpen,
+    onOpen: updateAddressOnOpen,
+    onClose: updateAddressOnClose,
+    onOpenChange: updateAddressOnOpenChange,
   } = useDisclosure();
   const {
     isOpen: deleteAddressIsOpen,
@@ -72,7 +80,7 @@ const Page = () => {
             <CardHeader className="flex gap-3">
               <div
                 className={`h-8 w-8 rounded-md ${
-                  isDeliveryAddress ? "bg-green-600" : "bg-red-700"
+                  isDeliveryAddress ? "bg-green-600" : "bg-default"
                 }`}
               />
               <div className="flex flex-col">
@@ -87,8 +95,8 @@ const Page = () => {
             </CardHeader>
             <Divider />
             <CardBody className="flex flex-col gap-1 text-sm">
-              <p>{flatNumber},</p>
-              <p>{street},</p>
+              {flatNumber && <p>{flatNumber},</p>}
+              {street && <p>{street},</p>}
               <p>{city},</p>
               <p>
                 {state}, {country}
@@ -96,7 +104,15 @@ const Page = () => {
             </CardBody>
             <Divider />
             <CardFooter className="flex justify-end gap-3">
-              <Button color="default">Edit</Button>
+              <Button
+                onPress={() => {
+                  setAddress(address);
+                  updateAddressOnOpen();
+                }}
+                color="default"
+              >
+                Edit
+              </Button>
               <Button
                 onPress={() => {
                   setAddressId(id);
@@ -120,6 +136,15 @@ const Page = () => {
           isOpen={addAddressIsOpen}
           onClose={addAddressOnClose}
           onOpenChange={addAddressOnOpenChange}
+        />
+      )}
+
+      {updateAddressIsOpen && (
+        <UpdateAddressModal
+          address={address as Address}
+          isOpen={updateAddressIsOpen}
+          onClose={updateAddressOnClose}
+          onOpenChange={updateAddressOnOpenChange}
         />
       )}
 

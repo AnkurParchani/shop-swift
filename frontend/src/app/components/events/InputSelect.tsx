@@ -10,6 +10,7 @@ type InputSelectType = {
   register?: UseFormRegister<FieldValues>;
   registerName?: string;
   onChange?: React.ChangeEventHandler<HTMLSelectElement>;
+  defaultSelectedKey?: string;
 };
 
 const InputSelect = ({
@@ -20,10 +21,12 @@ const InputSelect = ({
   registerName,
   register,
   placeholder,
+  defaultSelectedKey,
 }: InputSelectType) => {
   return (
     <Select
       label={label}
+      defaultSelectedKeys={defaultSelectedKey ? [defaultSelectedKey] : []}
       variant={variant}
       placeholder={placeholder}
       onChange={onChange}
