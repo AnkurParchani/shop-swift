@@ -17,6 +17,7 @@ import Image from "next/image";
 import EmptyCart from "./EmptyCart";
 import Loading from "../loading";
 import RemoveFromCartModal from "./RemoveFromCartModal";
+import PriceSummary from "./PriceSummary";
 import AddToCartForm from "./AddToCartForm";
 
 import { CartItem } from "../../../global";
@@ -43,6 +44,9 @@ const Page = () => {
   if (isLoading) return <Loading />;
 
   if (cart.length === 0) return <EmptyCart />;
+
+  const selectedItemsInCart =
+    cart && cart.filter((cart: CartItem) => cart.isChecked === true);
 
   const selectedCartItem =
     cart && cart.find((item: CartItem) => item.id === cartId);
@@ -162,6 +166,10 @@ const Page = () => {
           <FaBookmark />
           Add more from Wishlist
         </Button>
+
+        {selectedItemsInCart.length > 0 && (
+          <PriceSummary cart={selectedItemsInCart} />
+        )}
       </div>
 
       {/* Form for Add to Cart */}
