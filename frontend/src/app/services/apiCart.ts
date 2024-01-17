@@ -14,7 +14,7 @@ export const getMyCart = async () => {
 };
 
 // To add item to user's cart
-export const addToCart = async (data: CartItem) => {
+export const addToCart = async (data: Partial<CartItem>) => {
   try {
     await newRequest.post("/carts", data, { withCredentials: true });
   } catch (err) {

@@ -9,12 +9,19 @@ export type Item = {
   about: string;
   for_gender: "male" | "female" | "unisex";
   description: object;
-  extraDetails: object;
+  extraDetails: ExtraDetails;
   numReviews: number;
   ratings: number;
   company: string;
   image?: string;
   images?: Image[];
+};
+
+export type ExtraDetails = {
+  colors?: { color: string; hex: string }[];
+  hexColor?: string;
+  maxOrderQuantity: number;
+  size: string;
 };
 
 // For users

@@ -33,7 +33,7 @@ const InputSelect = ({
       size={size || "md"}
       placeholder={placeholder}
       onChange={onChange}
-      className="text-white"
+      className="capitalize text-white"
       {...(register && register(registerName as string))}
     >
       {options.map((option) => (

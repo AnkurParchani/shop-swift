@@ -41,10 +41,6 @@ const Page = ({ params }: PageType) => {
     numReviews,
   } = data;
 
-  const mainImgSrc = images.filter(
-    (img: Image) => img.isItemMainImg === true,
-  )[0].path;
-
   return (
     <>
       <CarouselImgs images={images} />
@@ -63,7 +59,10 @@ const Page = ({ params }: PageType) => {
         />
 
         <ItemConfigurations extraDetails={extraDetails} />
-        <ActionBtn mainImgSrc={mainImgSrc} itemId={params.itemId} />
+        <ActionBtn
+          itemDetails={{ discountedPrice, extraDetails, id: +params.itemId }}
+          itemId={params.itemId}
+        />
 
         <AboutBox about={about} />
         <ReviewContainer reviews={reviews} />

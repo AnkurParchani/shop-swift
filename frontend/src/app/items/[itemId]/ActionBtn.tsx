@@ -5,17 +5,16 @@ import { CiHeart } from "react-icons/ci";
 import { useAddToWishlist, useGetMyWishlist } from "@/app/hooks/useWishlist";
 import { useRouter } from "next/navigation";
 import { FaHeart } from "react-icons/fa6";
-import { CartItem, WishlistItem } from "../../../../global";
+import { CartItem, ExtraDetails, Item, WishlistItem } from "../../../../global";
 import { useGetMyCart } from "@/app/hooks/useCart";
 import AddToCartForm from "@/app/my-cart/AddToCartForm";
 
-const ActionBtn = ({
-  itemId,
-  mainImgSrc,
-}: {
+type ActionBtnType = {
   itemId: string;
-  mainImgSrc: string;
-}) => {
+  itemDetails: Partial<Item>;
+};
+
+const ActionBtn = ({ itemId, itemDetails }: ActionBtnType) => {
   const router = useRouter();
   const [isAddedInWishlist, setIsAddedInWishlist] = useState<boolean>(false);
   const [isAddedInCart, setIsAddedInCart] = useState<boolean>(false);
@@ -101,8 +100,8 @@ const ActionBtn = ({
       {/* Form for Add to Cart */}
       {addToCartIsOpen && (
         <AddToCartForm
-          imgSrc={mainImgSrc}
           isOpen={addToCartIsOpen}
+          itemDetails={itemDetails}
           onClose={addToCartOnClose}
           onOpenChange={addToCartOnOpenChange}
         />

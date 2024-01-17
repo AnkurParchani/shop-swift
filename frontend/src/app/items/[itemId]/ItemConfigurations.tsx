@@ -1,10 +1,7 @@
+import { ExtraDetails } from "../../../../global";
+
 type ConfigurationType = {
-  extraDetails: {
-    colors?: { color: string; hex: string }[];
-    hexColor?: string;
-    maxOrderQuantity: number;
-    size: string;
-  };
+  extraDetails: ExtraDetails;
 };
 
 const ItemConfigurations = ({ extraDetails }: ConfigurationType) => {
@@ -12,18 +9,20 @@ const ItemConfigurations = ({ extraDetails }: ConfigurationType) => {
 
   return (
     <div className=" flex flex-col gap-2 py-4">
-      <div className="flex gap-1">
-        <span className="font-semibold">Colors: </span>
-        {colors?.map((color) => {
-          return (
-            <Color
-              color={color.color}
-              hexColor={`bg-[${color.hex}]`}
-              key={color.color}
-            />
-          );
-        })}
-      </div>
+      {colors && colors.length > 0 && (
+        <div className="flex gap-1">
+          <span className="font-semibold">Colors: </span>
+          {colors?.map((color) => {
+            return (
+              <Color
+                color={color.color}
+                hexColor={`bg-[${color.hex}]`}
+                key={color.color}
+              />
+            );
+          })}
+        </div>
+      )}
 
       <Sizes size={size} />
       <SelectQuantity totalQuantity={maxOrderQuantity} />
