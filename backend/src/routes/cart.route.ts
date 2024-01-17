@@ -4,6 +4,7 @@ import {
   clearCart,
   getAllItemsFromCart,
   removeItemFromCart,
+  updateCartItem,
 } from "../controllers/cart.controller";
 import { protect } from "../controllers/auth.controller";
 
@@ -13,6 +14,6 @@ router.use(protect);
 router.route("/").get(getAllItemsFromCart).post(addItemToCart);
 
 router.route("/delete-all").delete(clearCart);
-router.route("/:cartId").delete(removeItemFromCart);
+router.route("/:cartId").patch(updateCartItem).delete(removeItemFromCart);
 
 export default router;

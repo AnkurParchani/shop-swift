@@ -70,11 +70,43 @@ export const getAllItemsFromCart = async (
     const itemsInCart = await db.query.cart.findMany({
       where: eq(cart.userId, Number(req.user?.id)),
       with: {
-        item: true,
+        item: {
+          with: {
+            images: true,
+          },
+        },
       },
     });
 
     res.status(200).json({ status: "success", items: itemsInCart });
+  } catch (err) {
+    return handleServerError(err, next);
+  }
+};
+
+// Update cart item
+export const updateCartItem = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.params.cartId)
+      return next(new AppError(400, "Please provide the cartId"));
+
+    const { isChecked, size, price, quantity, color } = req.body;
+
+    const [updatedItem] = await db
+      .update(cart)
+      .set({ isChecked, size, price, quantity, color })
+      .where(
+        and(eq(cart.userId, req.user?.id!), eq(cart.id, +req.params.cartId))
+      )
+      .returning();
+
+    if (!updatedItem) return next(new AppError(400, "No item found to Update"));
+
+    res.status(200).json({ status: "success", updatedItem });
   } catch (err) {
     return handleServerError(err, next);
   }

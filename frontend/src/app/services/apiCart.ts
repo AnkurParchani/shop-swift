@@ -21,3 +21,26 @@ export const addToCart = async (data: Partial<CartItem>) => {
     return handleApiError(err);
   }
 };
+
+// To update a cart item
+export const updateCart = async (data: {
+  cartId: number;
+  data: Partial<CartItem>;
+}) => {
+  try {
+    await newRequest.patch(`/carts/${data.cartId}`, data.data, {
+      withCredentials: true,
+    });
+  } catch (err) {
+    return handleApiError(err);
+  }
+};
+
+// To remove an item from cart
+export const removeFromCart = async (cartId: number) => {
+  try {
+    await newRequest.delete(`carts/${cartId}`);
+  } catch (err) {
+    return handleApiError(err);
+  }
+};

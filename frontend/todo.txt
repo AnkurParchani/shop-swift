@@ -1,3 +1,2 @@
 - lazy loading for all images
-- color will be inside extra details - the hex code
 - nav image error

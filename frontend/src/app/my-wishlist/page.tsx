@@ -1,33 +1,26 @@
 "use client";
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  useDisclosure,
-} from "@nextui-org/react";
+import { Button, useDisclosure } from "@nextui-org/react";
 
 import WishlistItemCard from "./WishlistItemCard";
 import EmptyWishlist from "./EmptyWishlist";
 import Loading from "../loading";
 
-import { useClearFullWishlist, useGetMyWishlist } from "../hooks/useWishlist";
+import { useGetMyWishlist } from "../hooks/useWishlist";
 import { WishlistItem } from "../../../global";
-import { useGetMyCart } from "../hooks/useCart";
+import { useRouter } from "next/navigation";
+import ClearWishlistModal from "./ClearWishlistModal";
 
 const Page = () => {
+  const router = useRouter();
   const { data: wishlist, isLoading, error } = useGetMyWishlist();
-  const clearWishlistMutation = useClearFullWishlist();
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const {
+    isOpen: clearWishlistIsOpen,
+    onOpen: clearWishlistOnOpen,
+    onOpenChange: clearWishlistOnOpenChange,
+  } = useDisclosure();
 
   if (isLoading) return <Loading />;
   if (wishlist.length === 0) return <EmptyWishlist />;
-
-  function handleClearWishlist() {
-    clearWishlistMutation.mutate();
-  }
 
   return (
     <>
@@ -37,16 +30,28 @@ const Page = () => {
             Wishlist <span className="text-sm">({wishlist.length} items)</span>
           </p>
 
-          <Button
-            radius="full"
-            size="sm"
-            variant="ghost"
-            color="danger"
-            className="font-bold uppercase"
-            onClick={onOpen}
-          >
-            Clear
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              radius="full"
+              size="sm"
+              variant="ghost"
+              color="danger"
+              className="font-bold uppercase"
+              onClick={clearWishlistOnOpen}
+            >
+              Clear
+            </Button>
+            <Button
+              radius="full"
+              size="sm"
+              variant="solid"
+              color="primary"
+              className="font-semibold"
+              onClick={() => router.push("/my-cart")}
+            >
+              My Cart
+            </Button>
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-10">
@@ -57,43 +62,12 @@ const Page = () => {
       </div>
 
       {/* Modal for confirmation of clearing whole cart */}
-      <Modal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        classNames={{
-          body: "py-2",
-          base: "bg-gray-900 dark:bg-gray-900 text-[#a8b0d3]",
-          closeButton: "hover:bg-white/5 active:bg-white/10",
-        }}
-      >
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Are you sure you want to clear your whole Wishlist?
-              </ModalHeader>
-              <ModalBody>
-                <p>You won&apos;t be able to retrieve back this data</p>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="flat" onPress={onClose}>
-                  Close
-                </Button>
-                <Button
-                  color="danger"
-                  variant="solid"
-                  onPress={() => {
-                    handleClearWishlist();
-                    onClose();
-                  }}
-                >
-                  Delete
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+      {clearWishlistIsOpen && (
+        <ClearWishlistModal
+          isOpen={clearWishlistIsOpen}
+          onOpenChange={clearWishlistOnOpenChange}
+        />
+      )}
     </>
   );
 };
