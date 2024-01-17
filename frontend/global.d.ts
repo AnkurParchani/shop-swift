@@ -86,4 +86,5 @@ export type CartItem = {
   color?: string;
   userId: number;
   itemId: number;
+  item: Item;
 };

@@ -15,6 +15,7 @@ import Loading from "../loading";
 
 import { useClearFullWishlist, useGetMyWishlist } from "../hooks/useWishlist";
 import { WishlistItem } from "../../../global";
+import { useGetMyCart } from "../hooks/useCart";
 
 const Page = () => {
   const { data: wishlist, isLoading, error } = useGetMyWishlist();
@@ -54,6 +55,8 @@ const Page = () => {
           ))}
         </div>
       </div>
+
+      {/* Modal for confirmation of clearing whole cart */}
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}

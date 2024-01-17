@@ -5,6 +5,7 @@ import { cart } from "../db/schema/cart.schema";
 import { and, eq } from "drizzle-orm";
 import AppError from "../utils/appError";
 import { handleServerError } from "../utils/handleServerError";
+import { wishlist } from "../db/schema/wishlist.schema";
 
 // CustomRequest for every request
 export interface CustomRequest extends Request {
@@ -21,7 +22,7 @@ export const addItemToCart = async (
     if (!req.body.itemId)
       return next(new AppError(400, "Provide the itemId of the item"));
 
-    // Checking if the item is already in user's wishlist or not
+    // Checking if the item is already in user's cart or not
     const checkItemInCart = await db
       .select()
       .from(cart)
@@ -34,7 +35,7 @@ export const addItemToCart = async (
 
     if (checkItemInCart[0])
       return next(
-        new AppError(400, "You have already added this item in your wishlist")
+        new AppError(400, "You have already added this item in your cart")
       );
 
     // Adding item to the cart
@@ -42,6 +43,16 @@ export const addItemToCart = async (
       .insert(cart)
       .values({ itemId: req.body.itemId, userId: req.user?.id, ...req.body })
       .returning();
+
+    // Removing that item from wishlist (if present)
+    await db
+      .delete(wishlist)
+      .where(
+        and(
+          eq(wishlist.userId, +req.user?.id!),
+          eq(wishlist.itemId, req.body.itemId)
+        )
+      );
 
     res.status(200).json({ status: "success", item });
   } catch (err) {

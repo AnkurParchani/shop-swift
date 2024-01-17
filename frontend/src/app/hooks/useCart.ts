@@ -20,6 +20,7 @@ export const useAddToCart = () => {
     mutationFn: addToCart,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["my-cart"] });
+      queryClient.invalidateQueries({ queryKey: ["my-wishlist"] });
       queryClient.refetchQueries({ queryKey: ["my-cart"] });
     },
     onError: (err: Error) => toast(err.message, { type: "error" }),
