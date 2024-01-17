@@ -57,9 +57,11 @@ export const addItemToWishlist = async (
       );
 
     if (checkItemInWishlist[0])
-      return next(
-        new AppError(400, "You have already added this item in your wishlist")
-      );
+      return res.status(200).json({
+        status: "success",
+        item: checkItemInWishlist[0],
+        message: "This item was already present in the wishlist",
+      });
 
     // Adding the item to the wishlist
     const [item] = await db

@@ -8,10 +8,12 @@ import {
 } from "@nextui-org/react";
 import { useRemoveFromCart } from "../hooks/useCart";
 import { toast } from "react-toastify";
+import { useAddToWishlist } from "../hooks/useWishlist";
 
 type RemoveFromCartModalType = {
   isOpen: boolean;
   cartId: number;
+  itemId: number;
   onOpenChange: () => void;
   onClose: () => void;
 };
@@ -21,9 +23,26 @@ const RemoveFromCartModal = ({
   onOpenChange,
   onClose,
   cartId,
+  itemId,
 }: RemoveFromCartModalType) => {
   const removeItemFromCartMutation = useRemoveFromCart();
+  const addToWishlistMutation = useAddToWishlist();
 
+  //   Removing from cart and sending to wishlist
+  function handleSendToWishlist() {
+    removeItemFromCartMutation.mutate(cartId, {
+      onSuccess: () => {
+        addToWishlistMutation.mutate(itemId, {
+          onSuccess: () => {
+            onClose();
+          },
+        });
+        toast("Item moved to Wishlist", { type: "info" });
+      },
+    });
+  }
+
+  //   Removing from cart permanently
   function handleRemoveItemFromCart() {
     removeItemFromCartMutation.mutate(cartId, {
       onSuccess: () => {
@@ -32,8 +51,6 @@ const RemoveFromCartModal = ({
       },
     });
   }
-
-  function handleSendToWishlist() {}
 
   return (
     <Modal
@@ -68,9 +85,7 @@ const RemoveFromCartModal = ({
               <Button
                 color="warning"
                 variant="solid"
-                onPress={() => {
-                  handleSendToWishlist();
-                }}
+                onPress={handleSendToWishlist}
               >
                 Send to Wishlist
               </Button>

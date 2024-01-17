@@ -7,15 +7,16 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@nextui-org/react";
-import { useAddToCart } from "../hooks/useCart";
+import { useAddToCart, useUpdateCart } from "../hooks/useCart";
 import InputSelect from "../components/events/InputSelect";
 import Image from "next/image";
-import { ExtraDetails, Item } from "../../../global";
+import { CartItem, ExtraDetails, Item } from "../../../global";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
 type AddToCartFormType = {
   isOpen: boolean;
+  selectedCartItem?: CartItem;
   itemDetails: Partial<Item>;
   onOpenChange: () => void;
   onClose: () => void;
@@ -25,9 +26,11 @@ const AddToCartForm = ({
   isOpen,
   onClose,
   itemDetails,
+  selectedCartItem,
   onOpenChange,
 }: AddToCartFormType) => {
   const addToCartMutation = useAddToCart();
+  const updateCartMutation = useUpdateCart();
 
   const { maxOrderQuantity, size, colors } =
     itemDetails.extraDetails as ExtraDetails;
@@ -37,12 +40,12 @@ const AddToCartForm = ({
   )[0].path;
 
   const [cartDetails, setCartDetails] = useState({
-    isChecked: true,
-    size: sizeArr[0],
-    price: itemDetails.discountedPrice,
     itemId: itemDetails.id,
-    quantity: 1,
-    color: (colors && colors[0].color) || undefined,
+    isChecked: selectedCartItem?.isChecked,
+    size: selectedCartItem?.size || sizeArr[0],
+    price: selectedCartItem?.price || itemDetails.discountedPrice,
+    quantity: selectedCartItem?.quantity || 1,
+    color: selectedCartItem?.color || (colors && colors[0].color) || undefined,
   });
 
   const handleAddToCart = () => {
@@ -53,12 +56,24 @@ const AddToCartForm = ({
     if (!color && itemDetails.extraDetails?.colors)
       return toast("Please provide all the details", { type: "warning" });
 
-    addToCartMutation.mutate(cartDetails, {
-      onSuccess: () => {
-        toast("Item Added To Cart", { type: "success" });
-        onClose();
-      },
-    });
+    if (selectedCartItem) {
+      updateCartMutation.mutate(
+        { cartId: selectedCartItem.id, data: cartDetails },
+        {
+          onSuccess: () => {
+            toast("Cart Item Updated", { type: "success" });
+            onClose();
+          },
+        },
+      );
+    } else {
+      addToCartMutation.mutate(cartDetails, {
+        onSuccess: () => {
+          toast("Item Added To Cart", { type: "success" });
+          onClose();
+        },
+      });
+    }
   };
 
   return (
@@ -75,7 +90,7 @@ const AddToCartForm = ({
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              Add To Cart
+              {selectedCartItem ? "Update Cart Item" : "Add To Cart"}
               <p className="text-sm font-normal text-green-500">
                 Total Amount: ₹
                 {itemDetails.discountedPrice! * cartDetails.quantity}
@@ -94,7 +109,7 @@ const AddToCartForm = ({
 
               {maxOrderQuantity && (
                 <InputSelect
-                  defaultSelectedKey="1"
+                  defaultSelectedKey={String(cartDetails.quantity)}
                   variant="bordered"
                   size="sm"
                   label="Select Quantity"
@@ -141,21 +156,25 @@ const AddToCartForm = ({
                 />
               )}
 
-              <Checkbox
-                color="warning"
-                defaultSelected={true}
-                size="sm"
-                onChange={(e) =>
-                  setCartDetails({
-                    ...cartDetails,
-                    isChecked: e.target.checked,
-                  })
-                }
-              >
-                <span className="text-sm text-yellow-500">
-                  Include in Total
-                </span>
-              </Checkbox>
+              {!selectedCartItem && (
+                <Checkbox
+                  color="warning"
+                  defaultSelected={
+                    cartDetails.isChecked ? cartDetails.isChecked : true
+                  }
+                  size="sm"
+                  onChange={(e) =>
+                    setCartDetails({
+                      ...cartDetails,
+                      isChecked: e.target.checked,
+                    })
+                  }
+                >
+                  <span className="text-sm text-yellow-500">
+                    Include in Total
+                  </span>
+                </Checkbox>
+              )}
             </ModalBody>
             <ModalFooter>
               <Button

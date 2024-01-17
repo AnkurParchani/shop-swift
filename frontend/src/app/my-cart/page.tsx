@@ -1,13 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { FaBookmark } from "react-icons/fa";
 import {
+  Button,
   Card,
   CardBody,
   CardFooter,
-  CardHeader,
   Divider,
-  Link,
   useDisclosure,
 } from "@nextui-org/react";
 import { RxCross2 } from "react-icons/rx";
@@ -15,13 +16,21 @@ import { RxCross2 } from "react-icons/rx";
 import Image from "next/image";
 import EmptyCart from "./EmptyCart";
 import Loading from "../loading";
+import RemoveFromCartModal from "./RemoveFromCartModal";
+import AddToCartForm from "./AddToCartForm";
 
 import { CartItem } from "../../../global";
 import { useGetMyCart, useUpdateCart } from "../hooks/useCart";
-import RemoveFromCartModal from "./RemoveFromCartModal";
 
 const Page = () => {
+  const router = useRouter();
   const { data: cart, isLoading, error } = useGetMyCart();
+  const {
+    isOpen: addToCartIsOpen,
+    onOpen: addToCartOnOpen,
+    onClose: addToCartOnClose,
+    onOpenChange: addToCartOnOpenChange,
+  } = useDisclosure();
   const {
     isOpen: removeFromCartIsOpen,
     onOpen: removeFromCartOnOpen,
@@ -34,6 +43,9 @@ const Page = () => {
   if (isLoading) return <Loading />;
 
   if (cart.length === 0) return <EmptyCart />;
+
+  const selectedCartItem =
+    cart && cart.find((item: CartItem) => item.id === cartId);
 
   const sortedCart = cart.sort((a: CartItem, b: CartItem) =>
     a.isChecked === b.isChecked ? 0 : a.isChecked ? -1 : 1,
@@ -128,18 +140,50 @@ const Page = () => {
                 </div>
               </CardBody>
               <Divider />
-              <CardFooter>
-                <p>This is footer</p>
+              <CardFooter className="flex justify-end">
+                <Button
+                  className={`${!cart.isChecked && "opacity-30"}`}
+                  onPress={() => {
+                    if (!cart.isChecked) return;
+
+                    setCartId(cart.id);
+                    addToCartOnOpen();
+                  }}
+                  color="secondary"
+                >
+                  Edit
+                </Button>
               </CardFooter>
             </Card>
           );
         })}
+
+        <Button color="secondary" onPress={() => router.push("/my-wishlist")}>
+          <FaBookmark />
+          Add more from Wishlist
+        </Button>
       </div>
+
+      {/* Form for Add to Cart */}
+      {addToCartIsOpen && (
+        <AddToCartForm
+          isOpen={addToCartIsOpen}
+          itemDetails={{
+            discountedPrice: selectedCartItem?.item?.discountedPrice,
+            extraDetails: selectedCartItem?.item?.extraDetails,
+            id: selectedCartItem?.item?.id,
+          }}
+          onClose={addToCartOnClose}
+          selectedCartItem={selectedCartItem}
+          onOpenChange={addToCartOnOpenChange}
+        />
+      )}
 
       {/* Confirmation modal for remove from cart */}
       {removeFromCartIsOpen && (
         <RemoveFromCartModal
           cartId={cartId}
+          itemId={selectedCartItem?.item?.id}
           onClose={removeFromCartOnClose}
           isOpen={removeFromCartIsOpen}
           onOpenChange={removeFromCartOnOpenChange}
