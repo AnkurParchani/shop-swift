@@ -16,7 +16,11 @@ const ItemConfigurations = ({ extraDetails }: ConfigurationType) => {
         <span className="font-semibold">Colors: </span>
         {colors?.map((color) => {
           return (
-            <Color color={color.color} hexColor={color.hex} key={color.color} />
+            <Color
+              color={color.color}
+              hexColor={`bg-[${color.hex}]`}
+              key={color.color}
+            />
           );
         })}
       </div>
@@ -71,7 +75,7 @@ const Color = ({
       {color && (
         <div className="py0.5 flex items-center gap-2 rounded-md border border-primary px-2 capitalize">
           <p className="font-semibold">{color}</p>
-          <p className={`h-3 w-3 rounded-full bg-[#${hexColor}]`} />
+          <p className={`h-3 w-3 rounded-full ${hexColor} `} />
         </div>
       )}
     </>

@@ -12,6 +12,7 @@ import ExtraDetailsTable from "./ExtraDetailsTable";
 import SellerInfo from "./SellerInfo";
 import ItemConfigurations from "./ItemConfigurations";
 import ActionBtn from "./ActionBtn";
+import { Image } from "../../../../global";
 
 type PageType = {
   params: { itemId: string };
@@ -40,6 +41,9 @@ const Page = ({ params }: PageType) => {
     numReviews,
   } = data;
 
+  const mainImgSrc = images.filter(
+    (img: Image) => img.isItemMainImg === true,
+  )[0].path;
 
   return (
     <>
@@ -59,7 +63,7 @@ const Page = ({ params }: PageType) => {
         />
 
         <ItemConfigurations extraDetails={extraDetails} />
-        <ActionBtn itemId={params.itemId} />
+        <ActionBtn mainImgSrc={mainImgSrc} itemId={params.itemId} />
 
         <AboutBox about={about} />
         <ReviewContainer reviews={reviews} />

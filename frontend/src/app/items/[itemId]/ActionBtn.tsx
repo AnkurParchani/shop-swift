@@ -6,10 +6,16 @@ import { useAddToWishlist, useGetMyWishlist } from "@/app/hooks/useWishlist";
 import { useRouter } from "next/navigation";
 import { FaHeart } from "react-icons/fa6";
 import { CartItem, WishlistItem } from "../../../../global";
-import { useAddToCart, useGetMyCart } from "@/app/hooks/useCart";
+import { useGetMyCart } from "@/app/hooks/useCart";
 import AddToCartForm from "@/app/my-cart/AddToCartForm";
 
-const ActionBtn = ({ itemId }: { itemId: string }) => {
+const ActionBtn = ({
+  itemId,
+  mainImgSrc,
+}: {
+  itemId: string;
+  mainImgSrc: string;
+}) => {
   const router = useRouter();
   const [isAddedInWishlist, setIsAddedInWishlist] = useState<boolean>(false);
   const [isAddedInCart, setIsAddedInCart] = useState<boolean>(false);
@@ -95,6 +101,7 @@ const ActionBtn = ({ itemId }: { itemId: string }) => {
       {/* Form for Add to Cart */}
       {addToCartIsOpen && (
         <AddToCartForm
+          imgSrc={mainImgSrc}
           isOpen={addToCartIsOpen}
           onClose={addToCartOnClose}
           onOpenChange={addToCartOnOpenChange}

@@ -3,13 +3,14 @@ import { Select, SelectItem } from "@nextui-org/react";
 import { FieldValues, UseFormRegister } from "react-hook-form";
 
 type InputSelectType = {
-  options: { label: string; value: string }[];
+  options: { label: string | number; value: string | number }[];
   label: string;
   variant: "flat" | "bordered" | "underlined" | "faded";
   placeholder?: string;
   register?: UseFormRegister<FieldValues>;
   registerName?: string;
   onChange?: React.ChangeEventHandler<HTMLSelectElement>;
+  size?: "md" | "sm" | "lg";
   defaultSelectedKey?: string;
 };
 
@@ -18,6 +19,7 @@ const InputSelect = ({
   label,
   variant,
   onChange,
+  size,
   registerName,
   register,
   placeholder,
@@ -28,6 +30,7 @@ const InputSelect = ({
       label={label}
       defaultSelectedKeys={defaultSelectedKey ? [defaultSelectedKey] : []}
       variant={variant}
+      size={size || "md"}
       placeholder={placeholder}
       onChange={onChange}
       className="text-white"
