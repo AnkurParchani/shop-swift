@@ -22,6 +22,7 @@ import AddToCartForm from "./AddToCartForm";
 
 import { CartItem } from "../../../global";
 import { useGetMyCart, useUpdateCart } from "../hooks/useCart";
+import CheckoutBtn from "./CheckoutBtn";
 
 const Page = () => {
   const router = useRouter();
@@ -168,7 +169,10 @@ const Page = () => {
         </Button>
 
         {selectedItemsInCart.length > 0 && (
-          <PriceSummary cart={selectedItemsInCart} />
+          <>
+            <PriceSummary cart={selectedItemsInCart} />
+            <CheckoutBtn cart={selectedItemsInCart} />
+          </>
         )}
       </div>
 
