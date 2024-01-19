@@ -21,12 +21,12 @@ const PriceSummary = ({ cart }: { cart: CartItem[] }) => {
   const totalAmount = totalMRP - totalDiscount;
 
   return (
-    <Card className="border-l-2 border-r-2 border-secondary bg-transparent">
+    <Card className="mb-24 border-l-2 border-r-2 border-secondary bg-transparent">
       <CardHeader>
         <div className="flex w-full justify-between text-sm">
           <p className="font-semibold">Price Details</p>
-          <p className=" font-semibold text-yellow-400">
-            ({cart.length} {cart.length > 1 ? "Items" : "Item"})
+          <p className=" font-semibold">
+            {cart.length} {cart.length > 1 ? "Items" : "Item"}
           </p>
         </div>
       </CardHeader>

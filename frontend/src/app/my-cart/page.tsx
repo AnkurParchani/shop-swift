@@ -169,12 +169,13 @@ const Page = () => {
         </Button>
 
         {selectedItemsInCart.length > 0 && (
-          <>
-            <PriceSummary cart={selectedItemsInCart} />
-            <CheckoutBtn cart={selectedItemsInCart} />
-          </>
+          <PriceSummary cart={selectedItemsInCart} />
         )}
       </div>
+
+      {selectedItemsInCart.length > 0 && (
+        <CheckoutBtn cart={selectedItemsInCart} />
+      )}
 
       {/* Form for Add to Cart */}
       {addToCartIsOpen && (
