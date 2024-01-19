@@ -38,11 +38,29 @@ export const addAddress = async (
   try {
     let address;
 
+    const prevAddresses = await db
+      .select()
+      .from(addresses)
+      .where(eq(addresses.userId, req.user?.id!));
+
     // If this is NOT the default address
     if (!req.body.isDeliveryAddress) {
+      // Making sure that there is an address with isDeliveryAddress === true
+      if (!prevAddresses.some((address) => address.isDeliveryAddress))
+        return next(
+          new AppError(
+            400,
+            "Please set this as your default Address as you have no previous addresses"
+          )
+        );
+
       [address] = await db
         .insert(addresses)
-        .values({ ...req.body, userId: req.user?.id, isDeliveryAddress: false })
+        .values({
+          ...req.body,
+          userId: req.user?.id,
+          isDeliveryAddress: false,
+        })
         .returning();
     }
 
