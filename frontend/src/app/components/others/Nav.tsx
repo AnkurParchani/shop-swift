@@ -17,11 +17,11 @@ import {
   NavbarMenuToggle,
 } from "@nextui-org/react";
 import { CiSearch } from "react-icons/ci";
-import { getUser } from "../utils/helpers";
+import { getUser } from "../../utils/helpers";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useCookies } from "react-cookie";
-import { User } from "./../../../global";
+import { User } from "../../../../global";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 

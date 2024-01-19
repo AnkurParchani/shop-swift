@@ -11,7 +11,7 @@ const CheckoutBtn = ({ cart }: CheckoutBtnType) => {
   const itemsInCart = cart.length;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-20 flex flex-col gap-3 border-t-2 bg-[#1b1b1b] px-4 py-3 text-center">
+    <div className="fixed inset-x-0 bottom-0 z-20 flex flex-col gap-3 border-t-2 border-t-secondary bg-[#1b1b1b] px-4 py-3 text-center">
       <p className="text-sm">
         {itemsInCart} {itemsInCart > 1 ? "items" : "item"} selected for order
       </p>

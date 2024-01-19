@@ -8,7 +8,7 @@ import {
 import { toast } from "react-toastify";
 
 // To get all the addresses of the user
-export const useGetAddresses = () => {
+export const useGetMyAddresses = () => {
   const { data, isLoading, error } = useQuery({
     queryFn: getAllAddresses,
     queryKey: ["my-address"],

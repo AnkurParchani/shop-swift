@@ -11,6 +11,7 @@ import {
   Divider,
   useDisclosure,
 } from "@nextui-org/react";
+import { FaAngleRight } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 
 import Image from "next/image";
@@ -19,10 +20,11 @@ import Loading from "../loading";
 import RemoveFromCartModal from "./RemoveFromCartModal";
 import PriceSummary from "./PriceSummary";
 import AddToCartForm from "./AddToCartForm";
+import CheckoutBtn from "./CheckoutBtn";
+import BreadCrumb from "../components/others/BreadCrumb";
 
 import { CartItem } from "../../../global";
 import { useGetMyCart, useUpdateCart } from "../hooks/useCart";
-import CheckoutBtn from "./CheckoutBtn";
 
 const Page = () => {
   const router = useRouter();
@@ -72,6 +74,12 @@ const Page = () => {
   return (
     <>
       <div className="mx-auto flex max-w-5xl flex-col gap-6 px-5 py-5">
+        <BreadCrumb
+          size="sm"
+          curPage="Cart"
+          nextPages={["Addresses", "Payment"]}
+        />
+
         {sortedCart.map((cart: CartItem) => {
           const discount = Math.round(
             ((cart.item.originalPrice - cart.item.discountedPrice) /
@@ -163,9 +171,17 @@ const Page = () => {
           );
         })}
 
-        <Button color="secondary" onPress={() => router.push("/my-wishlist")}>
-          <FaBookmark />
-          Add more from Wishlist
+        <Button
+          className="flex justify-between"
+          color="secondary"
+          onPress={() => router.push("/my-wishlist")}
+        >
+          <span className="flex items-center gap-1.5">
+            {" "}
+            <FaBookmark />
+            Add more from Wishlist
+          </span>
+          <FaAngleRight />
         </Button>
 
         {selectedItemsInCart.length > 0 && (

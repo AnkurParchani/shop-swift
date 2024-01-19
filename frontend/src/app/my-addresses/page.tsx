@@ -16,14 +16,14 @@ import EmptyAddresses from "./EmptyAddresses";
 import AddAddressForm from "./AddAddressForm";
 import DeleteAddressModal from "./DeleteAddressModal";
 
-import { useGetAddresses } from "../hooks/useAddress";
+import { useGetMyAddresses } from "../hooks/useAddress";
 import { Address } from "../../../global";
 import UpdateAddressModal from "./UpdateAddressModal";
 
 const Page = () => {
   const [address, setAddress] = useState<Address | null>();
   const [addressId, setAddressId] = useState<number>(0);
-  const { data: addresses, isLoading, error } = useGetAddresses();
+  const { data: addresses, isLoading, error } = useGetMyAddresses();
   const {
     isOpen: addAddressIsOpen,
     onOpen: addAddressOnOpen,
