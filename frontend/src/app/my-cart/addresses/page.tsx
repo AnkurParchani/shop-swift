@@ -16,6 +16,7 @@ import { Address } from "../../../../global";
 import { toast } from "react-toastify";
 import AddAddressForm from "@/app/my-addresses/AddAddressForm";
 import PricingBtn from "./PricingBtn";
+import NoProducts from "./NoProducts";
 
 const Page = () => {
   const router = useRouter();
@@ -29,6 +30,9 @@ const Page = () => {
     onClose: addAddressOnClose,
     onOpenChange: addAddressOnOpenChange,
   } = useDisclosure();
+
+  // If there are no products in cart and someone has intentionally made a request to this page
+  if (!cart || cart.length === 0) return <NoProducts />;
 
   // Sorting the address according the the isDeliveryAddress = true
   const sortedAddress = addresses?.sort((a: Address, b: Address) =>
