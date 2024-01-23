@@ -13,6 +13,7 @@ import Loading from "../loading";
 import EmptyOrders from "./EmptyOrders";
 import { Order } from "../../../global";
 import { formatDate } from "../utils/helpers";
+import BreadCrumb from "../components/others/BreadCrumb";
 
 const Page = () => {
   const router = useRouter();
@@ -23,12 +24,16 @@ const Page = () => {
 
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-6 px-5 py-5">
-      <p className="flex items-center gap-1 text-lg font-semibold text-primary">
-        Orders{" "}
-        <span className="text-sm">
-          ({orders.length} {orders.length > 1 ? "orders" : "order"})
-        </span>
-      </p>
+      <div className="flex flex-col gap-2">
+        <p className="flex items-center gap-1 text-lg font-semibold text-primary">
+          Orders{" "}
+          <span className="text-sm">
+            ({orders.length} {orders.length > 1 ? "orders" : "order"})
+          </span>
+        </p>
+
+        <BreadCrumb curPage="orders" />
+      </div>
 
       {orders.map((order: Order) => {
         const { date, id, orderItems } = order;

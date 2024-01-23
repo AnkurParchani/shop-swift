@@ -106,4 +106,5 @@ export type Order = {
   id: number;
   userId: number;
   orderItems: OrderItem[];
+  address: Address;
 };

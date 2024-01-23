@@ -1,15 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Divider,
-  useDisclosure,
-} from "@nextui-org/react";
+import { Button, CardFooter, useDisclosure } from "@nextui-org/react";
 
 import Loading from "../loading";
 import EmptyAddresses from "./EmptyAddresses";
@@ -19,6 +11,7 @@ import DeleteAddressModal from "./DeleteAddressModal";
 import { useGetMyAddresses } from "../hooks/useAddress";
 import { Address } from "../../../global";
 import UpdateAddressModal from "./UpdateAddressModal";
+import AddressBox from "../components/others/AddressBox";
 
 const Page = () => {
   const [address, setAddress] = useState<Address | null>();
@@ -59,72 +52,30 @@ const Page = () => {
         </Button>
       </div>
 
-      {addresses.map((address: Address) => {
-        const {
-          id,
-          firstName,
-          lastName,
-          phoneNumber,
-          street,
-          country,
-          flatNumber,
-          city,
-          gender,
-          isDeliveryAddress,
-          state,
-        } = address;
-
-        return (
-          <Card key={id} className="relative max-w-[400px]">
-            <CardHeader className="flex gap-3">
-              <div
-                className={`h-8 w-8 rounded-md ${
-                  isDeliveryAddress ? "bg-green-600" : "bg-default"
-                }`}
-              />
-              <div className="flex flex-col">
-                <p className="text-md capitalize">
-                  {firstName} {lastName}{" "}
-                  <span className="text-sm text-gray-500">
-                    ({gender === "female" ? "F" : "M"})
-                  </span>
-                </p>
-                <p className="text-small text-default-500">{phoneNumber}</p>
-              </div>
-            </CardHeader>
-            <Divider />
-            <CardBody className="flex flex-col gap-1 text-sm capitalize">
-              {flatNumber && <p>{flatNumber},</p>}
-              {street && <p>{street},</p>}
-              <p>{city},</p>
-              <p>
-                {state}, {country}
-              </p>
-            </CardBody>
-            <Divider />
-            <CardFooter className="flex justify-end gap-3">
-              <Button
-                onPress={() => {
-                  setAddress(address);
-                  updateAddressOnOpen();
-                }}
-                color="default"
-              >
-                Edit
-              </Button>
-              <Button
-                onPress={() => {
-                  setAddressId(id);
-                  deleteAddressOnOpen();
-                }}
-                color="danger"
-              >
-                Delete
-              </Button>
-            </CardFooter>
-          </Card>
-        );
-      })}
+      {addresses.map((address: Address) => (
+        <AddressBox key={address.id} address={address}>
+          <CardFooter className="flex justify-end gap-3">
+            <Button
+              onPress={() => {
+                setAddress(address);
+                updateAddressOnOpen();
+              }}
+              color="default"
+            >
+              Edit
+            </Button>
+            <Button
+              onPress={() => {
+                setAddressId(address.id);
+                deleteAddressOnOpen();
+              }}
+              color="danger"
+            >
+              Delete
+            </Button>
+          </CardFooter>
+        </AddressBox>
+      ))}
 
       <Button color="secondary" onPress={addAddressOnOpen}>
         Add new Address

@@ -121,7 +121,11 @@ export const getSingleOrder = async (
       with: {
         orderItems: {
           with: {
-            item: true,
+            item: {
+              with: {
+                images: true,
+              },
+            },
           },
         },
         address: true,
