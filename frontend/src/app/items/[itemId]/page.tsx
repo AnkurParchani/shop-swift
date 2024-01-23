@@ -12,18 +12,17 @@ import ExtraDetailsTable from "./ExtraDetailsTable";
 import SellerInfo from "./SellerInfo";
 import ItemConfigurations from "./ItemConfigurations";
 import ActionBtn from "./ActionBtn";
+import { useGetSingleItem } from "@/app/hooks/useItems";
 
 type PageType = {
   params: { itemId: string };
 };
 
 const Page = ({ params }: PageType) => {
-  const { data, isLoading, error } = useQuery({
-    queryKey: [`item-${params.itemId}`],
-    queryFn: () => getSingleItem(params.itemId),
-  });
+  const { data: item, isLoading, error } = useGetSingleItem(params.itemId);
 
   if (isLoading) return <Loading />;
+  if (!item) return <p>No item found with this itemID</p>;
 
   const {
     images,
@@ -38,7 +37,7 @@ const Page = ({ params }: PageType) => {
     about,
     ratings,
     numReviews,
-  } = data;
+  } = item;
 
   return (
     <>

@@ -8,7 +8,7 @@ export type Item = {
   inStock: boolean;
   about: string;
   for_gender: "male" | "female" | "unisex";
-  description: object;
+  description: Description;
   extraDetails: ExtraDetails;
   numReviews: number;
   ratings: number;
@@ -104,6 +104,7 @@ export type OrderItem = {
 export type Order = {
   date: string;
   id: number;
+  user: User;
   userId: number;
   orderItems: OrderItem[];
   address: Address;

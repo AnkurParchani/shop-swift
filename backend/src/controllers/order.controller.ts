@@ -119,6 +119,7 @@ export const getSingleOrder = async (
         eq(orders.id, Number(req.params.orderId))
       ),
       with: {
+        user: true,
         orderItems: {
           with: {
             item: {

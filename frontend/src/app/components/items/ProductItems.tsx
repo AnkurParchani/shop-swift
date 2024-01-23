@@ -1,21 +1,12 @@
 "use client";
 
 import Loading from "@/app/loading";
-import { getItems } from "@/app/services/apiItems";
-import { useQuery } from "@tanstack/react-query";
 import ProductItem from "./ProductItem";
 import { Item } from "../../../../global";
+import { useGetAllItems } from "@/app/hooks/useItems";
 
 const ProductItems = () => {
-  // Getting all the items
-  const {
-    isLoading,
-    error,
-    data: items,
-  } = useQuery({
-    queryKey: ["items"],
-    queryFn: getItems,
-  });
+  const { data: items, isLoading, error } = useGetAllItems();
 
   if (isLoading) return <Loading />;
 
