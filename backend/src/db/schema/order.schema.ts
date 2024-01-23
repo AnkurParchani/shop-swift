@@ -3,6 +3,7 @@ import { pgTable } from "drizzle-orm/pg-core";
 import { users } from "./user.schema";
 import { relations } from "drizzle-orm";
 import { items } from "./item.schema";
+import { addresses } from "./address.schema";
 
 // Defining the Orders table
 export const orders = pgTable("orders", {
@@ -11,6 +12,12 @@ export const orders = pgTable("orders", {
   userId: integer("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
+  addressId: integer("address_id")
+    .notNull()
+    .references(() => addresses.id, {
+      onUpdate: "cascade",
+      onDelete: "cascade",
+    }),
 });
 
 // Defining the order table for seperate order_items
@@ -40,6 +47,11 @@ export const orderRelations = relations(orders, ({ one, many }) => ({
     references: [users.id],
   }),
 
+  address: one(addresses, {
+    fields: [orders.addressId],
+    references: [addresses.id],
+  }),
+
   orderItems: many(order_items),
 }));
 
@@ -48,5 +60,10 @@ export const orderItemRelations = relations(order_items, ({ one }) => ({
   order: one(orders, {
     fields: [order_items.orderId],
     references: [orders.id],
+  }),
+
+  item: one(items, {
+    fields: [order_items.itemId],
+    references: [items.id],
   }),
 }));

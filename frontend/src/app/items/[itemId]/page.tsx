@@ -12,7 +12,6 @@ import ExtraDetailsTable from "./ExtraDetailsTable";
 import SellerInfo from "./SellerInfo";
 import ItemConfigurations from "./ItemConfigurations";
 import ActionBtn from "./ActionBtn";
-import { Image } from "../../../../global";
 
 type PageType = {
   params: { itemId: string };

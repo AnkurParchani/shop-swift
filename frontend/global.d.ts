@@ -88,3 +88,22 @@ export type CartItem = {
   itemId: number;
   item: Item;
 };
+
+// Single order type
+export type OrderItem = {
+  color: string | null;
+  id: number;
+  itemId: number;
+  orderId: number;
+  quantity: number;
+  size: null | string;
+  item?: Item;
+};
+
+// Order type
+export type Order = {
+  date: string;
+  id: number;
+  userId: number;
+  orderItems: OrderItem[];
+};

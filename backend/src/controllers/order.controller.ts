@@ -5,6 +5,7 @@ import { User } from "../../global";
 import { and, eq } from "drizzle-orm";
 import AppError from "../utils/appError";
 import { handleServerError } from "../utils/handleServerError";
+import { addresses } from "../db/schema/address.schema";
 
 // CustomRequest for every request
 export interface CustomRequest extends Request {
@@ -28,13 +29,29 @@ export const createOrder = async (
     if (!req.body.orders || !req.user?.id)
       return next(new AppError(400, "Provide the order details"));
 
+    // Getting the defualt address of the user and throwing error if it doesn't exist
+    const defaultAddress = await db.query.addresses.findFirst({
+      where: and(
+        eq(addresses.userId, req.user.id),
+        eq(addresses.isDeliveryAddress, true)
+      ),
+    });
+
+    if (!defaultAddress?.id)
+      return next(
+        new AppError(
+          400,
+          "You must have a default address before ordering anything"
+        )
+      );
+
     //  Getting all the orders
     const ordersFromClient: OrderItem[] = req.body.orders;
 
     // Creating the main order (parent)
     const [mainOrder] = await db
       .insert(orders)
-      .values({ userId: req.user.id })
+      .values({ userId: req.user.id, addressId: defaultAddress.id })
       .returning();
 
     // Inserting the seperate order item (child)
@@ -72,7 +89,11 @@ export const getMyOrders = async (
     const myOrders = await db.query.orders.findMany({
       where: eq(orders.userId, Number(req.user?.id)),
       with: {
-        orderItems: true,
+        orderItems: {
+          with: {
+            item: true,
+          },
+        },
       },
     });
 
@@ -98,7 +119,12 @@ export const getSingleOrder = async (
         eq(orders.id, Number(req.params.orderId))
       ),
       with: {
-        orderItems: true,
+        orderItems: {
+          with: {
+            item: true,
+          },
+        },
+        address: true,
       },
     });
 
@@ -111,5 +137,5 @@ export const getSingleOrder = async (
   }
 };
 
-// No routes for DELETE and UPDATE order.
+// No routes will be made for DELETE and UPDATE order.
 ////////////////////////////////////////

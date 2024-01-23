@@ -4,7 +4,7 @@ import newRequest from "../utils/newRequest";
 import { Address } from "../../../global";
 
 // To get all the addresses of the user
-export const getAllAddresses = async () => {
+export const getMyAddresses = async () => {
   try {
     const res = await newRequest.get("/addresses");
 

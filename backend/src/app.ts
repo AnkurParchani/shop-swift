@@ -12,6 +12,7 @@ import orderRoutes from "./routes/order.route";
 import wishlistRoutes from "./routes/wishlist.route";
 import cartRoutes from "./routes/cart.route";
 import imgRoutes from "./routes/img.route";
+import stripeRoutes from "./routes/stripe.route";
 
 import AppError from "./utils/appError";
 
@@ -43,6 +44,7 @@ app.use("/wishlists", wishlistRoutes);
 app.use("/orders", orderRoutes);
 app.use("/carts", cartRoutes);
 app.use("/images", imgRoutes);
+app.use("/stripe", stripeRoutes);
 
 // Undefined Routes
 app.use("*", (req: Request, res: Response, next: NextFunction) => {

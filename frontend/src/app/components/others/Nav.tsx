@@ -117,6 +117,12 @@ const Nav = () => {
               My Addresses
             </DropdownItem>
             <DropdownItem
+              onClick={() => router.push("/my-orders")}
+              key="orders"
+            >
+              My Orders
+            </DropdownItem>
+            <DropdownItem
               onClick={handleLogout}
               key="logout"
               className="text-red-500"

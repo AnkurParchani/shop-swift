@@ -20,7 +20,7 @@ const Page = () => {
   } = useDisclosure();
 
   if (isLoading) return <Loading />;
-  if (wishlist.length === 0) return <EmptyWishlist />;
+  if (wishlist.length === 0 || !wishlist) return <EmptyWishlist />;
 
   return (
     <>

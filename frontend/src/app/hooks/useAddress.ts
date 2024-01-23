@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   addAddress,
   deleteAddress,
-  getAllAddresses,
+  getMyAddresses,
   updateAddress,
 } from "../services/apiAddress";
 import { toast } from "react-toastify";
@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 // To get all the addresses of the user
 export const useGetMyAddresses = () => {
   const { data, isLoading, error } = useQuery({
-    queryFn: getAllAddresses,
+    queryFn: getMyAddresses,
     queryKey: ["my-address"],
     staleTime: 30000,
   });

@@ -59,7 +59,6 @@ const Page = () => {
         </Button>
       </div>
 
-      {/* @ts-ignore */}
       {addresses.map((address: Address) => {
         const {
           id,
