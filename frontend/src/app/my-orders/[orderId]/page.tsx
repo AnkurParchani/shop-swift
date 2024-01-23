@@ -41,7 +41,7 @@ const Page = ({ params }: { params: { orderId: string } }) => {
           <p>{formattedDate}</p>
         </div>
 
-        <BreadCrumb curPage={`order-${order.id}`} />
+        <BreadCrumb curPage={`order_${order.id}`} />
       </div>
 
       <div className="flex flex-col gap-3">
@@ -70,7 +70,7 @@ const Page = ({ params }: { params: { orderId: string } }) => {
                   {color && <p>Color: {color}</p>}
                   {size && <p>Size: {size}</p>}
 
-                  <div className="ml-auto mt-auto flex flex-col text-right">
+                  <div className="ml-auto mt-auto flex flex-col gap-0.5 text-right">
                     <p className="text-yellow-400">Quantity: {quantity}</p>
                     <p className="text-green-500">Total amount: {totalPrice}</p>
                   </div>
@@ -89,8 +89,8 @@ const Page = ({ params }: { params: { orderId: string } }) => {
           <AddressBox address={order.address} />
         </div>
 
-        <div>
-          <p className="font-mediumj mb-2 uppercase text-yellow-400">
+        <div className="mt-3">
+          <p className="mb-2 font-medium uppercase text-yellow-400">
             Updates Sent to:
           </p>
           <Card className="flex flex-col gap-2 px-3 py-2">

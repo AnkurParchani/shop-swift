@@ -48,7 +48,7 @@ const Page = () => {
             <CardHeader>
               <div className="flex w-full justify-between">
                 <p className="font-semibold">ORDER_ID: {id}</p>
-                <p className="text-yellow-400">{formattedDate}</p>
+                <p>{formattedDate}</p>
               </div>
             </CardHeader>
             <Divider />
