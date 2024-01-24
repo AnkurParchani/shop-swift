@@ -9,6 +9,7 @@ import { useGetMyWishlist } from "../hooks/useWishlist";
 import { WishlistItem } from "../../../global";
 import { useRouter } from "next/navigation";
 import ClearWishlistModal from "./ClearWishlistModal";
+import BreadCrumb from "../components/others/BreadCrumb";
 
 const Page = () => {
   const router = useRouter();
@@ -24,7 +25,7 @@ const Page = () => {
 
   return (
     <>
-      <div className="mx-auto flex max-w-5xl flex-col gap-6 px-5 py-5">
+      <div className="mx-auto flex max-w-5xl flex-col gap-2 px-5 py-5">
         <div className="flex justify-between">
           <p className="flex items-center gap-1 text-lg font-semibold text-primary">
             Wishlist <span className="text-sm">({wishlist.length} items)</span>
@@ -54,7 +55,9 @@ const Page = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-10">
+        <BreadCrumb curPage="Wishlist" />
+
+        <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-10">
           {wishlist.map((item: WishlistItem) => (
             <WishlistItemCard key={item.id} item={item.item} />
           ))}

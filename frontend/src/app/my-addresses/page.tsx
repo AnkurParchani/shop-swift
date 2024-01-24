@@ -12,6 +12,7 @@ import { useGetMyAddresses } from "../hooks/useAddress";
 import { Address } from "../../../global";
 import UpdateAddressModal from "./UpdateAddressModal";
 import AddressBox from "../components/others/AddressBox";
+import BreadCrumb from "../components/others/BreadCrumb";
 
 const Page = () => {
   const [address, setAddress] = useState<Address | null>();
@@ -40,7 +41,7 @@ const Page = () => {
   if (addresses && addresses.length === 0) return <EmptyAddresses />;
 
   return (
-    <div className="mx-auto flex max-w-5xl flex-col gap-6 px-5 py-5">
+    <div className="mx-auto flex max-w-5xl flex-col gap-2 px-5 py-5">
       <div className="flex justify-between">
         <p className="flex items-center gap-1 text-lg font-semibold text-primary">
           Address{" "}
@@ -52,32 +53,36 @@ const Page = () => {
         </Button>
       </div>
 
-      {addresses.map((address: Address) => (
-        <AddressBox key={address.id} address={address}>
-          <CardFooter className="flex justify-end gap-3">
-            <Button
-              onPress={() => {
-                setAddress(address);
-                updateAddressOnOpen();
-              }}
-              color="default"
-            >
-              Edit
-            </Button>
-            <Button
-              onPress={() => {
-                setAddressId(address.id);
-                deleteAddressOnOpen();
-              }}
-              color="danger"
-            >
-              Delete
-            </Button>
-          </CardFooter>
-        </AddressBox>
-      ))}
+      <BreadCrumb curPage="Addresses" />
 
-      <Button color="secondary" onPress={addAddressOnOpen}>
+      <div className="mt-4 flex flex-col gap-4">
+        {addresses.map((address: Address) => (
+          <AddressBox key={address.id} address={address}>
+            <CardFooter className="flex justify-end gap-3">
+              <Button
+                onPress={() => {
+                  setAddress(address);
+                  updateAddressOnOpen();
+                }}
+                color="default"
+              >
+                Edit
+              </Button>
+              <Button
+                onPress={() => {
+                  setAddressId(address.id);
+                  deleteAddressOnOpen();
+                }}
+                color="danger"
+              >
+                Delete
+              </Button>
+            </CardFooter>
+          </AddressBox>
+        ))}
+      </div>
+
+      <Button color="secondary" className="mt-3" onPress={addAddressOnOpen}>
         Add new Address
       </Button>
 

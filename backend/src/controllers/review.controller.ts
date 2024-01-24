@@ -20,10 +20,16 @@ export const getReviews = async (
   next: NextFunction
 ) => {
   try {
-    const allReviews = await db
-      .select()
-      .from(reviews)
-      .where(eq(reviews.userId, req.user?.id as number));
+    const allReviews = await db.query.reviews.findMany({
+      where: eq(reviews.userId, req.user?.id as number),
+      with: {
+        item: {
+          with: {
+            images: true,
+          },
+        },
+      },
+    });
 
     res.status(200).json({ status: "success", reviews: allReviews });
   } catch (err) {

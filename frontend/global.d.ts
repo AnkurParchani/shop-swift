@@ -109,3 +109,14 @@ export type Order = {
   orderItems: OrderItem[];
   address: Address;
 };
+
+// Review type
+export type Review = {
+  content: string;
+  date: string;
+  isEdited: boolean;
+  id: number;
+  itemId: number;
+  stars: string;
+  item: Item;
+};

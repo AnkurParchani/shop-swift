@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getMyOrders, getSingleOrder } from "../services/apiOrders";
 
 // Getting all orders of the user
-export const useGetAllOrders = () => {
+export const useGetMyOrders = () => {
   const { data, error, isLoading } = useQuery({
     queryFn: getMyOrders,
     queryKey: ["my-orders"],
