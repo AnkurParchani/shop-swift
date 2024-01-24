@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  addReview,
   deleteReview,
   getMyReviews,
   updateReview,
@@ -14,6 +15,23 @@ export const useGetMyReviews = () => {
   });
 
   return { data, isLoading, error };
+};
+
+// Adding a new Review
+export const useAddReview = () => {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: addReview,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["my-reviews"] });
+    },
+    onError(err: Error) {
+      toast(err.message, { type: "error" });
+    },
+  });
+
+  return mutation;
 };
 
 // To update an address of the user

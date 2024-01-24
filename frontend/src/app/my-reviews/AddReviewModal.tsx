@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-import { Review } from "../../../global";
 import {
   Button,
   Modal,
@@ -9,33 +7,33 @@ import {
   ModalHeader,
   Textarea,
 } from "@nextui-org/react";
-import { useUpdateReview } from "../hooks/useReviews";
+import React, { useState } from "react";
 import InputSelect from "../components/events/InputSelect";
-import InputText from "../components/events/InputText";
+import { useAddReview } from "../hooks/useReviews";
 import { toast } from "react-toastify";
 
-type UpdateReviewProps = {
+type AddReviewType = {
   isOpen: boolean;
-  review: Review;
+  itemId: number;
   onClose: () => void;
   onOpenChange: () => void;
 };
 
-const UpdateReviewModal = ({
+const AddReviewModal = ({
   isOpen,
-  review,
   onClose,
   onOpenChange,
-}: UpdateReviewProps) => {
-  const [reviewData, setReviewData] = useState<Review>(review);
-  const updateReviewMutation = useUpdateReview();
+  itemId,
+}: AddReviewType) => {
+  const [reviewData, setReviewData] = useState({ stars: "1", content: "" });
+  const addReviewMutation = useAddReview();
 
-  function handleUpdateReveiw() {
-    updateReviewMutation.mutate(
-      { reviewId: reviewData.id, review: reviewData },
+  function handleAddReview() {
+    addReviewMutation.mutate(
+      { ...reviewData, itemId },
       {
         onSuccess: () => {
-          toast("Your review has been updated", { type: "success" });
+          toast("Review Added", { type: "success" });
           onClose();
         },
       },
@@ -56,13 +54,13 @@ const UpdateReviewModal = ({
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              Update Review
+              Add Review
             </ModalHeader>
             <ModalBody>
               <InputSelect
                 variant="bordered"
-                label="Select Star(s)"
-                defaultSelectedKey={reviewData.stars}
+                label="Select star(s)"
+                defaultSelectedKey={"1"}
                 placeholder="Select your Review Stars"
                 options={[
                   { label: "1", value: "1" },
@@ -88,7 +86,7 @@ const UpdateReviewModal = ({
             </ModalBody>
             <ModalFooter>
               <Button
-                isDisabled={updateReviewMutation.isPending}
+                isDisabled={addReviewMutation.isPending}
                 color="danger"
                 variant="solid"
                 onPress={onClose}
@@ -96,14 +94,14 @@ const UpdateReviewModal = ({
                 Close
               </Button>
               <Button
-                isLoading={updateReviewMutation.isPending}
-                disabled={updateReviewMutation.isPending}
+                isLoading={addReviewMutation.isPending}
+                disabled={addReviewMutation.isPending}
                 color="success"
                 className="text-white"
                 type="submit"
-                onClick={handleUpdateReveiw}
+                onClick={handleAddReview}
               >
-                {updateReviewMutation.isPending ? "Updating..." : "Update"}
+                {addReviewMutation.isPending ? "Updating..." : "Update"}
               </Button>
             </ModalFooter>
           </>
@@ -113,4 +111,4 @@ const UpdateReviewModal = ({
   );
 };
 
-export default UpdateReviewModal;
+export default AddReviewModal;

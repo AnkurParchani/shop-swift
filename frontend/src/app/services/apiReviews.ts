@@ -13,6 +13,23 @@ export const getMyReviews = async () => {
   }
 };
 
+// Adding a new Review
+export const addReview = async (data: {
+  content: string;
+  stars: string;
+  itemId: number;
+}) => {
+  try {
+    const res = await newRequest.post("/reviews", data, {
+      withCredentials: true,
+    });
+
+    return res.data;
+  } catch (err) {
+    return handleApiError(err);
+  }
+};
+
 // To Update a Review
 export const updateReview = async (data: {
   reviewId: number;
