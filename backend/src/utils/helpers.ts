@@ -19,14 +19,14 @@ export const uploadItemImgToSupabase = async (
       .upload(fileName, buffer, { contentType: mimetype });
 
     if (error) {
-      console.log(error);
+      console.error(error);
       throw new Error("Something went wrong while uploading the image");
     }
 
     // Returning file URL
     return data;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error("Something went wrong while uploading the image");
   }
 };

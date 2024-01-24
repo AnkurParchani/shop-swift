@@ -1,16 +1,20 @@
+import { useEffect } from "react";
 import { useCheckout } from "../hooks/useCheckout";
+import {
+  LinkAuthenticationElement,
+  PaymentElement,
+} from "@stripe/react-stripe-js";
 
 const CheckoutForm = () => {
-  const checkout = useCheckout();
+  const { data, isLoading } = useCheckout();
 
-  if (checkout.isLoading) return <p>Payment intent is loading... wait. </p>;
+  if (isLoading) return <p>Form is loading</p>;
 
-  console.log("Logging payment intent ", checkout.paymentIntent);
   return (
-    <div>
-      <p>Payment intent has been loaded</p>
-      <p>CheckoutForm</p>
-    </div>
+    <form>
+      <LinkAuthenticationElement id="link-authentication-element" />
+      <PaymentElement />
+    </form>
   );
 };
 

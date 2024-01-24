@@ -2,7 +2,7 @@ import { NextFunction } from "express";
 import AppError from "./appError";
 
 export const handleServerError = (err: any, next: NextFunction) => {
-  console.log(err);
+  console.error(err);
   //   If the error is of duplicate email error
   if (err.code === "23505" && err.constraint === "users_email_unique") {
     return next(new AppError(400, "Email already exists, try different one"));

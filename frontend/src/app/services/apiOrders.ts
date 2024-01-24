@@ -22,3 +22,18 @@ export const getSingleOrder = async (orderId: string) => {
     return handleApiError(err);
   }
 };
+
+// Creating an Order
+export const createOrder = async (data: {
+  orders: { itemId: number; quantity: number }[];
+}) => {
+  try {
+    const res = await newRequest.post(`/orders`, data, {
+      withCredentials: true,
+    });
+
+    return res.data;
+  } catch (err) {
+    return handleApiError(err);
+  }
+};

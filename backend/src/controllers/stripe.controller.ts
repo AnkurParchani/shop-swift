@@ -19,7 +19,7 @@ export const getPaymentIntent = async (
       description: "payment intent",
     });
 
-    return res.status(200).json({ status: "success", intent });
+    res.status(200).json({ status: "success", intent });
   } catch (err) {
     return handleServerError(err, next);
   }

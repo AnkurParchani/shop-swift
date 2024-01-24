@@ -17,7 +17,7 @@ import InputText from "../components/events/InputText";
 
 import { signup } from "../services/apiUsers";
 import { ChangeEvent, useRef, useState } from "react";
-import { supabase, supabaseUrl } from "../services/supabase";
+import { supabase, supabaseUrl } from "../utils/supabase";
 import { getUserImg } from "../utils/helpers";
 
 const Page = () => {

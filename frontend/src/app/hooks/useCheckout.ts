@@ -1,25 +1,24 @@
 import { PaymentIntent } from "@stripe/stripe-js";
 import { useState } from "react";
 import newRequest from "../utils/newRequest";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 export const useCheckout = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [paymentIntent, setPaymentIntent] = useState<PaymentIntent | null>(
-    null,
-  );
-
-  useQuery({
-    queryFn: async () => {
-      const intent = (await newRequest(
-        "/stripe/payment-intent",
-      )) as PaymentIntent;
-
-      setPaymentIntent(intent);
-      setIsLoading(false);
-    },
+  const { data, isLoading } = useQuery({
     queryKey: ["payment-intent"],
+    queryFn: async () => {
+      try {
+        const res = await newRequest.get("/stripe/payment-intent", {
+          withCredentials: true,
+        });
+
+        return res.data.intent;
+      } catch (err) {
+        toast("Error from useCheckout mutation");
+      }
+    },
   });
 
-  return { isLoading, paymentIntent };
+  return { data, isLoading };
 };

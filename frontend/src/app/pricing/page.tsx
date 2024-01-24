@@ -1,27 +1,33 @@
 "use client";
 
 import IncompleteDetails from "./IncompleteDetails";
-import { Elements } from "@stripe/react-stripe-js";
+import {
+  Elements,
+  LinkAuthenticationElement,
+  PaymentElement,
+} from "@stripe/react-stripe-js";
 
 import { useGetMyAddresses } from "../hooks/useAddress";
 import { useGetMyCart } from "../hooks/useCart";
 import { StripeElementsOptions, loadStripe } from "@stripe/stripe-js";
+import { useCheckout } from "../hooks/useCheckout";
 
 const Page = () => {
+  const { data: paymentIntent, isLoading } = useCheckout();
   const { data: cart } = useGetMyCart();
   const { data: address } = useGetMyAddresses();
-
-  const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY!);
-  console.log(
-    "Logging the publishable key ",
-    process.env.STRIPE_PUBLISHABLE_KEY,
-  );
 
   if (!cart || !cart.length || !address || !address.length)
     return <IncompleteDetails />;
 
+  if (isLoading) return <p>stripe payment intent loading</p>;
+
+  const stripePromise = loadStripe(
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+  );
+
   const options: StripeElementsOptions = {
-    clientSecret: "",
+    clientSecret: paymentIntent.client_secret,
     appearance: { theme: "stripe" },
   };
 
@@ -29,6 +35,8 @@ const Page = () => {
     <div>
       <Elements options={options} stripe={stripePromise}>
         <p>Hello</p>
+        <LinkAuthenticationElement />
+        <PaymentElement />
       </Elements>
     </div>
   );

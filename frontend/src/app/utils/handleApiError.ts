@@ -10,7 +10,7 @@ export const handleApiError = (err: any) => {
 
     // Don't know what the error is about
   } else {
-    console.log(`Api Unknown Error`, err);
+    console.error(`Api Unknown Error`, err);
     throw new Error("Something went wrong. Please try again later!");
   }
 };

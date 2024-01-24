@@ -1,5 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
-import { getMyOrders, getSingleOrder } from "../services/apiOrders";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  createOrder,
+  getMyOrders,
+  getSingleOrder,
+} from "../services/apiOrders";
+import { toast } from "react-toastify";
 
 // Getting all orders of the user
 export const useGetMyOrders = () => {
@@ -19,4 +24,19 @@ export const useGetSingleOrder = (id: string) => {
   });
 
   return { data, isLoading, error };
+};
+
+// Creating an Order
+export const useCreateOrder = () => {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: createOrder,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["my-orders"] });
+    },
+    onError: (err: Error) => toast(err.message, { type: "error" }),
+  });
+
+  return mutation;
 };

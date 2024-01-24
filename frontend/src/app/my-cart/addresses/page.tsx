@@ -62,6 +62,7 @@ const Page = () => {
     <>
       <div className="mx-auto flex max-w-5xl flex-col gap-6 px-5 py-5">
         <BreadCrumb size="sm" curPage="Addresses" nextPages={["Payment"]} />
+
         <p className="text-center text-xs font-semibold text-warning">
           Please choose an address for the shipment of your Order
         </p>
