@@ -11,3 +11,16 @@ export const getMyReviews = async () => {
     return handleApiError(err);
   }
 };
+
+// Deleting a reveiw
+export const deleteReview = async (reviewId: number) => {
+  try {
+    const res = await newRequest.delete(`/reviews/${reviewId}`, {
+      withCredentials: true,
+    });
+
+    return res.data;
+  } catch (err) {
+    return handleApiError(err);
+  }
+};
