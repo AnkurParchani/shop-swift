@@ -44,13 +44,18 @@ const ReviewContainer = ({ reviews }: { reviews: ReviewType[] }) => {
         className="bg-trasnparent rounded-lg border-3 border-gray-600"
       >
         {reviews.map((review) => {
-          const { id, content, isEdited, stars, date, user } = review;
+          const { id, content, isEdited, stars, user } = review;
           const { email: userEmail, name: userName, image } = user;
 
           return (
             <SwiperSlide key={id} className="cursor-pointer">
               <Card className="bg-transparent pb-8">
-                <CardHeader className="flex items-start gap-3">
+                <CardHeader className="relative flex items-start gap-3">
+                  {isEdited && (
+                    <p className="absolute right-1.5 top-1.5 text-xs text-gray-400">
+                      (Edited)
+                    </p>
+                  )}
                   <Image
                     alt={`${userName} image`}
                     height={40}
