@@ -93,11 +93,6 @@ export const updateAddress = async (
     if (!req.params.addressId)
       return next(new AppError(400, "No address Id provided"));
 
-    const userAddresses = await db
-      .select()
-      .from(addresses)
-      .where(eq(addresses.userId, req.user?.id as number));
-
     // If this is new deliveryAddress then removing the old delivery one
     if (req.body.isDeliveryAddress) {
       await db

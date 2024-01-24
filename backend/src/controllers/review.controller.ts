@@ -116,7 +116,12 @@ export const updateReview = async (
 
     const [updatedReview] = await db
       .update(reviews)
-      .set({ ...req.body, userId: req.user?.id, isEdited: true })
+      .set({
+        content: req.body.content,
+        stars: req.body.stars,
+        userId: req.user?.id,
+        isEdited: true,
+      })
       .where(
         and(
           eq(reviews.userId, Number(req.user?.id)),
