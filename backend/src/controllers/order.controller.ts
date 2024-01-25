@@ -6,6 +6,7 @@ import { and, eq } from "drizzle-orm";
 import AppError from "../utils/appError";
 import { handleServerError } from "../utils/handleServerError";
 import { addresses } from "../db/schema/address.schema";
+import { cart } from "../db/schema/cart.schema";
 
 // CustomRequest for every request
 export interface CustomRequest extends Request {
@@ -55,7 +56,7 @@ export const createOrder = async (
       .returning();
 
     // Inserting the seperate order item (child)
-    const promises = ordersFromClient.map(async (order) => {
+    const orderPromises = ordersFromClient.map(async (order) => {
       const orderItemValues = {
         orderId: mainOrder.id,
         itemId: order.itemId,
@@ -67,7 +68,21 @@ export const createOrder = async (
       return db.insert(order_items).values(orderItemValues).returning();
     });
 
-    const seperateOrder_item = await Promise.all(promises);
+    const seperateOrder_item = (await Promise.all(orderPromises)).flat();
+
+    // Deleting all the items from the cart after doing the order
+    const cartPromises = seperateOrder_item.map((order_item) => {
+      return db
+        .delete(cart)
+        .where(
+          and(
+            eq(cart.userId, +req.user?.id!),
+            eq(cart.itemId, order_item.itemId)
+          )
+        );
+    });
+
+    await Promise.all(cartPromises);
 
     res.status(200).json({
       status: "success",
