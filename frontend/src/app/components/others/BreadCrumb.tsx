@@ -1,5 +1,6 @@
 import { useRouter } from "next/navigation";
 import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
+import { useBreadcrumb } from "./BreadCrumbProvider";
 
 type BreadCrumbType = {
   curPage: string;
@@ -7,8 +8,10 @@ type BreadCrumbType = {
   size?: "sm" | "md" | "lg";
 };
 const BreadCrumb = ({ curPage, nextPages, size }: BreadCrumbType) => {
-  const prevPages = [{ label: "useContext", link: "useContext" }];
   const router = useRouter();
+  const { prevPages } = useBreadcrumb();
+
+  console.log(prevPages);
 
   return (
     <Breadcrumbs size={size || "md"} underline="hover">

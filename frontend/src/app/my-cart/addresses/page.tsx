@@ -17,9 +17,12 @@ import { toast } from "react-toastify";
 import AddAddressForm from "@/app/my-addresses/AddAddressForm";
 import PricingBtn from "./PricingBtn";
 import NoProducts from "./NoProducts";
+import { useEffect } from "react";
+import { useBreadcrumb } from "@/app/components/others/BreadCrumbProvider";
 
 const Page = () => {
   const router = useRouter();
+  const { setPrevPages } = useBreadcrumb();
   const { data: addresses } = useGetMyAddresses();
   const { data: cart } = useGetMyCart();
 
@@ -30,6 +33,11 @@ const Page = () => {
     onClose: addAddressOnClose,
     onOpenChange: addAddressOnOpenChange,
   } = useDisclosure();
+
+  // Setting the breadcrumb previous pages
+  useEffect(() => {
+    setPrevPages([{ label: "Cart", link: "/my-cart" }]);
+  }, [setPrevPages]);
 
   // If there are no products in cart and someone has intentionally made a request to this page
   if (!cart || cart.length === 0) return <NoProducts />;

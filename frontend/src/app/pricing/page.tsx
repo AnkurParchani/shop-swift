@@ -14,10 +14,12 @@ import { CartItem } from "../../../global";
 import { useGetMyCart } from "../hooks/useCart";
 import { useGetMyAddresses } from "../hooks/useAddress";
 import { handleApiError } from "../utils/handleApiError";
+import { useBreadcrumb } from "../components/others/BreadCrumbProvider";
 
 const Page = () => {
   const { data: cart } = useGetMyCart();
   const { data: address } = useGetMyAddresses();
+  const { setPrevPages } = useBreadcrumb();
   const [clientSecret, setClientSecret] = useState("");
   const [checkoutIsLoading, setCheckoutIsLoading] = useState(true);
 
@@ -49,6 +51,14 @@ const Page = () => {
     checkout();
   }, [totalAmount]);
 
+  // Setting the breadcrumb previous pages
+  useEffect(() => {
+    setPrevPages([
+      { label: "Cart", link: "/my-cart" },
+      { label: "Addresses", link: "/my-cart/addresses" },
+    ]);
+  }, [setPrevPages]);
+
   if (!cart || !cart.length || !address || !address.length)
     return <IncompleteDetails />;
 
@@ -65,12 +75,7 @@ const Page = () => {
 
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-5 px-5 py-5">
-      <div>
-        <p className="flex items-center gap-1 text-lg font-semibold text-primary">
-          Pricing
-        </p>
-        <BreadCrumb curPage="Wishlist" />
-      </div>
+      <BreadCrumb curPage="Pricing" size="sm" />
 
       <ItemsSummary totalAmount={totalAmount} cart={checkoutCart} />
 

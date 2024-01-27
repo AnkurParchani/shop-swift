@@ -24,7 +24,7 @@ const CheckoutForm = ({ cart }: { cart: CartItem[] }) => {
       itemId,
       quantity,
       ...(color && { color }),
-      ...(color && { color }),
+      ...(size && { size }),
     };
   });
 

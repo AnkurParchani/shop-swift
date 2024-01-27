@@ -1,20 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, CardFooter, useDisclosure } from "@nextui-org/react";
 
 import Loading from "../loading";
 import EmptyAddresses from "./EmptyAddresses";
 import AddAddressForm from "./AddAddressForm";
 import DeleteAddressModal from "./DeleteAddressModal";
-
-import { useGetMyAddresses } from "../hooks/useAddress";
-import { Address } from "../../../global";
 import UpdateAddressModal from "./UpdateAddressModal";
 import AddressBox from "../components/others/AddressBox";
 import BreadCrumb from "../components/others/BreadCrumb";
 
+import { Address } from "../../../global";
+import { useGetMyAddresses } from "../hooks/useAddress";
+import { useBreadcrumb } from "../components/others/BreadCrumbProvider";
+
 const Page = () => {
+  const { setPrevPages } = useBreadcrumb();
   const [address, setAddress] = useState<Address | null>();
   const [addressId, setAddressId] = useState<number>(0);
   const { data: addresses, isLoading, error } = useGetMyAddresses();

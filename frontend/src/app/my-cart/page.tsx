@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FaBookmark } from "react-icons/fa";
 import {
@@ -25,9 +25,11 @@ import BreadCrumb from "../components/others/BreadCrumb";
 
 import { CartItem } from "../../../global";
 import { useGetMyCart, useUpdateCart } from "../hooks/useCart";
+import { useBreadcrumb } from "../components/others/BreadCrumbProvider";
 
 const Page = () => {
   const router = useRouter();
+  const { setPrevPages } = useBreadcrumb();
   const { data: cart, isLoading, error } = useGetMyCart();
   const {
     isOpen: addToCartIsOpen,
@@ -43,6 +45,10 @@ const Page = () => {
   } = useDisclosure();
   const [cartId, setCartId] = useState<number>(0);
   const updateCartMutation = useUpdateCart();
+
+  useEffect(() => {
+    setPrevPages([]);
+  }, [setPrevPages]);
 
   if (isLoading) return <Loading />;
 
