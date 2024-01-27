@@ -14,7 +14,7 @@ import { CartItem } from "../../../global";
 import { useGetMyCart } from "../hooks/useCart";
 import { useGetMyAddresses } from "../hooks/useAddress";
 import { handleApiError } from "../utils/handleApiError";
-import { useBreadcrumb } from "../components/others/BreadCrumbProvider";
+import { useBreadcrumb } from "../contexts/BreadCrumbProvider";
 
 const Page = () => {
   const { data: cart } = useGetMyCart();

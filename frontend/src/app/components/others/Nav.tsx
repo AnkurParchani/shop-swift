@@ -22,14 +22,45 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useCookies } from "react-cookie";
 import { User } from "../../../../global";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
+import { useBreadcrumb } from "@/app/contexts/BreadCrumbProvider";
 
 const Nav = () => {
+  let pathname = usePathname();
+  const queryClient = useQueryClient();
+  const { setPrevPages } = useBreadcrumb();
   const [user, setUser] = useState<User | null>(getUser());
   const [cookies, setCookie, removeCookie] = useCookies();
   const router = useRouter();
-  const queryClient = useQueryClient();
+
+  let label: string;
+  switch (pathname) {
+    case "/my-cart":
+      label = "Cart";
+      break;
+    case "/pricing":
+      label = "Pricing";
+      break;
+    case "/my-orders":
+      label = "Orders";
+      break;
+    case "/my-reviews":
+      label = "Reviews";
+      break;
+    case "/my-wishlist":
+      label = "Wishlist";
+      break;
+    case "/my-addresses":
+      label = "Addresses";
+      break;
+
+    default:
+      label = "Home";
+      break;
+  }
+
+  if (label === "Home") pathname = "/";
 
   // Setting useEffect to change navbar according to the user logged in or not
   useEffect(() => {
@@ -52,9 +83,6 @@ const Nav = () => {
 
     // Invalidating all the essential tags
     queryClient.invalidateQueries({
-      queryKey: ["my-wishlist"],
-    });
-    queryClient.refetchQueries({
       queryKey: ["my-wishlist"],
     });
 
@@ -101,29 +129,57 @@ const Nav = () => {
               <p className="font-semibold">Signed in as</p>
               <p className="font-semibold">{user.email}</p>
             </DropdownItem>
-            <DropdownItem onClick={() => router.push("/my-cart")} key="cart">
+            <DropdownItem
+              onClick={() => {
+                router.push("/my-cart");
+                if (pathname !== "/my-cart") {
+                  setPrevPages([{ label, link: pathname }]);
+                }
+              }}
+              key="cart"
+            >
               My Cart
             </DropdownItem>
             <DropdownItem
-              onClick={() => router.push("/my-wishlist")}
+              onClick={() => {
+                router.push("/my-wishlist");
+                if (pathname !== "/my-wishlist") {
+                  setPrevPages([{ label, link: pathname }]);
+                }
+              }}
               key="wishlist"
             >
               My Wishlist
             </DropdownItem>
             <DropdownItem
-              onClick={() => router.push("/my-addresses")}
+              onClick={() => {
+                router.push("/my-addresses");
+                if (pathname !== "/my-addresses") {
+                  setPrevPages([{ label, link: pathname }]);
+                }
+              }}
               key="address"
             >
               My Addresses
             </DropdownItem>
             <DropdownItem
-              onClick={() => router.push("/my-orders")}
+              onClick={() => {
+                router.push("/my-orders");
+                if (pathname !== "/my-orders") {
+                  setPrevPages([{ label, link: pathname }]);
+                }
+              }}
               key="orders"
             >
               My Orders
             </DropdownItem>
             <DropdownItem
-              onClick={() => router.push("/my-reviews")}
+              onClick={() => {
+                router.push("/my-reviews");
+                if (pathname !== "/my-reviews") {
+                  setPrevPages([{ label, link: pathname }]);
+                }
+              }}
               key="reviews"
             >
               My Reviews

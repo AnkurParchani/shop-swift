@@ -10,9 +10,11 @@ import { WishlistItem } from "../../../global";
 import { useRouter } from "next/navigation";
 import ClearWishlistModal from "./ClearWishlistModal";
 import BreadCrumb from "../components/others/BreadCrumb";
+import { useBreadcrumb } from "../contexts/BreadCrumbProvider";
 
 const Page = () => {
   const router = useRouter();
+  const { setPrevPages } = useBreadcrumb();
   const { data: wishlist, isLoading, error } = useGetMyWishlist();
   const {
     isOpen: clearWishlistIsOpen,
@@ -48,7 +50,10 @@ const Page = () => {
               variant="solid"
               color="primary"
               className="font-semibold"
-              onClick={() => router.push("/my-cart")}
+              onClick={() => {
+                setPrevPages([{ label: "Wishlist", link: "/my-wishlist" }]);
+                router.push("/my-cart");
+              }}
             >
               My Cart
             </Button>

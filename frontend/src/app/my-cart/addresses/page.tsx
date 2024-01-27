@@ -18,7 +18,7 @@ import AddAddressForm from "@/app/my-addresses/AddAddressForm";
 import PricingBtn from "./PricingBtn";
 import NoProducts from "./NoProducts";
 import { useEffect } from "react";
-import { useBreadcrumb } from "@/app/components/others/BreadCrumbProvider";
+import { useBreadcrumb } from "@/app/contexts/BreadCrumbProvider";
 
 const Page = () => {
   const router = useRouter();

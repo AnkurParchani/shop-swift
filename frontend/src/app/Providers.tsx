@@ -6,7 +6,7 @@ import { CookiesProvider } from "react-cookie";
 import { Slide, ToastContainer } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
-import BreadCrumbProvider from "./components/others/BreadCrumbProvider";
+import BreadCrumbProvider from "./contexts/BreadCrumbProvider";
 
 function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = new QueryClient();

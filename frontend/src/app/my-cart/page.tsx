@@ -25,7 +25,7 @@ import BreadCrumb from "../components/others/BreadCrumb";
 
 import { CartItem } from "../../../global";
 import { useGetMyCart, useUpdateCart } from "../hooks/useCart";
-import { useBreadcrumb } from "../components/others/BreadCrumbProvider";
+import { useBreadcrumb } from "../contexts/BreadCrumbProvider";
 
 const Page = () => {
   const router = useRouter();
@@ -180,7 +180,10 @@ const Page = () => {
         <Button
           className="flex justify-between"
           color="secondary"
-          onPress={() => router.push("/my-wishlist")}
+          onPress={() => {
+            setPrevPages([{ label: "Cart", link: "/my-cart" }]);
+            router.push("/my-wishlist");
+          }}
         >
           <span className="flex items-center gap-1.5">
             {" "}

@@ -13,7 +13,7 @@ import BreadCrumb from "../components/others/BreadCrumb";
 
 import { Address } from "../../../global";
 import { useGetMyAddresses } from "../hooks/useAddress";
-import { useBreadcrumb } from "../components/others/BreadCrumbProvider";
+import { useBreadcrumb } from "../contexts/BreadCrumbProvider";
 
 const Page = () => {
   const { setPrevPages } = useBreadcrumb();
