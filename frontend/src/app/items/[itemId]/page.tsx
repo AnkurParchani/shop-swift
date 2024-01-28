@@ -13,6 +13,7 @@ import SellerInfo from "./SellerInfo";
 import ItemConfigurations from "./ItemConfigurations";
 import ActionBtn from "./ActionBtn";
 import { useGetSingleItem } from "@/app/hooks/useItems";
+import NoMatch from "./NoMatch";
 
 type PageType = {
   params: { itemId: string };

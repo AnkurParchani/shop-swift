@@ -7,28 +7,31 @@ import { Slide, ToastContainer } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
 import BreadCrumbProvider from "./contexts/BreadCrumbProvider";
+import { BrowserRouter } from "react-router-dom";
 
 function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = new QueryClient();
 
   return (
     <QueryClientProvider client={queryClient}>
-      <CookiesProvider>
-        <BreadCrumbProvider>
-          <NextUIProvider>
-            <div className="min-h-screen bg-background text-foreground pink-dark">
-              {children}
-            </div>
-            <ToastContainer
-              position="top-center"
-              autoClose={3000}
-              newestOnTop
-              theme="dark"
-              transition={Slide}
-            />
-          </NextUIProvider>
-        </BreadCrumbProvider>
-      </CookiesProvider>
+      <BrowserRouter>
+        <CookiesProvider>
+          <BreadCrumbProvider>
+            <NextUIProvider>
+              <div className="min-h-screen bg-background text-foreground pink-dark">
+                {children}
+              </div>
+              <ToastContainer
+                position="top-center"
+                autoClose={3000}
+                newestOnTop
+                theme="dark"
+                transition={Slide}
+              />
+            </NextUIProvider>
+          </BreadCrumbProvider>
+        </CookiesProvider>
+      </BrowserRouter>
     </QueryClientProvider>
   );
 }

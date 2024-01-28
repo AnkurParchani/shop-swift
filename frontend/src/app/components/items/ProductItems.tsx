@@ -11,7 +11,7 @@ const ProductItems = () => {
   if (isLoading) return <Loading />;
 
   return (
-    <div className="mx-auto grid max-w-5xl grid-cols-2 gap-4 px-5 py-10 sm:grid-cols-3 sm:gap-10">
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-10">
       {items.map((item: Item) => (
         <ProductItem key={item.id} item={item} />
       ))}
