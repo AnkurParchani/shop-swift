@@ -2,13 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import { getItems, getSingleItem } from "../services/apiItems";
 
 // Getting all the items
-export const useGetAllItems = () => {
-  const { isLoading, error, data } = useQuery({
+export const useGetAllItems = (searchParams: URLSearchParams) => {
+  const { isLoading, error, data, refetch } = useQuery({
     queryKey: ["items"],
-    queryFn: getItems,
+    queryFn: () => getItems(searchParams),
   });
 
-  return { isLoading, error, data };
+  return { isLoading, error, data, refetch };
 };
 
 // Getting single item

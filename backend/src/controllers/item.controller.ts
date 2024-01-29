@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { db } from "../db/dbConnect";
 import { items } from "../db/schema/item.schema";
-import { eq } from "drizzle-orm";
+import { asc, desc, eq } from "drizzle-orm";
 import { images } from "../db/schema/img.schema";
 import { handleServerError } from "../utils/handleServerError";
 import AppError from "../utils/appError";
@@ -13,16 +13,47 @@ export const getItems = async (
   next: NextFunction
 ) => {
   try {
-    const allItems = await db.query.items.findMany({
+    const highPriceFirst = req.query.sort === "price-high";
+    const highRatingsFirst = req.query.sort === "ratings-high";
+    const lowRatingsFirst = req.query.sort === "ratings-low";
+
+    let allItems = await db.query.items.findMany({
       with: {
         images: { where: eq(images.isItemMainImg, true) },
         reviews: true,
       },
+
+      // Sorting according to the price
+      orderBy: [
+        highPriceFirst
+          ? desc(items.discountedPrice)
+          : asc(items.discountedPrice),
+      ],
     });
 
+    // Sorting according to the reviews
+    if (highRatingsFirst || lowRatingsFirst) {
+      allItems = allItems.sort((cur, next) => {
+        const curRatings = cur.reviews.reduce(
+          (acc, cur) => +cur.stars + acc,
+          0
+        );
+        const nextRatings = next.reviews.reduce(
+          (acc, cur) => +cur.stars + acc,
+          0
+        );
+
+        return highRatingsFirst
+          ? nextRatings - curRatings
+          : curRatings - nextRatings;
+      });
+    }
+
+    // Refactoring the items to send
     const itemsToSend = allItems.map((item) => {
       const { images, reviews, ...restOfThem } = item;
-      const imgPath = images.map((img) => img.path)[0] || undefined;
+      const imgPath =
+        images.filter((img) => img.isItemMainImg)[0].path || undefined;
       const rating =
         reviews.reduce((acc, cur) => +cur.stars + acc, 0) || undefined;
 
@@ -34,6 +65,7 @@ export const getItems = async (
       };
     });
 
+    // The Response
     res.status(200).json({ status: "success", items: itemsToSend });
   } catch (err) {
     return handleServerError(err, next);

@@ -1,12 +1,26 @@
 "use client";
 
-import Loading from "@/app/loading";
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+
 import ProductItem from "./ProductItem";
+import Loading from "@/app/loading";
+
 import { Item } from "../../../../global";
 import { useGetAllItems } from "@/app/hooks/useItems";
 
 const ProductItems = () => {
-  const { data: items, isLoading, error } = useGetAllItems();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const {
+    data: items,
+    isLoading,
+    error,
+    refetch: refetchGetAllItems,
+  } = useGetAllItems(searchParams);
+
+  useEffect(() => {
+    refetchGetAllItems();
+  }, [refetchGetAllItems, searchParams]);
 
   if (isLoading) return <Loading />;
 

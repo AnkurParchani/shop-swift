@@ -19,6 +19,7 @@ function SortModal({
   onClose: () => void;
 }) {
   const [searchParams, setSearchParams] = useSearchParams();
+  const currentSort = searchParams.get("sort");
 
   function handleSortClick(sortOption: string) {
     if (sortOption === "none") {
@@ -41,19 +42,38 @@ function SortModal({
       <ModalContent>
         <ModalHeader className="text-danger">Sort According to:</ModalHeader>
         <ModalBody>
-          <SortModalBtn onClick={() => handleSortClick("price-high")}>
+          <SortModalBtn
+            currentlySelected={currentSort === "price-high"}
+            onClick={() => handleSortClick("price-high")}
+          >
             Price: High to low
           </SortModalBtn>
-          <SortModalBtn onClick={() => handleSortClick("price-low")}>
+
+          <SortModalBtn
+            currentlySelected={currentSort === "price-low"}
+            onClick={() => handleSortClick("price-low")}
+          >
             Price: Low to high
           </SortModalBtn>
-          <SortModalBtn onClick={() => handleSortClick("discount-high")}>
-            Discount: High to low
+
+          <SortModalBtn
+            currentlySelected={currentSort === "ratings-high"}
+            onClick={() => handleSortClick("ratings-high")}
+          >
+            Ratings: High to low
           </SortModalBtn>
-          <SortModalBtn onClick={() => handleSortClick("discount-low")}>
-            Discount: Low to high
+
+          <SortModalBtn
+            currentlySelected={currentSort === "ratings-low"}
+            onClick={() => handleSortClick("ratings-low")}
+          >
+            Ratings: Low to high
           </SortModalBtn>
-          <SortModalBtn onClick={() => handleSortClick("none")}>
+
+          <SortModalBtn
+            currentlySelected={currentSort === null}
+            onClick={() => handleSortClick("none")}
+          >
             None
           </SortModalBtn>
         </ModalBody>
@@ -68,16 +88,21 @@ export default SortModal;
 function SortModalBtn({
   children,
   onClick,
+  currentlySelected,
 }: {
   children: React.ReactNode;
   onClick:
     | MouseEventHandler<HTMLButtonElement>
     | ((sortOption: string) => void);
+
+  currentlySelected: boolean;
 }) {
   return (
     <Button
       onClick={onClick as MouseEventHandler<HTMLButtonElement>}
-      className="border-2 bg-transparent"
+      className={`border-2 bg-transparent ${
+        currentlySelected ? "text-danger" : "text-white"
+      }`}
       radius="sm"
     >
       {children}
