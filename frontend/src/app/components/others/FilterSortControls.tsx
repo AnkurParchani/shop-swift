@@ -1,7 +1,9 @@
-"use client";
-
 import { Button, useDisclosure } from "@nextui-org/react";
+import { FaSort } from "react-icons/fa";
+import { FaFilter } from "react-icons/fa";
+
 import SortModal from "../modals/SortModal";
+import FilterModal from "../modals/FilterModal";
 
 const FilterSortControls = () => {
   const {
@@ -9,6 +11,12 @@ const FilterSortControls = () => {
     onOpen: sortOnOpen,
     onClose: sortOnClose,
     onOpenChange: sortOnOpenChange,
+  } = useDisclosure();
+  const {
+    isOpen: filterIsOpen,
+    onOpen: filterOnOpen,
+    onClose: filterOnClose,
+    onOpenChange: filterOnOpenChange,
   } = useDisclosure();
 
   return (
@@ -22,8 +30,18 @@ const FilterSortControls = () => {
           size="sm"
         >
           Sort
+          <FaSort />
         </Button>
-        <Button size="sm">Filter</Button>
+        <Button
+          onPress={filterOnOpen}
+          variant="solid"
+          radius="lg"
+          color="primary"
+          size="sm"
+        >
+          Filter
+          <FaFilter />
+        </Button>
       </div>
 
       {sortIsOpen && (
@@ -31,6 +49,14 @@ const FilterSortControls = () => {
           isOpen={sortIsOpen}
           onClose={sortOnClose}
           onOpenChange={sortOnOpenChange}
+        />
+      )}
+
+      {filterIsOpen && (
+        <FilterModal
+          isOpen={filterIsOpen}
+          onClose={filterOnClose}
+          onOpenChange={filterOnOpenChange}
         />
       )}
     </>

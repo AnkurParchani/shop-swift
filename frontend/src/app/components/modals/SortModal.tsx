@@ -21,6 +21,7 @@ function SortModal({
   const [searchParams, setSearchParams] = useSearchParams();
   const currentSort = searchParams.get("sort");
 
+  // Changing the sort query paramter
   function handleSortClick(sortOption: string) {
     if (sortOption === "none") {
       searchParams.delete("sort");
@@ -82,8 +83,6 @@ function SortModal({
   );
 }
 
-export default SortModal;
-
 // Sort Modal Button
 function SortModalBtn({
   children,
@@ -109,3 +108,5 @@ function SortModalBtn({
     </Button>
   );
 }
+
+export default SortModal;
