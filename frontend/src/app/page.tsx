@@ -7,28 +7,30 @@ import FilterSortControls from "./components/others/FilterSortControls";
 import ProductItems from "./components/items/ProductItems";
 import Loading from "./loading";
 
-import { useGetAllItems } from "./hooks/useItems";
+import { useGetAllFilteredItems, useGetAllItems } from "./hooks/useItems";
 
 export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { data: allItems, isLoading: allItemsIsLoading } = useGetAllItems();
   const {
-    data: items,
-    isLoading,
-    error,
-    refetch: refetchGetAllItems,
-  } = useGetAllItems(searchParams);
+    data: filteredItems,
+    isLoading: filteredItemsIsLoading,
+    refetch: refetchGetAllFilteredItems,
+  } = useGetAllFilteredItems(searchParams);
+
+  console.log("Logging all items", allItems);
 
   // Refetching the data if there's a change in query parameter
   useEffect(() => {
-    refetchGetAllItems();
-  }, [refetchGetAllItems, searchParams]);
+    refetchGetAllFilteredItems();
+  }, [refetchGetAllFilteredItems, searchParams]);
 
-  if (isLoading) return <Loading />;
+  if (filteredItemsIsLoading || allItemsIsLoading) return <Loading />;
 
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-3 px-5 py-3">
-      <FilterSortControls items={items} />
-      <ProductItems items={items} />
+      <FilterSortControls items={allItems} />
+      <ProductItems items={filteredItems} />
     </div>
   );
 }

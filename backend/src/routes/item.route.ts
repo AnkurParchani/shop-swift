@@ -2,16 +2,18 @@ import express from "express";
 
 import {
   createItem,
-  getItems,
+  getFilteredItems,
   getItem,
   deleteItem,
   updateItem,
+  getAllItems,
 } from "../controllers/item.controller";
 import { checkIsAdmin, protect } from "../controllers/auth.controller";
 
 const router = express();
 
-router.route("/").get(getItems).post(protect, checkIsAdmin, createItem);
+router.route("/").get(getFilteredItems).post(protect, checkIsAdmin, createItem);
+router.route("/all-items").get(getAllItems);
 
 router
   .route("/:itemId")

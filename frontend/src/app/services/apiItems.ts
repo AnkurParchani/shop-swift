@@ -1,8 +1,8 @@
 import { handleApiError } from "../utils/handleApiError";
 import newRequest from "../utils/newRequest";
 
-// Getting all the items
-export const getItems = async (searchParams: URLSearchParams) => {
+// Getting all the items (filtered)
+export const getFilteredItems = async (searchParams: URLSearchParams) => {
   try {
     const queryParams = [];
     if (searchParams.has("sort")) {
@@ -32,6 +32,18 @@ export const getItems = async (searchParams: URLSearchParams) => {
     }
 
     const res = await newRequest.get(queryPath);
+    if (res.data.status === "success") {
+      return res.data.items;
+    }
+  } catch (err) {
+    return handleApiError(err);
+  }
+};
+
+// Getting all items
+export const getItems = async () => {
+  try {
+    const res = await newRequest.get("/items/all-items");
     if (res.data.status === "success") {
       return res.data.items;
     }

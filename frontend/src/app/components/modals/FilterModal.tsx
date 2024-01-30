@@ -36,9 +36,12 @@ const FilterModal = ({
     );
 
   const initialFilterOptions = {
-    gender: "",
-    category: "",
-    priceRange: { min: 600, max: 4000 },
+    gender: searchParams.get("gender") || "",
+    category: searchParams.get("category") || "",
+    priceRange: {
+      min: Number(searchParams.get("min")) || 600,
+      max: Number(searchParams.get("max")) || 4000,
+    },
   };
   const [filterOptions, setFilterOptions] = useState(initialFilterOptions);
   const [sliderKey, setSliderKey] = useState(0);
@@ -51,26 +54,32 @@ const FilterModal = ({
   // Reseting all the filters
   function handleResetFilters() {
     setSliderKey((prev) => prev + 1);
-    setFilterOptions(initialFilterOptions);
+    setFilterOptions({
+      gender: "",
+      category: "",
+      priceRange: {
+        min: 600,
+        max: 4000,
+      },
+    });
   }
 
   // Changing params according to the filter
   function handleSetFilter() {
-    console.log(filterOptions);
-    // if (!min || !max) return;
-    // const prevSearchParams = Object.fromEntries(searchParams);
+    if (!min || !max) return;
+    const prevSearchParams = Object.fromEntries(searchParams);
 
-    // if (gender) prevSearchParams.gender = gender;
-    // else delete prevSearchParams.gender;
+    if (gender) prevSearchParams.gender = gender;
+    else delete prevSearchParams.gender;
 
-    // if (category) prevSearchParams.category = category;
-    // else delete prevSearchParams.category;
+    if (category) prevSearchParams.category = category;
+    else delete prevSearchParams.category;
 
-    // setSearchParams({
-    //   ...prevSearchParams,
-    //   min: min.toString(),
-    //   max: max.toString(),
-    // });
+    setSearchParams({
+      ...prevSearchParams,
+      min: min.toString(),
+      max: max.toString(),
+    });
   }
 
   return (

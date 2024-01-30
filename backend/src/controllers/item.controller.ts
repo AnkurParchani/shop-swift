@@ -6,8 +6,8 @@ import { images } from "../db/schema/img.schema";
 import { handleServerError } from "../utils/handleServerError";
 import AppError from "../utils/appError";
 
-// Getting all the items
-export const getItems = async (
+// Getting all the items (filtered)
+export const getFilteredItems = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -19,19 +19,18 @@ export const getItems = async (
 
     const { gender, category, min, max } = req.query;
 
-    // console.log("Logging gender ", gender);
-
     let allItems = await db.query.items.findMany({
       with: {
         images: { where: eq(images.isItemMainImg, true) },
         reviews: true,
       },
 
-      // where: and(
-      //   gender
-      //     ? eq(items.forGender, gender as "male" | "female" | "unisex")
-      //     : undefined
-      // ),
+      where: and(
+        gender
+          ? eq(items.forGender, gender as "male" | "female" | "unisex")
+          : undefined,
+        category ? eq(items.category, category.toString()) : undefined
+      ),
 
       // Sorting according to the price
       orderBy: [
@@ -58,6 +57,43 @@ export const getItems = async (
           : curRatings - nextRatings;
       });
     }
+
+    // Refactoring the items to send
+    const itemsToSend = allItems.map((item) => {
+      const { images, reviews, ...restOfThem } = item;
+      const imgPath =
+        images.filter((img) => img.isItemMainImg)[0].path || undefined;
+      const rating =
+        reviews.reduce((acc, cur) => +cur.stars + acc, 0) || undefined;
+
+      return {
+        ...restOfThem,
+        image: imgPath,
+        numReviews: reviews.length,
+        ratings: (rating && rating / reviews.length)?.toFixed(1) || "1.0",
+      };
+    });
+
+    // The Response
+    res.status(200).json({ status: "success", items: itemsToSend });
+  } catch (err) {
+    return handleServerError(err, next);
+  }
+};
+
+// Getting all the items (non-filtered)
+export const getAllItems = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    let allItems = await db.query.items.findMany({
+      with: {
+        images: { where: eq(images.isItemMainImg, true) },
+        reviews: true,
+      },
+    });
 
     // Refactoring the items to send
     const itemsToSend = allItems.map((item) => {
