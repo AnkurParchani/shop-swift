@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { db } from "../db/dbConnect";
 import { items } from "../db/schema/item.schema";
-import { and, asc, desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq, gte, lte } from "drizzle-orm";
 import { images } from "../db/schema/img.schema";
 import { handleServerError } from "../utils/handleServerError";
 import AppError from "../utils/appError";
@@ -19,6 +19,7 @@ export const getFilteredItems = async (
 
     const { gender, category, min, max } = req.query;
 
+    // Getting items according to the query
     let allItems = await db.query.items.findMany({
       with: {
         images: { where: eq(images.isItemMainImg, true) },
@@ -29,7 +30,9 @@ export const getFilteredItems = async (
         gender
           ? eq(items.forGender, gender as "male" | "female" | "unisex")
           : undefined,
-        category ? eq(items.category, category.toString()) : undefined
+        category ? eq(items.category, category.toString()) : undefined,
+        min ? gte(items.discountedPrice, +min) : undefined,
+        max ? lte(items.discountedPrice, +max) : undefined
       ),
 
       // Sorting according to the price
