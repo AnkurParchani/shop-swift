@@ -24,11 +24,13 @@ function SortModal({
 
   // Changing the sort query paramter
   function handleSortClick(sortOption: string) {
+    const prevSearchParams = Object.fromEntries(searchParams);
+
     if (sortOption === "none") {
       searchParams.delete("sort");
       setSearchParams(searchParams);
     } else {
-      setSearchParams({ sort: sortOption });
+      setSearchParams({ ...prevSearchParams, sort: sortOption });
     }
 
     onClose();

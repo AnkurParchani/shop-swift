@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { db } from "../db/dbConnect";
 import { items } from "../db/schema/item.schema";
-import { asc, desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq } from "drizzle-orm";
 import { images } from "../db/schema/img.schema";
 import { handleServerError } from "../utils/handleServerError";
 import AppError from "../utils/appError";
@@ -17,11 +17,21 @@ export const getItems = async (
     const highRatingsFirst = req.query.sort === "ratings-high";
     const lowRatingsFirst = req.query.sort === "ratings-low";
 
+    const { gender, category, min, max } = req.query;
+
+    // console.log("Logging gender ", gender);
+
     let allItems = await db.query.items.findMany({
       with: {
         images: { where: eq(images.isItemMainImg, true) },
         reviews: true,
       },
+
+      // where: and(
+      //   gender
+      //     ? eq(items.forGender, gender as "male" | "female" | "unisex")
+      //     : undefined
+      // ),
 
       // Sorting according to the price
       orderBy: [

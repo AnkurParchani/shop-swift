@@ -29,17 +29,24 @@ const FilterModal = ({
   items,
 }: FilterModalProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const categories = items.map(
-    (item) => item.category.charAt(0).toUpperCase() + item.category.slice(1),
-  );
+  const categories =
+    items &&
+    items.map(
+      (item) => item.category.charAt(0).toUpperCase() + item.category.slice(1),
+    );
 
   const initialFilterOptions = {
-    gender: "men",
-    category: categories[0].toLowerCase(),
-    priceRange: { min: 500, max: 4000 },
+    gender: "",
+    category: "",
+    priceRange: { min: 600, max: 4000 },
   };
   const [filterOptions, setFilterOptions] = useState(initialFilterOptions);
   const [sliderKey, setSliderKey] = useState(0);
+  const {
+    gender,
+    category,
+    priceRange: { min, max },
+  } = filterOptions;
 
   // Reseting all the filters
   function handleResetFilters() {
@@ -48,8 +55,22 @@ const FilterModal = ({
   }
 
   // Changing params according to the filter
-  function handleChangeFilter() {
+  function handleSetFilter() {
     console.log(filterOptions);
+    // if (!min || !max) return;
+    // const prevSearchParams = Object.fromEntries(searchParams);
+
+    // if (gender) prevSearchParams.gender = gender;
+    // else delete prevSearchParams.gender;
+
+    // if (category) prevSearchParams.category = category;
+    // else delete prevSearchParams.category;
+
+    // setSearchParams({
+    //   ...prevSearchParams,
+    //   min: min.toString(),
+    //   max: max.toString(),
+    // });
   }
 
   return (
@@ -67,14 +88,14 @@ const FilterModal = ({
         <ModalBody className="flex flex-col gap-3 text-white">
           <InputSelect
             label="Gender"
+            key={`gender-${gender}`}
             options={[
-              { label: "Men", value: "men" },
-              { label: "Women", value: "women" },
+              { label: "Male", value: "male" },
+              { label: "Female", value: "female" },
               { label: "Unisex", value: "unisex" },
             ]}
             variant="bordered"
-            defaultSelectedKey={filterOptions.gender}
-            key={filterOptions.gender}
+            defaultSelectedKey={gender}
             placeholder="Select a Gender"
             size="sm"
             onChange={(e) =>
@@ -83,12 +104,12 @@ const FilterModal = ({
           />
           <InputSelect
             label="Category"
+            key={`category-${category}`}
             options={categories.map((category) => {
               return { label: category, value: category.toLowerCase() };
             })}
             variant="bordered"
-            defaultSelectedKey={filterOptions.category}
-            key={filterOptions.category}
+            defaultSelectedKey={category}
             placeholder="Select a Category of Item"
             size="sm"
             onChange={(e) =>
@@ -97,16 +118,13 @@ const FilterModal = ({
           />
           <Slider
             label="Price Range"
-            size="sm"
             key={sliderKey}
+            size="sm"
             step={200}
             minValue={0}
             showTooltip={true}
             maxValue={10000}
-            defaultValue={[
-              filterOptions.priceRange.min,
-              filterOptions.priceRange.max,
-            ]}
+            defaultValue={[min, max]}
             formatOptions={{ style: "currency", currency: "INR" }}
             className="max-w-md"
             color="danger"
@@ -126,7 +144,7 @@ const FilterModal = ({
             Reset
           </Button>
           <Button
-            onPress={handleChangeFilter}
+            onPress={handleSetFilter}
             color="success"
             variant="solid"
             radius="sm"

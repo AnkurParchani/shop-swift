@@ -9,6 +9,22 @@ export const getItems = async (searchParams: URLSearchParams) => {
       const sort = searchParams.get("sort");
       queryParams.push(`sort=${sort}`);
     }
+    if (searchParams.has("gender")) {
+      const gender = searchParams.get("gender");
+      queryParams.push(`gender=${gender}`);
+    }
+    if (searchParams.has("category")) {
+      const category = searchParams.get("category");
+      queryParams.push(`category=${category}`);
+    }
+    if (searchParams.has("min")) {
+      const min = searchParams.get("min");
+      queryParams.push(`min=${min}`);
+    }
+    if (searchParams.has("max")) {
+      const max = searchParams.get("max");
+      queryParams.push(`max=${max}`);
+    }
 
     let queryPath = "/items";
     if (queryParams.length > 0) {
