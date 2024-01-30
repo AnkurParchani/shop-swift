@@ -4,8 +4,9 @@ import { FaFilter } from "react-icons/fa";
 
 import SortModal from "../modals/SortModal";
 import FilterModal from "../modals/FilterModal";
+import { Item } from "../../../../global";
 
-const FilterSortControls = () => {
+const FilterSortControls = ({ items }: { items: Item[] }) => {
   const {
     isOpen: sortIsOpen,
     onOpen: sortOnOpen,
@@ -54,6 +55,7 @@ const FilterSortControls = () => {
 
       {filterIsOpen && (
         <FilterModal
+          items={items}
           isOpen={filterIsOpen}
           onClose={filterOnClose}
           onOpenChange={filterOnOpenChange}

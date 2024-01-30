@@ -7,6 +7,7 @@ import {
   ModalHeader,
 } from "@nextui-org/react";
 import { useSearchParams } from "react-router-dom";
+import { FaSort } from "react-icons/fa";
 
 // Sort Modal
 function SortModal({
@@ -41,7 +42,10 @@ function SortModal({
       onOpenChange={onOpenChange}
     >
       <ModalContent>
-        <ModalHeader className="text-danger">Sort According to:</ModalHeader>
+        <ModalHeader className="flex items-center gap-1 text-danger">
+          <FaSort />
+          Sort
+        </ModalHeader>
         <ModalBody>
           <SortModalBtn
             currentlySelected={currentSort === "price-high"}
