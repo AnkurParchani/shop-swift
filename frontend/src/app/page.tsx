@@ -18,8 +18,6 @@ export default function Home() {
     refetch: refetchGetAllFilteredItems,
   } = useGetAllFilteredItems(searchParams);
 
-  console.log("Logging all items", allItems);
-
   // Refetching the data if there's a change in query parameter
   useEffect(() => {
     refetchGetAllFilteredItems();
