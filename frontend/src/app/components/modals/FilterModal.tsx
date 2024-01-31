@@ -53,6 +53,14 @@ const FilterModal = ({
 
   // Reseting all the filters
   function handleResetFilters() {
+    const prevSearchParams = Object.fromEntries(searchParams);
+    delete prevSearchParams.gender;
+    delete prevSearchParams.min;
+    delete prevSearchParams.max;
+    delete prevSearchParams.category;
+
+    setSearchParams({ ...prevSearchParams });
+
     setSliderKey((prev) => prev + 1);
     setFilterOptions({
       gender: "",
@@ -62,6 +70,8 @@ const FilterModal = ({
         max: 4000,
       },
     });
+
+    onClose();
   }
 
   // Changing params according to the filter
@@ -80,6 +90,8 @@ const FilterModal = ({
       min: min.toString(),
       max: max.toString(),
     });
+
+    onClose();
   }
 
   return (
