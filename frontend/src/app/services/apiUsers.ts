@@ -1,6 +1,20 @@
 import { FieldValues } from "react-hook-form";
 import { handleApiError } from "../utils/handleApiError";
+
 import newRequest from "../utils/newRequest";
+
+// Getting the currently logged in user
+export const getLoggedInUser = async () => {
+  try {
+    const res = await newRequest.get("/users/me");
+
+    if (res.data?.user) {
+      return res.data.user;
+    }
+  } catch (err) {
+    return handleApiError(err);
+  }
+};
 
 // Login request
 export const login = async (data: FieldValues) => {
@@ -24,18 +38,21 @@ export const login = async (data: FieldValues) => {
 };
 
 // Signup Request
-export const signup = async (data: FieldValues, userImg: string | null) => {
+export const signup = async (data: {
+  data: FieldValues;
+  userImg: string | null;
+}) => {
   try {
-    const res = await newRequest.post("/users/sign-up", data, {
+    const res = await newRequest.post("/users/sign-up", data.data, {
       withCredentials: true,
     });
 
     // If there is user image
-    if (res.data.status === "success" && userImg) {
+    if (res.data.status === "success" && data.userImg) {
       await newRequest.post(
         "/images/user",
         {
-          path: userImg,
+          path: data.userImg,
           userId: res.data.user.id,
         },
         { withCredentials: true },
@@ -49,3 +66,28 @@ export const signup = async (data: FieldValues, userImg: string | null) => {
     return handleApiError(err);
   }
 };
+// export const signup = async (data: FieldValues, userImg: string | null) => {
+//   try {
+//     const res = await newRequest.post("/users/sign-up", data, {
+//       withCredentials: true,
+//     });
+
+//     // If there is user image
+//     if (res.data.status === "success" && userImg) {
+//       await newRequest.post(
+//         "/images/user",
+//         {
+//           path: userImg,
+//           userId: res.data.user.id,
+//         },
+//         { withCredentials: true },
+//       );
+//     }
+
+//     if (res.data.status === "success") {
+//       return res.data;
+//     }
+//   } catch (err) {
+//     return handleApiError(err);
+//   }
+// };

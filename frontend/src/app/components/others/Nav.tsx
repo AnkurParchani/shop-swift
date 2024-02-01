@@ -17,22 +17,21 @@ import {
   NavbarMenuToggle,
 } from "@nextui-org/react";
 import { CiSearch } from "react-icons/ci";
-import { getUser } from "../../utils/helpers";
-import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useCookies } from "react-cookie";
-import { User } from "../../../../global";
 import { usePathname, useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { useBreadcrumb } from "@/app/contexts/BreadCrumbProvider";
+import { useGetUser } from "@/app/hooks/useUser";
 
 const Nav = () => {
+  const router = useRouter();
   let pathname = usePathname();
   const queryClient = useQueryClient();
-  const { setPrevPages } = useBreadcrumb();
-  const [user, setUser] = useState<User | null>(getUser());
   const [cookies, setCookie, removeCookie] = useCookies();
-  const router = useRouter();
+
+  const { data: user, isLoading, error } = useGetUser();
+  const { setPrevPages } = useBreadcrumb();
 
   let label: string;
   switch (pathname) {
@@ -62,29 +61,15 @@ const Nav = () => {
 
   if (label === "Home") pathname = "/";
 
-  // Setting useEffect to change navbar according to the user logged in or not
-  useEffect(() => {
-    function handleStorageChange() {
-      setUser(getUser());
-    }
-
-    window.addEventListener("storage", handleStorageChange);
-
-    return () => window.removeEventListener("storage", handleStorageChange);
-  }, []);
-
   // Logout function
   function handleLogout() {
     toast("Logged out successfully", { type: "success" });
     // Setting the user in localstorage
     localStorage.removeItem("user");
 
-    setUser(null);
-
     // Invalidating all the essential tags
-    queryClient.invalidateQueries({
-      queryKey: ["my-wishlist"],
-    });
+    queryClient.invalidateQueries({ queryKey: ["user"] });
+    queryClient.invalidateQueries({ queryKey: ["my-wishlist"] });
 
     // Removing the cookie
     removeCookie("token");
@@ -121,9 +106,12 @@ const Nav = () => {
               color="secondary"
               name="Jason Hughes"
               size="sm"
-              src={`${user.img ? user.img : "/images/default-user.jpg"}`}
+              src={`${
+                user.image.path ? user.image.path : "/images/default-user.jpg"
+              }`}
             />
           </DropdownTrigger>
+
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownItem key="profile" className="h-14 gap-2">
               <p className="font-semibold">Signed in as</p>
@@ -140,6 +128,7 @@ const Nav = () => {
             >
               My Cart
             </DropdownItem>
+
             <DropdownItem
               onClick={() => {
                 router.push("/my-wishlist");
@@ -151,6 +140,7 @@ const Nav = () => {
             >
               My Wishlist
             </DropdownItem>
+
             <DropdownItem
               onClick={() => {
                 router.push("/my-addresses");
@@ -162,6 +152,7 @@ const Nav = () => {
             >
               My Addresses
             </DropdownItem>
+
             <DropdownItem
               onClick={() => {
                 router.push("/my-orders");
@@ -173,6 +164,7 @@ const Nav = () => {
             >
               My Orders
             </DropdownItem>
+
             <DropdownItem
               onClick={() => {
                 router.push("/my-reviews");
@@ -184,6 +176,7 @@ const Nav = () => {
             >
               My Reviews
             </DropdownItem>
+
             <DropdownItem
               onClick={handleLogout}
               key="logout"
@@ -202,6 +195,19 @@ const Nav = () => {
         <Link href="/" className="font-bold text-inherit">
           Shop_Swift
         </Link>
+        <Input
+          classNames={{
+            base: "w-[10rem] sm:w-[20rem] h-10",
+            mainWrapper: "h-full",
+            input: "text-small",
+            inputWrapper:
+              "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
+          }}
+          placeholder="Type to search..."
+          size="sm"
+          startContent={<CiSearch size={18} />}
+          type="search"
+        />
       </NavbarContent>
 
       <NavbarContent className="pr-3 sm:hidden" justify="center">

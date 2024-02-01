@@ -29,6 +29,12 @@ export default function Home() {
     <div className="mx-auto flex max-w-5xl flex-col gap-3 px-5 py-3">
       <FilterSortControls items={allItems} />
       <ProductItems items={filteredItems} />
+      <ProductItems items={filteredItems} />
+      <ProductItems items={filteredItems} />
+      <ProductItems items={filteredItems} />
+      <ProductItems items={filteredItems} />
+      <ProductItems items={filteredItems} />
+      <ProductItems items={filteredItems} />
     </div>
   );
 }

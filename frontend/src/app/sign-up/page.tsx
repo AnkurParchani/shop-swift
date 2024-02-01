@@ -2,12 +2,10 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { ChangeEvent, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { useCookies } from "react-cookie";
-import { FieldValues, useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
+import { FieldValues } from "react-hook-form";
 import { Button } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
 import { HiOutlineCamera } from "react-icons/hi2";
 
 import InputPassword from "../components/events/InputPassword";
@@ -15,54 +13,21 @@ import AuthFormTemplate from "../components/form/AuthFormTemplate";
 import InputEmail from "../components/events/InputEmail";
 import InputText from "../components/events/InputText";
 
-import { signup } from "../services/apiUsers";
-import { ChangeEvent, useRef, useState } from "react";
 import { supabase, supabaseUrl } from "../utils/supabase";
 import { getUserImg } from "../utils/helpers";
+import { useSignup } from "../hooks/useUser";
 
 const Page = () => {
-  const router = useRouter();
-  const [cookies, setCookie] = useCookies();
   const preImg = getUserImg();
   const [userImg, setUserImg] = useState<null | string>(
     preImg
       ? `https://plgvwkkuqxvmjvnjiybq.supabase.co/storage/v1/object/public/users/${preImg}`
       : null,
   );
-  const { register, handleSubmit, reset } = useForm();
+
   const userImgRef = useRef<HTMLInputElement | null>(null);
 
-  // react-query's useMutation
-  const { mutate, isPending } = useMutation({
-    mutationFn: (data: FieldValues) => signup(data, userImg),
-    onSuccess: (data) => {
-      // Showing success notification and resetting the form
-      toast("Signed up successfully", { type: "success" });
-      reset();
-
-      setUserImg(null);
-
-      // Setting the user in localstorage
-      localStorage.setItem(
-        "user",
-        JSON.stringify({ ...data.user, img: userImg }),
-      );
-      localStorage.removeItem("user-img");
-
-      // For Nav's useEffect run
-      const storageEvent = new Event("storage");
-      window.dispatchEvent(storageEvent);
-
-      // Setting the cookie
-      setCookie("token", data.token);
-
-      // Redirection to home page
-      router.push("/");
-    },
-    onError: (err) => {
-      toast(err.message, { type: "error", theme: "dark" });
-    },
-  });
+  const { mutation, handleSubmit, register } = useSignup();
 
   const handleAddUserImg = async (e: ChangeEvent<HTMLInputElement>) => {
     // If there is problem with uploading the img
@@ -101,7 +66,15 @@ const Page = () => {
   };
 
   // The onSubmit function for react-hook-form that will call mutate on react query
-  const onSubmit = (data: FieldValues) => mutate(data);
+  const onSubmit = (data: FieldValues) =>
+    mutation.mutate(
+      { data, userImg: userImg },
+      {
+        onSuccess: () => {
+          setUserImg(null);
+        },
+      },
+    );
 
   // The JSX
   return (
@@ -157,8 +130,8 @@ const Page = () => {
         type="submit"
         color="primary"
         variant="solid"
-        isDisabled={isPending}
-        isLoading={isPending}
+        isDisabled={mutation.isPending}
+        isLoading={mutation.isPending}
       >
         Signup
       </Button>

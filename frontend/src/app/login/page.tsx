@@ -1,64 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { toast } from "react-toastify";
-import { useCookies } from "react-cookie";
-import { FieldValues, useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { FieldValues } from "react-hook-form";
 import { Button } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
 
 import InputPassword from "../components/events/InputPassword";
 import AuthFormTemplate from "../components/form/AuthFormTemplate";
 import InputEmail from "../components/events/InputEmail";
 
-import { login } from "../services/apiUsers";
+import { useLogin } from "../hooks/useUser";
 
 const Page = () => {
-  const router = useRouter();
-  const queryClient = useQueryClient();
-  const [cookies, setCookie, removeCookie] = useCookies();
-  const { register, handleSubmit, reset } = useForm();
+  const { handleSubmit, register, mutation } = useLogin();
 
-  // react-query's useMutation
-  const { mutate, isPending } = useMutation({
-    mutationFn: login,
-    onSuccess: (data) => {
-      // Showing success notification and resetting the form
-      toast("Logged in successfully", { type: "success" });
-      reset();
-
-      // Setting the user in localstorage
-      localStorage.setItem(
-        "user",
-        JSON.stringify({ ...data.user, img: data.img || undefined }),
-      );
-
-      // For Nav's useEffect run
-      const storageEvent = new Event("storage");
-      window.dispatchEvent(storageEvent);
-
-      // Setting the cookie
-      setCookie("token", data.token);
-
-      // Invalidating all the essential tags
-      queryClient.invalidateQueries({
-        queryKey: ["my-wishlist"],
-      });
-      queryClient.refetchQueries({
-        queryKey: ["my-wishlist"],
-      });
-
-      // Redirection to home page
-      router.push("/");
-    },
-    onError: (err) => {
-      toast(err.message, { type: "error", theme: "dark" });
-    },
-  });
-
-  // The onSubmit function for react-hook-form that will call mutate on react query
-  const onSubmit = (data: FieldValues) => mutate(data);
+  // Login handleSubmit
+  const onSubmit = (data: FieldValues) => mutation.mutate(data);
 
   // The JSX
   return (
@@ -78,8 +34,8 @@ const Page = () => {
         type="submit"
         color="primary"
         variant="solid"
-        isDisabled={isPending}
-        isLoading={isPending}
+        isDisabled={mutation.isPending}
+        isLoading={mutation.isPending}
       >
         Login
       </Button>
