@@ -6,6 +6,7 @@ import { useSearchParams } from "react-router-dom";
 type FooterPartType = {
   children: React.ReactNode;
   heading: string;
+  fullWidth?: boolean;
 };
 
 type FooterLinkType = {
@@ -18,7 +19,7 @@ type FooterLinkType = {
 const Footer = ({ hasUser }: { hasUser: boolean }) => {
   return (
     <>
-      <div className="mt-4 bg-primary px-5 py-6">
+      <div className="mt-4 bg-[#111] px-5 py-6">
         <div className="mx-auto max-w-6xl">
           <div className="grid grid-cols-2 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {/* Online shopping footer part */}
@@ -64,8 +65,8 @@ const Footer = ({ hasUser }: { hasUser: boolean }) => {
             </FooterPart>
 
             {/* Address */}
-            <FooterPart heading="Registered office Addresses">
-              <div className="flex flex-col gap-0.5 text-black ">
+            <FooterPart fullWidth heading="Registered office Addresses">
+              <div className="flex flex-col gap-0.5 text-gray-300 ">
                 <p>EdenEmpire Inc.</p>
                 <p>456 Business Boulevard, Suite 789,</p>
                 <p>Corporate Plaza,</p>
@@ -81,10 +82,12 @@ const Footer = ({ hasUser }: { hasUser: boolean }) => {
 };
 
 // Individual footer section
-function FooterPart({ children, heading }: FooterPartType) {
+function FooterPart({ children, heading, fullWidth }: FooterPartType) {
   return (
-    <div>
-      <h1 className="mb-1 text-sm font-bold uppercase text-white">{heading}</h1>
+    <div className={`${fullWidth && "col-span-full md:col-auto"}`}>
+      <h1 className="mb-1 text-sm font-bold uppercase text-primary">
+        {heading}
+      </h1>
       <div className="flex flex-col gap-1 text-xs font-semibold">
         {children}
       </div>
@@ -101,14 +104,14 @@ function FooterLink({ children, changeParam, href, blank }: FooterLinkType) {
     <>
       {changeParam ? (
         <p
-          className="text-black hover:text-[#0066c0] hover:underline"
+          className="text-gray-300 hover:text-[#0066c0] hover:underline"
           onClick={() => setSearchParams({ ...changeParam, prevSearchParams })}
         >
           {children}
         </p>
       ) : (
         <Link
-          className="text-black hover:text-[#0066c0] hover:underline"
+          className="text-gray-300 hover:text-[#0066c0] hover:underline"
           target={blank ? "_blank" : "_self"}
           href={href as string}
         >
