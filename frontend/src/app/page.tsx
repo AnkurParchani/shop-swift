@@ -6,6 +6,7 @@ import { useSearchParams } from "react-router-dom";
 import FilterSortControls from "./components/others/FilterSortControls";
 import ProductItems from "./components/items/ProductItems";
 import Loading from "./loading";
+import Footer from "./components/others/Footer";
 
 import { useGetAllFilteredItems, useGetAllItems } from "./hooks/useItems";
 
@@ -24,17 +25,21 @@ export default function Home() {
   }, [refetchGetAllFilteredItems, searchParams]);
 
   if (filteredItemsIsLoading || allItemsIsLoading) return <Loading />;
+  if (!filteredItems || !allItems) return <p>No items found</p>;
 
   return (
-    <div className="mx-auto flex max-w-5xl flex-col gap-3 px-5 py-3">
-      <FilterSortControls items={allItems} />
-      <ProductItems items={filteredItems} />
-      <ProductItems items={filteredItems} />
-      <ProductItems items={filteredItems} />
-      <ProductItems items={filteredItems} />
-      <ProductItems items={filteredItems} />
-      <ProductItems items={filteredItems} />
-      <ProductItems items={filteredItems} />
-    </div>
+    <>
+      <div className="mx-auto flex max-w-5xl flex-col gap-3 px-5 py-3">
+        <FilterSortControls items={allItems} />
+        <ProductItems items={filteredItems} />
+        <ProductItems items={filteredItems} />
+        <ProductItems items={filteredItems} />
+        <ProductItems items={filteredItems} />
+        <ProductItems items={filteredItems} />
+        <ProductItems items={filteredItems} />
+        <ProductItems items={filteredItems} />
+      </div>
+      <Footer hasUser />
+    </>
   );
 }
