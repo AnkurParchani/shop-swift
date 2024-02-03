@@ -89,7 +89,7 @@ const WishlistItemCard = ({ item }: { item: Item }) => {
             radius="lg"
             width="100%"
             alt={genericName}
-            className="h-auto w-full object-cover"
+            className="h-52 w-full object-cover"
             src={imgPath}
           />
         </CardBody>

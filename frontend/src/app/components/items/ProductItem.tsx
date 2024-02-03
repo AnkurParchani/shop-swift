@@ -49,9 +49,8 @@ const ProductItem = ({ item }: { item: Item }) => {
         <Image
           shadow="sm"
           radius="lg"
-          width="100%"
           alt={genericName}
-          className="h-auto w-full object-cover"
+          className="h-52 w-[156px] object-cover"
           src={image || "/images/no-product.png"}
         />
       </CardBody>

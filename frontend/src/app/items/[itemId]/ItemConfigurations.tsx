@@ -42,7 +42,7 @@ const Sizes = ({ size }: { size: string }) => {
         {sizeArr.map((size) => (
           <p
             key={size}
-            className="flex h-10 items-center justify-center rounded-full border border-primary bg-transparent px-3 uppercase"
+            className="flex items-center justify-center rounded-full border border-primary bg-transparent px-3 py-1 uppercase"
           >
             {size}
           </p>

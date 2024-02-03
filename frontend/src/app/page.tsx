@@ -2,22 +2,19 @@
 
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useRouter } from "next/navigation";
-import { SwiperSlide, Swiper } from "swiper/react";
-import { Autoplay, FreeMode } from "swiper/modules";
-import SwiperCore from "swiper/core";
 
 import FilterSortControls from "./components/others/FilterSortControls";
-import ProductItems from "./components/items/ProductItems";
 import Loading from "./loading";
 import Footer from "./components/others/Footer";
 
 import { useGetAllFilteredItems, useGetAllItems } from "./hooks/useItems";
-import { Item } from "../../global";
 
 import "swiper/css";
 import "swiper/css/free-mode";
-import Image from "next/image";
+import {
+  ImageSwiperSection,
+  ProductSection,
+} from "./components/items/ProductItems";
 
 export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -111,60 +108,5 @@ export default function Home() {
       </div>
       <Footer hasUser />
     </>
-  );
-}
-
-// Seperate section for different products
-function ProductSection({
-  items,
-  heading,
-}: {
-  items: Item[];
-  heading: string;
-}) {
-  return (
-    <div className="flex flex-col gap-2">
-      <h1 className="text-xl font-semibold text-primary">{heading}</h1>
-      <ProductItems items={items} />
-    </div>
-  );
-}
-
-// Slider for between sections
-function ImageSwiperSection({
-  items,
-}: {
-  items: { imgPath: string; link: string }[];
-}) {
-  const router = useRouter();
-  SwiperCore.use([Autoplay, FreeMode]);
-
-  return (
-    <Swiper
-      className="w-full"
-      centeredSlides={true}
-      spaceBetween={30}
-      loop={true}
-      autoplay={{
-        delay: 2500,
-        disableOnInteraction: false,
-      }}
-      speed={1500}
-      modules={[FreeMode]}
-    >
-      {items.map((item) => (
-        <SwiperSlide key={item.imgPath} className="bg-black">
-          <Image
-            src={item.imgPath}
-            alt="Image"
-            width={1000}
-            className="h-32 rounded-md object-cover"
-            objectFit="cover"
-            onClick={() => router.push(item.link)}
-            height={1000}
-          />
-        </SwiperSlide>
-      ))}
-    </Swiper>
   );
 }

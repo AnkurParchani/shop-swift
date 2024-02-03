@@ -127,7 +127,7 @@ const Page = () => {
                     alt="Item image"
                     height={1000}
                     src={itemImgSrc}
-                    className="h-28 w-auto rounded-md"
+                    className="h-28 w-[84px] rounded-md object-cover"
                     width={1000}
                   />
                 )}
