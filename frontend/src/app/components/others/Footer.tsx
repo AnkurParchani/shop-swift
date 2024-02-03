@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "react-router-dom";
 
@@ -20,7 +21,7 @@ const Footer = ({ hasUser }: { hasUser: boolean }) => {
   return (
     <>
       <div className="mt-4 bg-[#111] px-5 py-6">
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto max-w-6xl ">
           <div className="grid grid-cols-2 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {/* Online shopping footer part */}
             <FooterPart heading="Online shopping">
@@ -75,6 +76,20 @@ const Footer = ({ hasUser }: { hasUser: boolean }) => {
               </div>
             </FooterPart>
           </div>
+
+          <div className="mt-5 flex items-end justify-between text-xs text-yellow-200">
+            <Image
+              src="/images/default-user.jpg"
+              alt="Brand img"
+              height={1000}
+              width={1000}
+              className="h-14 w-auto rounded-full"
+            />
+            <div>
+              <p>CIN: U123456789</p>
+              <p>Tel: 9876543210</p>
+            </div>
+          </div>
         </div>
       </div>
     </>
@@ -104,14 +119,14 @@ function FooterLink({ children, changeParam, href, blank }: FooterLinkType) {
     <>
       {changeParam ? (
         <p
-          className="text-gray-300 hover:text-[#0066c0] hover:underline"
+          className="cursor-pointer text-gray-300 hover:text-primary hover:underline"
           onClick={() => setSearchParams({ ...changeParam, prevSearchParams })}
         >
           {children}
         </p>
       ) : (
         <Link
-          className="text-gray-300 hover:text-[#0066c0] hover:underline"
+          className="cursor-pointer text-gray-300 hover:text-primary hover:underline"
           target={blank ? "_blank" : "_self"}
           href={href as string}
         >

@@ -1,16 +1,6 @@
 // Import Swiper React components
 import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-
-import Image from "next/image";
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/free-mode";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/thumbs";
-
-// import required modules
 import {
   Autoplay,
   FreeMode,
@@ -19,6 +9,16 @@ import {
   Thumbs,
 } from "swiper/modules";
 import SwiperCore from "swiper/core";
+
+import Image from "next/image";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/thumbs";
+
 import { Image as ImageType } from "../../../../global";
 
 const CarouselImgs = ({ images }: { images: ImageType[] }) => {

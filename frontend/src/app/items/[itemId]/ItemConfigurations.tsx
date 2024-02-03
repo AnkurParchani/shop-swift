@@ -16,7 +16,7 @@ const ItemConfigurations = ({ extraDetails }: ConfigurationType) => {
             return (
               <Color
                 color={color.color}
-                hexColor={`bg-[${color.hex}]`}
+                hexColor={color.hex}
                 key={color.color}
               />
             );
@@ -74,7 +74,10 @@ const Color = ({
       {color && (
         <div className="py0.5 flex items-center gap-2 rounded-md border border-primary px-2 capitalize">
           <p className="font-semibold">{color}</p>
-          <p className={`h-3 w-3 rounded-full ${hexColor} `} />
+          <p
+            style={{ backgroundColor: hexColor }}
+            className={`h-3 w-3 rounded-full`}
+          />
         </div>
       )}
     </>
