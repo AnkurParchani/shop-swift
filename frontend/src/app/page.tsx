@@ -115,18 +115,19 @@ export default function Home() {
             )}
 
             {/* Highest rated items image carousel */}
-            {(femaleItems.length > 0 || maleItems.length > 0) && (
-              <ImageSwiperSection
-                delay={6000}
-                items={highRatedItems.map((item: Item) => {
-                  return {
-                    imgPath: item.image,
-                    link: `/items/${item.id}`,
-                    inStock: item.inStock,
-                  };
-                })}
-              />
-            )}
+            {(femaleItems.length > 0 || maleItems.length > 0) &&
+              highRatedItems.length > 0 && (
+                <ImageSwiperSection
+                  delay={6000}
+                  items={highRatedItems.map((item: Item) => {
+                    return {
+                      imgPath: item.image,
+                      link: `/items/${item.id}`,
+                      inStock: item.inStock,
+                    };
+                  })}
+                />
+              )}
 
             {/* Unisex items carousel */}
             {unisexItems.length > 0 && (

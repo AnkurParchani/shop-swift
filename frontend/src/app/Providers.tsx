@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import BreadCrumbProvider from "./contexts/BreadCrumbProvider";
 import { useEffect, useState } from "react";
+import ThemeProvider from "./contexts/ThemeContext";
 
 function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = new QueryClient();
@@ -28,18 +29,20 @@ function Providers({ children }: { children: React.ReactNode }) {
       <BrowserRouter>
         <CookiesProvider>
           <BreadCrumbProvider>
-            <NextUIProvider>
-              <div className="min-h-screen bg-background text-foreground pink-dark">
-                {children}
-              </div>
-              <ToastContainer
-                position="top-center"
-                autoClose={3000}
-                newestOnTop
-                theme="dark"
-                transition={Slide}
-              />
-            </NextUIProvider>
+            <ThemeProvider>
+              <NextUIProvider>
+                <div className="min-h-screen bg-background text-foreground pink-dark">
+                  {children}
+                </div>
+                <ToastContainer
+                  position="top-center"
+                  autoClose={3000}
+                  newestOnTop
+                  theme="dark"
+                  transition={Slide}
+                />
+              </NextUIProvider>
+            </ThemeProvider>
           </BreadCrumbProvider>
         </CookiesProvider>
       </BrowserRouter>
