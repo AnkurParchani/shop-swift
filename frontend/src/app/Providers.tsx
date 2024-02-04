@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import BreadCrumbProvider from "./contexts/BreadCrumbProvider";
 import { useEffect, useState } from "react";
-import ThemeProvider from "./contexts/ThemeContext";
+import ThemeProvider, { useTheme } from "./contexts/ThemeContext";
 
 function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = new QueryClient();
@@ -31,9 +31,7 @@ function Providers({ children }: { children: React.ReactNode }) {
           <BreadCrumbProvider>
             <ThemeProvider>
               <NextUIProvider>
-                <div className="min-h-screen bg-background text-foreground pink-dark">
-                  {children}
-                </div>
+                {children}
                 <ToastContainer
                   position="top-center"
                   autoClose={3000}

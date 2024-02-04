@@ -16,8 +16,10 @@ import {
   ImageSwiperSection,
   ProductSection,
 } from "./components/items/ProductItems";
+import { useTheme } from "./contexts/ThemeContext";
 
 export default function Home() {
+  const { setTheme, theme } = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
   const { data: allItems, isLoading: allItemsIsLoading } = useGetAllItems();
   const {
@@ -62,6 +64,14 @@ export default function Home() {
 
   return (
     <>
+      <button
+        className="rounded-md border-none bg-green-400 px-4 py-1"
+        onClick={() =>
+          setTheme(theme === "purple-dark" ? "pink-dark" : "purple-dark")
+        }
+      >
+        Click me
+      </button>
       <div className="mx-auto flex max-w-5xl flex-col gap-3 px-5 py-3">
         <FilterSortControls items={allItems} />
         {filteredItems && (
