@@ -7,7 +7,7 @@ export type Item = {
   category: string;
   inStock: boolean;
   about: string;
-  for_gender: "male" | "female" | "unisex";
+  forGender: "male" | "female" | "unisex";
   description: Description;
   extraDetails: ExtraDetails;
   numReviews: number;
@@ -15,6 +15,7 @@ export type Item = {
   company: string;
   image?: string;
   images?: Image[];
+  numOrders?: number;
 };
 
 export type ExtraDetails = {

@@ -1,20 +1,22 @@
 import Image from "next/image";
 import SwiperCore from "swiper/core";
-
 import { useRouter } from "next/navigation";
 import { SwiperSlide, Swiper } from "swiper/react";
 import { Autoplay, FreeMode } from "swiper/modules";
 
 import ProductItem from "./ProductItem";
+
 import { Item } from "../../../../global";
 
 // Seperate section for different products
 function ProductSection({
   items,
   heading,
+  delay,
 }: {
   items: Item[];
   heading: string;
+  delay?: number;
 }) {
   SwiperCore.use([Autoplay, FreeMode]);
 
@@ -28,19 +30,17 @@ function ProductSection({
         loop={true}
         spaceBetween={15}
         autoplay={{
-          delay: 2500,
+          delay: delay || 2500,
           disableOnInteraction: false,
         }}
-        speed={1500}
+        speed={2500}
         modules={[FreeMode]}
       >
-        {/* <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-10"> */}
         {items.map((item: Item) => (
           <SwiperSlide key={item.id}>
             <ProductItem key={item.id} item={item} />
           </SwiperSlide>
         ))}
-        {/* </div> */}
       </Swiper>
     </div>
   );
@@ -49,8 +49,10 @@ function ProductSection({
 // Slider for between sections
 function ImageSwiperSection({
   items,
+  delay,
 }: {
   items: { imgPath: string; link: string }[];
+  delay?: number;
 }) {
   const router = useRouter();
   SwiperCore.use([Autoplay, FreeMode]);
@@ -62,10 +64,10 @@ function ImageSwiperSection({
       spaceBetween={30}
       loop={true}
       autoplay={{
-        delay: 2500,
+        delay: delay || 4000,
         disableOnInteraction: false,
       }}
-      speed={1500}
+      speed={2000}
       modules={[FreeMode]}
     >
       {items.map((item) => (

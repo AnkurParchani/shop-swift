@@ -24,6 +24,7 @@ export const getFilteredItems = async (
       with: {
         images: { where: eq(images.isItemMainImg, true) },
         reviews: true,
+        orders: true,
       },
 
       where: and(
@@ -63,16 +64,18 @@ export const getFilteredItems = async (
 
     // Refactoring the items to send
     const itemsToSend = allItems.map((item) => {
-      const { images, reviews, ...restOfThem } = item;
+      const { images, reviews, orders, ...restOfThem } = item;
       const imgPath =
         images.filter((img) => img.isItemMainImg)[0].path || undefined;
       const rating =
         reviews.reduce((acc, cur) => +cur.stars + acc, 0) || undefined;
+      const numOrders = orders.reduce((acc, cur) => cur.quantity + acc, 0);
 
       return {
         ...restOfThem,
         image: imgPath,
         numReviews: reviews.length,
+        numOrders,
         ratings: (rating && rating / reviews.length)?.toFixed(1) || "1.0",
       };
     });

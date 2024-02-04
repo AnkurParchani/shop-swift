@@ -22,6 +22,9 @@ const Page = () => {
   if (isLoading) return <Loading />;
   if (!orders || orders.length === 0) return <EmptyOrders />;
 
+  // Reversing the orders
+  const reverseOrders = [...orders].reverse();
+
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-2 px-5 py-5">
       <div className="flex flex-col gap-2">
@@ -36,7 +39,7 @@ const Page = () => {
       <BreadCrumb curPage="Orders" />
 
       <div className="mt-4 flex flex-col gap-5">
-        {orders.map((order: Order) => {
+        {reverseOrders.map((order: Order) => {
           const { date, id, orderItems } = order;
           const totalPrice = orderItems.reduce(
             (acc, cur) => (cur.item?.discountedPrice ?? 0) * cur.quantity + acc,
