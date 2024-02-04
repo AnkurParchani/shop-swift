@@ -88,7 +88,11 @@ export default function Home() {
             <ImageSwiperSection
               delay={2000}
               items={allItems.map((item: Item) => {
-                return { imgPath: item.image, link: `/items/${item.id}` };
+                return {
+                  imgPath: item.image,
+                  link: `/items/${item.id}`,
+                  inStock: item.inStock,
+                };
               })}
             />
 
@@ -115,7 +119,11 @@ export default function Home() {
               <ImageSwiperSection
                 delay={6000}
                 items={highRatedItems.map((item: Item) => {
-                  return { imgPath: item.image, link: `/items/${item.id}` };
+                  return {
+                    imgPath: item.image,
+                    link: `/items/${item.id}`,
+                    inStock: item.inStock,
+                  };
                 })}
               />
             )}
@@ -134,7 +142,11 @@ export default function Home() {
               <ImageSwiperSection
                 delay={8000}
                 items={bestSellerItems.map((item: Item) => {
-                  return { imgPath: item.image, link: `/items/${item.id}` };
+                  return {
+                    imgPath: item.image,
+                    link: `/items/${item.id}`,
+                    inStock: item.inStock,
+                  };
                 })}
               />
             )}

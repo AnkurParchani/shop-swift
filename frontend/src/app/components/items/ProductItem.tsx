@@ -43,7 +43,7 @@ const ProductItem = ({ item }: { item: Item }) => {
         </p>
       )}
 
-      <AddToWishlistBtn itemId={id} />
+      {inStock && <AddToWishlistBtn itemId={id} />}
 
       <CardBody className={`overflow-visible p-0 ${!inStock && "opacity-50"}`}>
         <Image

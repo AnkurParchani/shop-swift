@@ -51,7 +51,7 @@ function ImageSwiperSection({
   items,
   delay,
 }: {
-  items: { imgPath: string; link: string }[];
+  items: { imgPath: string; link: string; inStock: boolean }[];
   delay?: number;
 }) {
   const router = useRouter();
@@ -71,16 +71,29 @@ function ImageSwiperSection({
       modules={[FreeMode]}
     >
       {items.map((item) => (
-        <SwiperSlide key={item.imgPath} className="bg-black">
+        <SwiperSlide key={item.imgPath} className="relative bg-black">
           <Image
             src={item.imgPath}
             alt="Image"
             width={1000}
-            className="h-32 rounded-md object-cover"
+            className={`h-32 rounded-md object-cover ${
+              !item.inStock && "opacity-50"
+            }`}
             objectFit="cover"
-            onClick={() => router.push(item.link)}
+            onClick={() => {
+              if (item.inStock) {
+                router.push(item.link);
+              }
+            }}
             height={1000}
           />
+
+          {/* Item not in stock tag */}
+          {!item.inStock && (
+            <p className="absolute right-0 top-0 z-20 rounded-sm bg-red-600 px-2 py-0.5 text-xs text-white">
+              Out of Stock
+            </p>
+          )}
         </SwiperSlide>
       ))}
     </Swiper>
