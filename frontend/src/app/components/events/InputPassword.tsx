@@ -7,15 +7,17 @@ import { EyeFilledIcon } from "../others/EyeFilledIcon";
 import { FieldValues, UseFormRegister } from "react-hook-form";
 
 type InputPasswordType = {
-  register: UseFormRegister<FieldValues>;
-  registerName: string;
+  register?: UseFormRegister<FieldValues>;
+  registerName?: string;
   label: string;
+  size?: "md" | "sm" | "lg";
 };
 
 // For Password inside form
 const InputPassword = ({
   register,
   registerName,
+  size,
   label,
 }: InputPasswordType) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -24,10 +26,9 @@ const InputPassword = ({
 
   return (
     <Input
-      {...register(registerName)}
       label={label}
       variant="bordered"
-      size="md"
+      size={size || "md"}
       endContent={
         <button
           className="focus:outline-none"
@@ -43,6 +44,7 @@ const InputPassword = ({
       }
       type={isVisible ? "text" : "password"}
       className="max-w-xs"
+      {...(register && register(registerName as string))}
     />
   );
 };

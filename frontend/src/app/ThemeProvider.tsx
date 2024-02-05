@@ -2,7 +2,7 @@
 
 import { useTheme } from "./contexts/ThemeContext";
 
-const ThemeSelector = ({ children }: { children: React.ReactNode }) => {
+const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const { theme } = useTheme();
 
   return (
@@ -16,4 +16,4 @@ const ThemeSelector = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default ThemeSelector;
+export default ThemeProvider;

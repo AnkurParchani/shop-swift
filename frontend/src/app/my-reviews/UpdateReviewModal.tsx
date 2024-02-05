@@ -11,7 +11,6 @@ import {
 } from "@nextui-org/react";
 import { useUpdateReview } from "../hooks/useReviews";
 import InputSelect from "../components/events/InputSelect";
-import InputText from "../components/events/InputText";
 import { toast } from "react-toastify";
 
 type UpdateReviewProps = {

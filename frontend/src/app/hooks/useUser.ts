@@ -31,10 +31,6 @@ export const useSignup = () => {
       // Removing the temporary user-img from localStorage
       localStorage.removeItem("user-img");
 
-      // For Nav's useEffect run
-      //   const storageEvent = new Event("storage");
-      //   window.dispatchEvent(storageEvent);
-
       // Setting the cookie
       setCookie("token", data.token);
 

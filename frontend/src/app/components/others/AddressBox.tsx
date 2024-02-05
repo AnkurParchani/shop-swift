@@ -1,13 +1,10 @@
 import React from "react";
 import { Address } from "../../../../global";
 import {
-  Button,
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
   Divider,
-  useDisclosure,
 } from "@nextui-org/react";
 
 const AddressBox = ({
