@@ -1,2 +1,4 @@
 - lazy loading for all images
 - nav image error
+
+- onPress={onClose} bug fix

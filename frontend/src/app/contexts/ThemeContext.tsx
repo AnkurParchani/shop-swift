@@ -3,6 +3,7 @@ import {
   SetStateAction,
   createContext,
   useContext,
+  useEffect,
   useState,
 } from "react";
 
@@ -15,6 +16,20 @@ const ThemeContext = createContext<undefined | ThemeContextType>(undefined);
 
 const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setTheme] = useState<string>("");
+
+  // Getting theme from localStorage, if not then setting default theme (theme_pink)
+  useEffect(() => {
+    function checkTheme() {
+      const storedTheme = localStorage.getItem("theme");
+      if (storedTheme) setTheme(storedTheme);
+      else setTheme("theme_pink-dark");
+    }
+    checkTheme();
+
+    window.addEventListener("storage", checkTheme);
+
+    return () => window.removeEventListener("storage", checkTheme);
+  }, []);
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>

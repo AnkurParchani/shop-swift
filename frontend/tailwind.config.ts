@@ -9,13 +9,10 @@ const config: Config = {
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
 
-  theme: {
-    extend: {},
-  },
   plugins: [
     nextui({
       themes: {
-        "purple-dark": {
+        theme_purple: {
           extend: "dark", // <- inherit default values from dark theme
           colors: {
             background: "#0D001A",
@@ -36,21 +33,8 @@ const config: Config = {
             },
             focus: "#F182F6",
           },
-          layout: {
-            disabledOpacity: "0.3",
-            radius: {
-              small: "4px",
-              medium: "6px",
-              large: "8px",
-            },
-            borderWidth: {
-              small: "1px",
-              medium: "2px",
-              large: "3px",
-            },
-          },
         },
-        "pink-dark": {
+        theme_pink: {
           extend: "dark", // <- inherit default values from dark theme
           colors: {
             background: "#0D001A",
@@ -70,19 +54,6 @@ const config: Config = {
               foreground: "#ffffff",
             },
             focus: "#F182F6",
-          },
-          layout: {
-            disabledOpacity: "0.3",
-            radius: {
-              small: "4px",
-              medium: "6px",
-              large: "8px",
-            },
-            borderWidth: {
-              small: "1px",
-              medium: "2px",
-              large: "3px",
-            },
           },
         },
       },
