@@ -51,7 +51,7 @@ const DeleteReviewModal = ({
               Are you sure you want to delete this Review?
             </ModalHeader>
             <ModalBody>
-              <p>You won&apos;t be able to recover this data</p>
+              <p>Note:- You won&apos;t be able to recover this data</p>
             </ModalBody>
             <ModalFooter>
               <Button color="danger" variant="flat" onPress={onClose}>

@@ -1,6 +1,7 @@
 import { useRouter } from "next/navigation";
 import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
 import { useBreadcrumb } from "../../contexts/BreadCrumbProvider";
+import { useTheme } from "@/app/contexts/ThemeContext";
 
 type BreadCrumbType = {
   curPage: string;
@@ -9,10 +10,16 @@ type BreadCrumbType = {
 };
 const BreadCrumb = ({ curPage, nextPages, size }: BreadCrumbType) => {
   const router = useRouter();
+  const { theme } = useTheme();
+  const bgTheme = theme.split("-")[1];
   const { prevPages } = useBreadcrumb();
 
   return (
-    <Breadcrumbs size={size || "md"} underline="hover">
+    <Breadcrumbs
+      color={bgTheme === "dark" ? "foreground" : "primary"}
+      size={size || "md"}
+      underline="hover"
+    >
       {/* for the previous pages */}
       {prevPages?.map((page) => (
         <BreadcrumbItem key={page.label} onPress={() => router.push(page.link)}>

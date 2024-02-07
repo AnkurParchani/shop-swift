@@ -23,9 +23,12 @@ import DeleteReviewModal from "./DeleteReviewModal";
 import { Review } from "../../../global";
 import { formatDate } from "../utils/helpers";
 import { useGetMyReviews } from "../hooks/useReviews";
+import { useTheme } from "../contexts/ThemeContext";
 
 const Page = () => {
   const router = useRouter();
+  const { theme } = useTheme();
+  const bgTheme = theme.split("-")[1];
   const [review, setReview] = useState<Review | null>();
   const [reviewId, setReviewId] = useState<number>(0);
   const { data: reviews, isLoading, error } = useGetMyReviews();
@@ -48,7 +51,7 @@ const Page = () => {
   return (
     <>
       <div className="mx-auto flex max-w-5xl flex-col gap-2 px-5 py-5">
-        <p className="flex items-center gap-1 text-lg font-semibold text-primary">
+        <p className="flex items-center gap-1 text-lg font-semibold text-content1-500">
           Reviews <span className="text-sm">({reviews.length} reviews)</span>
         </p>
 
@@ -62,28 +65,33 @@ const Page = () => {
             const formattedDate = formatDate(date);
 
             return (
-              <Card key={id} className="relative max-w-[400px]">
+              <Card
+                key={id}
+                className={`relative max-w-[400px] border border-content1-300 bg-transparent ${
+                  bgTheme === "dark" ? "text-foreground" : "text-background"
+                }`}
+              >
                 <CardHeader className="flex items-start justify-between gap-2">
                   <div className="flex flex-col">
-                    <p className="text-base capitalize">{item.company}</p>
-                    <p className="text-xs text-primary">{item.name}</p>
+                    <p className="text-base capitalize text-content1-500">
+                      {item.company}
+                    </p>
+                    <p className="text-xs">{item.name}</p>
                   </div>
                   <div className="flex flex-col gap-0.5">
                     <p className="text-xs">{formattedDate}</p>
                     {isEdited && (
-                      <p className="text-right text-[12px] text-gray-400">
-                        (Edited)
-                      </p>
+                      <p className="text-right text-[12px]">(Edited)</p>
                     )}
                   </div>
                 </CardHeader>
-                <Divider />
+                <Divider className="bg-content1-500" />
                 <CardBody className="flex flex-row gap-4 text-xs">
                   <Image
                     height={1000}
                     width={1000}
                     alt="Item Image"
-                    className="h-auto w-24 rounded-md"
+                    className="h-32 w-24 rounded-md object-cover"
                     src={mainItemImgPath}
                     onClick={() => router.push(`/items/${itemId}`)}
                   />
@@ -94,7 +102,7 @@ const Page = () => {
                   </div>
                 </CardBody>
 
-                <Divider />
+                <Divider className="bg-content1-500" />
 
                 <CardFooter className="flex justify-end gap-3">
                   <Button
@@ -103,7 +111,7 @@ const Page = () => {
                       setReview(review);
                       updateReviewOnOpen();
                     }}
-                    color="default"
+                    className="border-2 border-content1-600"
                   >
                     Edit
                   </Button>
