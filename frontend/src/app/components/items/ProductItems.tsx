@@ -22,7 +22,7 @@ function ProductSection({
 
   return (
     <div className="flex flex-col gap-2">
-      <h1 className="text-xl font-semibold text-content1-500">{heading}</h1>
+      <h1 className="text-xl font-semibold text-content1-400">{heading}</h1>
 
       <Swiper
         className="w-full"

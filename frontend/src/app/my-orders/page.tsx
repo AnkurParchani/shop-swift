@@ -8,15 +8,20 @@ import {
   CardHeader,
   Divider,
 } from "@nextui-org/react";
-import { useGetMyOrders } from "../hooks/useOrders";
+
 import Loading from "../loading";
 import EmptyOrders from "./EmptyOrders";
+import BreadCrumb from "../components/others/BreadCrumb";
+
 import { Order } from "../../../global";
 import { formatDate } from "../utils/helpers";
-import BreadCrumb from "../components/others/BreadCrumb";
+import { useTheme } from "../contexts/ThemeContext";
+import { useGetMyOrders } from "../hooks/useOrders";
 
 const Page = () => {
   const router = useRouter();
+  const { theme } = useTheme();
+  const bgTheme = theme.split("-")[1];
   const { data: orders, isLoading } = useGetMyOrders();
 
   if (isLoading) return <Loading />;
@@ -28,7 +33,7 @@ const Page = () => {
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-2 px-5 py-5">
       <div className="flex flex-col gap-2">
-        <p className="flex items-center gap-1 text-lg font-semibold text-primary">
+        <p className="flex items-center gap-1 text-lg font-semibold text-content1-400">
           Orders{" "}
           <span className="text-sm">
             ({orders.length} {orders.length > 1 ? "orders" : "order"})
@@ -48,14 +53,19 @@ const Page = () => {
           const formattedDate = formatDate(date);
 
           return (
-            <Card key={id} className="relative max-w-[400px] text-sm">
+            <Card
+              key={id}
+              className={`relative max-w-[400px] border border-content1-300 bg-transparent text-sm ${
+                bgTheme === "dark" ? "text-foreground" : "text-background"
+              }`}
+            >
               <CardHeader>
                 <div className="flex w-full justify-between">
                   <p className="font-semibold">ORDER_ID: {id}</p>
                   <p>{formattedDate}</p>
                 </div>
               </CardHeader>
-              <Divider />
+              <Divider className="bg-content1-500" />
               <CardBody className="flex flex-col gap-1">
                 <div className="flex justify-between">
                   <p>Items Ordered</p>
@@ -74,12 +84,12 @@ const Page = () => {
                   <p className="font-semibold text-primary">₹{totalPrice}</p>
                 </div>
               </CardBody>
-              <Divider />
+              <Divider className="bg-content1-500" />
               <CardFooter className="flex justify-end">
                 <Button
-                  color="primary"
                   size="sm"
                   variant="solid"
+                  className="border-2 border-content1-800 bg-content1-200 "
                   onPress={() => router.push(`/my-orders/${id}`)}
                 >
                   View Details

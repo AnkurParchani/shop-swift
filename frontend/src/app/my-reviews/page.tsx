@@ -51,7 +51,7 @@ const Page = () => {
   return (
     <>
       <div className="mx-auto flex max-w-5xl flex-col gap-2 px-5 py-5">
-        <p className="flex items-center gap-1 text-lg font-semibold text-content1-500">
+        <p className="flex items-center gap-1 text-lg font-semibold text-content1-400">
           Reviews <span className="text-sm">({reviews.length} reviews)</span>
         </p>
 
