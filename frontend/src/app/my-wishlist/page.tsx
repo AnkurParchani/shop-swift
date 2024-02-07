@@ -29,7 +29,7 @@ const Page = () => {
     <>
       <div className="mx-auto flex max-w-5xl flex-col gap-2 px-5 py-5">
         <div className="flex justify-between">
-          <p className="flex items-center gap-1 text-lg font-semibold text-primary">
+          <p className="flex items-center gap-1 text-lg font-semibold text-content1-500">
             Wishlist <span className="text-sm">({wishlist.length} items)</span>
           </p>
 
@@ -48,8 +48,7 @@ const Page = () => {
               radius="full"
               size="sm"
               variant="solid"
-              color="primary"
-              className="font-semibold"
+              className="border-2 border-content1-800 bg-content1-200 "
               onClick={() => {
                 setPrevPages([{ label: "Wishlist", link: "/my-wishlist" }]);
                 router.push("/my-cart");

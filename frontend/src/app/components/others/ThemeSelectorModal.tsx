@@ -35,6 +35,10 @@ const ThemeSelectorModal = ({
   const bgThemeArr = [
     { className: "bg-[#444] text-white", value: "dark" },
     { className: "bg-[#fff] text-black", value: "light" },
+    {
+      className: "bg-content1-foreground text-background border-2",
+      value: "interface",
+    },
   ];
 
   const interfaceThemeArr = [
@@ -48,7 +52,7 @@ const ThemeSelectorModal = ({
   ];
 
   function handleResetTheme() {
-    setTheme("theme_pink-dark");
+    setTheme("theme_purple-dark");
     onClose();
   }
 

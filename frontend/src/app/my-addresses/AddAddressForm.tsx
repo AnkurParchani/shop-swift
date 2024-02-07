@@ -58,8 +58,8 @@ const AddAddressForm = ({
       scrollBehavior="inside"
       onOpenChange={onOpenChange}
       classNames={{
-        base: "bg-[#1b1b1b] dark:bg-[#1b1b1b] text-white",
-        body: "text-white",
+        body: "py-2",
+        closeButton: "hover:bg-white/5 active:bg-white/10",
       }}
     >
       <ModalContent>

@@ -12,7 +12,9 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       className={`min-h-screen ${
         bgMode === "dark"
           ? "bg-background text-foreground"
-          : "bg-foreground text-background"
+          : bgMode === "interface"
+            ? "bg-foreground text-background"
+            : "bg-content1-foreground text-background"
       } ${mainTheme}`}
     >
       {children}

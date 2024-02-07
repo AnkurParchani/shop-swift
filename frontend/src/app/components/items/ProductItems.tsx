@@ -22,7 +22,7 @@ function ProductSection({
 
   return (
     <div className="flex flex-col gap-2">
-      <h1 className="text-xl font-semibold text-primary">{heading}</h1>
+      <h1 className="text-xl font-semibold text-content1-500">{heading}</h1>
 
       <Swiper
         className="w-full"
@@ -59,7 +59,7 @@ function ImageSwiperSection({
 
   return (
     <Swiper
-      className="w-full "
+      className="w-full rounded-md"
       centeredSlides={true}
       spaceBetween={30}
       loop={true}

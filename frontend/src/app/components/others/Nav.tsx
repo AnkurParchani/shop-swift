@@ -25,11 +25,14 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useBreadcrumb } from "@/app/contexts/BreadCrumbProvider";
 import { useGetUser } from "@/app/hooks/useUser";
 import ThemeSelectorModal from "./ThemeSelectorModal";
+import { useTheme } from "@/app/contexts/ThemeContext";
 
 const Nav = () => {
   const router = useRouter();
   let pathname = usePathname();
   const queryClient = useQueryClient();
+  const { theme } = useTheme();
+  const bgTheme = theme.split("-")[1];
   const [cookies, setCookie, removeCookie] = useCookies();
   const {
     isOpen: selectThemeIsOpen,
@@ -87,7 +90,7 @@ const Nav = () => {
     <>
       <Navbar isBordered>
         <NavbarContent justify="start">
-          <Link href="/" className="font-bold text-inherit">
+          <Link href="/" className="font-bold text-inherit text-white">
             Shop_Swift
           </Link>
         </NavbarContent>

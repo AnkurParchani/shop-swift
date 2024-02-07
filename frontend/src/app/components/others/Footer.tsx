@@ -100,7 +100,7 @@ const Footer = ({ hasUser }: { hasUser: boolean }) => {
 function FooterPart({ children, heading, fullWidth }: FooterPartType) {
   return (
     <div className={`${fullWidth && "col-span-full md:col-auto"}`}>
-      <h1 className="mb-1 text-sm font-bold uppercase text-primary">
+      <h1 className="mb-1 text-sm font-bold uppercase text-content1-500">
         {heading}
       </h1>
       <div className="flex flex-col gap-1 text-xs font-semibold">

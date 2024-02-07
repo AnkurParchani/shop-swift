@@ -1,13 +1,17 @@
 import { useRouter } from "next/navigation";
 import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
-import { Item } from "../../../../global";
-import ReviewStars from "../others/ReviewStars";
-import { Description } from "../../../../global";
 
+import ReviewStars from "../others/ReviewStars";
 import AddToWishlistBtn from "./AddToWishlistBtn";
+
+import { Item } from "../../../../global";
+import { useTheme } from "@/app/contexts/ThemeContext";
+import { Description } from "../../../../global";
 
 const ProductItem = ({ item }: { item: Item }) => {
   const router = useRouter();
+  const { theme } = useTheme();
+  const bgTheme = theme.split("-")[1];
   const {
     id,
     discountedPrice,
@@ -30,7 +34,11 @@ const ProductItem = ({ item }: { item: Item }) => {
       shadow="sm"
       key={id}
       isPressable={inStock}
-      className="relative"
+      className={`relative  ${
+        bgTheme === "dark"
+          ? "bg-backround border border-content1-200 text-white"
+          : "border border-content1-200 bg-gray-100 text-black"
+      }`}
       onClick={() => {
         if (inStock) {
           router.push(`/items/${id}`);
@@ -60,7 +68,11 @@ const ProductItem = ({ item }: { item: Item }) => {
         }`}
       >
         <b className="uppercase">{company}</b>
-        <p className="text-gray-650 text-left text-xs font-light capitalize">
+        <p
+          className={`${
+            bgTheme === "dark" ? "text-gray-400" : "text-gray-900"
+          } text-left text-xs font-light capitalize`}
+        >
           {genericName}
         </p>
         <div className="flex items-center gap-1 text-xs">
@@ -69,10 +81,16 @@ const ProductItem = ({ item }: { item: Item }) => {
           <p className="text-gray-400">({numReviews})</p>
         </div>
         <div className="flex items-center gap-1">
-          <p className="text-white">₹{discountedPrice}</p>
+          <p>₹{discountedPrice}</p>
           <p className="text-xs text-red-300 line-through">₹{originalPrice}</p>
         </div>
-        <p className="text-xs text-green-300">({discount}% OFF)</p>
+        <p
+          className={`text-xs ${
+            bgTheme === "dark" ? "text-green-300" : "text-green-700"
+          }`}
+        >
+          ({discount}% OFF)
+        </p>
       </CardFooter>
     </Card>
   );

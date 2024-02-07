@@ -5,8 +5,11 @@ import { FaFilter } from "react-icons/fa";
 import SortModal from "../modals/SortModal";
 import FilterModal from "../modals/FilterModal";
 import { Item } from "../../../../global";
+import { useTheme } from "@/app/contexts/ThemeContext";
 
 const FilterSortControls = ({ items }: { items: Item[] }) => {
+  const { theme } = useTheme();
+  const bgColor = theme.split("-")[1];
   const {
     isOpen: sortIsOpen,
     onOpen: sortOnOpen,
@@ -22,12 +25,14 @@ const FilterSortControls = ({ items }: { items: Item[] }) => {
 
   return (
     <>
-      <div className="flex justify-end gap-2">
+      <div className="flex justify-end gap-2 text-white">
         <Button
           onPress={sortOnOpen}
           variant="bordered"
           radius="lg"
-          color="primary"
+          className={`border-content1-500 ${
+            bgColor === "dark" ? "text-white" : "text-black"
+          }`}
           size="sm"
         >
           Sort
@@ -37,7 +42,7 @@ const FilterSortControls = ({ items }: { items: Item[] }) => {
           onPress={filterOnOpen}
           variant="solid"
           radius="lg"
-          color="primary"
+          className={`bg-content1-500 text-white`}
           size="sm"
         >
           Filter

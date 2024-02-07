@@ -45,32 +45,38 @@ const Page = () => {
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-2 px-5 py-5">
       <div className="flex justify-between">
-        <p className="flex items-center gap-1 text-lg font-semibold text-primary">
+        <p className="flex items-center gap-1 text-lg font-semibold text-content1-500">
           Address{" "}
           <span className="text-sm">({addresses.length} addresses)</span>
         </p>
 
-        <Button color="secondary" size="sm" onPress={addAddressOnOpen}>
+        <Button
+          className="bg-content1-200"
+          size="sm"
+          onPress={addAddressOnOpen}
+        >
           Add new Address
         </Button>
       </div>
 
       <BreadCrumb curPage="Addresses" />
 
-      <div className="mt-4 flex flex-col gap-4">
+      <div className="mt-4 flex flex-col gap-4 ">
         {addresses.map((address: Address) => (
           <AddressBox key={address.id} address={address}>
             <CardFooter className="flex justify-end gap-3">
               <Button
+                size="sm"
                 onPress={() => {
                   setAddress(address);
                   updateAddressOnOpen();
                 }}
-                color="default"
+                className="border-2 border-content1-600"
               >
                 Edit
               </Button>
               <Button
+                size="sm"
                 onPress={() => {
                   setAddressId(address.id);
                   deleteAddressOnOpen();
@@ -84,7 +90,11 @@ const Page = () => {
         ))}
       </div>
 
-      <Button color="secondary" className="mt-3" onPress={addAddressOnOpen}>
+      <Button
+        radius="sm"
+        className="mt-3 bg-content1-300"
+        onPress={addAddressOnOpen}
+      >
         Add new Address
       </Button>
 

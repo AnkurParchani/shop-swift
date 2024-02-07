@@ -13,9 +13,12 @@ import { useRemoveFromWishlist } from "../hooks/useWishlist";
 import { useGetMyCart } from "../hooks/useCart";
 import AddToCartForm from "../my-cart/AddToCartForm";
 import { CiShoppingCart } from "react-icons/ci";
+import { useTheme } from "../contexts/ThemeContext";
 
 const WishlistItemCard = ({ item }: { item: Item }) => {
   const router = useRouter();
+  const { theme } = useTheme();
+  const bgTheme = theme.split("-")[1];
   const { data: cart } = useGetMyCart();
   const removeFromWishlistMutation = useRemoveFromWishlist();
   const {
@@ -61,7 +64,11 @@ const WishlistItemCard = ({ item }: { item: Item }) => {
         shadow="sm"
         key={id}
         isPressable={inStock}
-        className="relative"
+        className={`relative  ${
+          bgTheme === "dark"
+            ? "bg-backround border border-content1-200 text-white"
+            : "border border-content1-200 bg-gray-100 text-black"
+        }`}
         onClick={() => {
           if (inStock) {
             router.push(`/items/${id}`);
@@ -104,12 +111,22 @@ const WishlistItemCard = ({ item }: { item: Item }) => {
           </p>
 
           <div className="flex items-center gap-1">
-            <p className="text-white">₹{discountedPrice}</p>
-            <p className="text-xs text-red-300 line-through">
+            <p>₹{discountedPrice}</p>
+            <p
+              className={`text-xs  ${
+                bgTheme === "dark" ? "text-red-300" : "text-red-700"
+              } line-through`}
+            >
               ₹{originalPrice}
             </p>
           </div>
-          <p className="text-xs text-green-300">({discount}% OFF)</p>
+          <p
+            className={`text-xs ${
+              bgTheme === "dark" ? "text-green-300" : "text-green-700"
+            }`}
+          >
+            ({discount}% OFF)
+          </p>
         </CardFooter>
         {isItemInCart ? (
           <Button
@@ -124,9 +141,8 @@ const WishlistItemCard = ({ item }: { item: Item }) => {
         ) : (
           <Button
             onPress={addToCartOnOpen}
-            className="w-full py-0.5"
+            className="w-full bg-content1-300 py-0.5"
             variant="solid"
-            color="primary"
           >
             <CiShoppingCart style={{ fontSize: "25px" }} />
             Add to Cart

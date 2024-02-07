@@ -1,11 +1,7 @@
 import React from "react";
 import { Address } from "../../../../global";
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Divider,
-} from "@nextui-org/react";
+import { Card, CardBody, CardHeader, Divider } from "@nextui-org/react";
+import { useTheme } from "@/app/contexts/ThemeContext";
 
 const AddressBox = ({
   address,
@@ -14,6 +10,8 @@ const AddressBox = ({
   address: Address;
   children?: React.ReactNode;
 }) => {
+  const { theme } = useTheme();
+  const bgColor = theme.split("-")[1];
   const {
     id,
     firstName,
@@ -29,7 +27,12 @@ const AddressBox = ({
   } = address;
 
   return (
-    <Card key={id} className="relative max-w-[400px]">
+    <Card
+      key={id}
+      className={`relative max-w-[400px] border-2 border-content1-500 bg-transparent ${
+        bgColor === "dark" ? "text-content1-100" : "text-black"
+      }`}
+    >
       <CardHeader className="flex gap-3">
         <div
           className={`h-8 w-8 rounded-md ${
@@ -46,7 +49,7 @@ const AddressBox = ({
           <p className="text-small text-default-500">{phoneNumber}</p>
         </div>
       </CardHeader>
-      <Divider />
+      <Divider className="bg-content1-500" />
       <CardBody className="flex flex-col gap-1 text-sm capitalize">
         {flatNumber && <p>{flatNumber},</p>}
         {street && <p>{street},</p>}

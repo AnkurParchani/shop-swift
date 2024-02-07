@@ -2,3 +2,4 @@
 - nav image error
 
 - onPress={onClose} bug fix
+- all modals color

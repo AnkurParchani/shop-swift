@@ -44,7 +44,7 @@ function SortModal({
       onOpenChange={onOpenChange}
     >
       <ModalContent>
-        <ModalHeader className="flex items-center gap-1 text-danger">
+        <ModalHeader className="text-content1-700 flex items-center gap-1">
           <FaSort />
           Sort
         </ModalHeader>
