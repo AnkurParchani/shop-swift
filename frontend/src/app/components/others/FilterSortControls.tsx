@@ -42,7 +42,7 @@ const FilterSortControls = ({ items }: { items: Item[] }) => {
           onPress={filterOnOpen}
           variant="solid"
           radius="lg"
-          className={`bg-content1-500 text-white`}
+          className="bg-content1-500 text-white"
           size="sm"
         >
           Filter

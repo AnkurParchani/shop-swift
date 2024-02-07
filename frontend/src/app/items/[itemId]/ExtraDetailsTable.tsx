@@ -23,7 +23,7 @@ const ExtraDetailsTable = ({
   const rows = Object.entries(details).map(([key, value]) => {
     return (
       <TableRow className="capitalize" key={key}>
-        <TableCell className="border border-gray-600 font-semibold text-gray-300">
+        <TableCell className="border border-gray-600 font-semibold">
           {key}
         </TableCell>
         <TableCell className="border border-gray-600">{value}</TableCell>
@@ -33,9 +33,7 @@ const ExtraDetailsTable = ({
 
   return (
     <div className="py-5">
-      <h2 className="mb-2 pl-1 text-lg font-semibold text-white">
-        Other Details
-      </h2>
+      <h2 className="mb-2 pl-1 text-lg font-semibold">Other Details</h2>
 
       <Table
         removeWrapper={true}

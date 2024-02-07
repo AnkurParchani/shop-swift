@@ -42,7 +42,7 @@ const Sizes = ({ size }: { size: string }) => {
         {sizeArr.map((size) => (
           <p
             key={size}
-            className="flex items-center justify-center rounded-full border border-primary bg-transparent px-3 py-1 uppercase"
+            className="flex items-center justify-center rounded-full border border-content1-700 bg-transparent px-3 py-1 uppercase"
           >
             {size}
           </p>
@@ -72,7 +72,7 @@ const Color = ({
   return (
     <>
       {color && (
-        <div className="py0.5 flex items-center gap-2 rounded-md border border-primary px-2 capitalize">
+        <div className="py0.5 flex items-center gap-2 rounded-md border border-content1-700 px-2 capitalize">
           <p className="font-semibold">{color}</p>
           <p
             style={{ backgroundColor: hexColor }}

@@ -8,6 +8,7 @@ import { FaHeart } from "react-icons/fa6";
 import { CartItem, ExtraDetails, Item, WishlistItem } from "../../../../global";
 import { useGetMyCart } from "@/app/hooks/useCart";
 import AddToCartForm from "@/app/my-cart/AddToCartForm";
+import { useTheme } from "@/app/contexts/ThemeContext";
 
 type ActionBtnType = {
   itemId: string;
@@ -16,6 +17,8 @@ type ActionBtnType = {
 
 const ActionBtn = ({ itemId, itemDetails }: ActionBtnType) => {
   const router = useRouter();
+  const { theme } = useTheme();
+  const bgTheme = theme.split("-")[1];
   const [isAddedInWishlist, setIsAddedInWishlist] = useState<boolean>(false);
   const [isAddedInCart, setIsAddedInCart] = useState<boolean>(false);
   const { data: wishlist } = useGetMyWishlist();
@@ -59,7 +62,11 @@ const ActionBtn = ({ itemId, itemDetails }: ActionBtnType) => {
       <div className="grid grid-cols-2 gap-3">
         {/* If the item is added in cart the show button for "See my Cart" otherwise show "Add to Cart" */}
         {!isAddedInCart ? (
-          <Button onPress={addToCartOnOpen} color="primary" variant="solid">
+          <Button
+            onPress={addToCartOnOpen}
+            className="bg-content1-500 text-white"
+            variant="solid"
+          >
             <CiShoppingCart style={{ fontSize: "25px" }} />
             Add to Cart
           </Button>
@@ -78,7 +85,9 @@ const ActionBtn = ({ itemId, itemDetails }: ActionBtnType) => {
         {!isAddedInWishlist ? (
           <Button
             onClick={handleAddToWishlist}
-            color="primary"
+            className={`border border-content1-400 bg-transparent ${
+              bgTheme === "dark" ? "text-foreground" : "text-background"
+            }`}
             variant="flat"
             disabled={addToWishlistMutation.isPending}
           >
@@ -88,7 +97,7 @@ const ActionBtn = ({ itemId, itemDetails }: ActionBtnType) => {
         ) : (
           <Button
             onClick={() => router.push("/my-wishlist")}
-            color="primary"
+            className="border border-pink-500 bg-transparent text-pink-500"
             variant="bordered"
           >
             <FaHeart style={{ fontSize: "25px" }} />

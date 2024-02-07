@@ -13,13 +13,15 @@ import SellerInfo from "./SellerInfo";
 import ItemConfigurations from "./ItemConfigurations";
 import ActionBtn from "./ActionBtn";
 import { useGetSingleItem } from "@/app/hooks/useItems";
-import NoMatch from "./NoMatch";
+import { useTheme } from "@/app/contexts/ThemeContext";
 
 type PageType = {
   params: { itemId: string };
 };
 
 const Page = ({ params }: PageType) => {
+  const { theme } = useTheme();
+  const bgTheme = theme.split("-")[1];
   const { data: item, isLoading, error } = useGetSingleItem(params.itemId);
 
   if (isLoading) return <Loading />;
@@ -46,7 +48,11 @@ const Page = ({ params }: PageType) => {
       <div className="mx-auto mt-3 flex w-11/12 flex-col gap-1">
         <b className="text-lg uppercase">{company}</b>
         {category && (
-          <p className="-mt-1 text-sm font-medium capitalize text-gray-300">
+          <p
+            className={`-mt-1 text-sm font-medium capitalize  ${
+              bgTheme === "dark" ? "text-content1-200" : "text-content1-700"
+            }`}
+          >
             {category}
           </p>
         )}
@@ -58,6 +64,7 @@ const Page = ({ params }: PageType) => {
         />
 
         <ItemConfigurations extraDetails={extraDetails} />
+
         <ActionBtn
           itemDetails={{ discountedPrice, extraDetails, id: +params.itemId }}
           itemId={params.itemId}

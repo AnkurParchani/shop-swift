@@ -8,8 +8,8 @@ import { User } from "../../../../global";
 import "swiper/css";
 import "swiper/css/pagination";
 
-// import required modules
 import { Pagination } from "swiper/modules";
+import { useTheme } from "@/app/contexts/ThemeContext";
 
 type ReviewType = {
   content: string;
@@ -21,9 +21,12 @@ type ReviewType = {
 };
 
 const ReviewContainer = ({ reviews }: { reviews: ReviewType[] }) => {
+  const { theme } = useTheme();
+  const bgTheme = theme.split("-")[1];
+
   return (
     <div className="px-1 py-5">
-      <h2 className="mb-2 text-lg font-semibold text-white">Reviews</h2>
+      <h2 className="mb-2 text-lg font-semibold">Reviews</h2>
 
       {reviews.length === 0 && (
         <p className="-mt-2 mb-2 text-sm text-orange-400">
@@ -41,7 +44,7 @@ const ReviewContainer = ({ reviews }: { reviews: ReviewType[] }) => {
         pagination={{ clickable: true }}
         speed={3000}
         modules={[Pagination]}
-        className="bg-trasnparent rounded-lg border-3 border-gray-600"
+        className="bg-trasnparent rounded-lg border-2 border-content1-300"
       >
         {reviews.map((review) => {
           const { id, content, isEdited, stars, user } = review;
@@ -49,10 +52,14 @@ const ReviewContainer = ({ reviews }: { reviews: ReviewType[] }) => {
 
           return (
             <SwiperSlide key={id} className="cursor-pointer">
-              <Card className="bg-transparent pb-8">
+              <Card
+                className={`bg-transparent pb-8 ${
+                  bgTheme === "dark" ? "text-foreground" : "text-black"
+                }`}
+              >
                 <CardHeader className="relative flex items-start gap-3">
                   {isEdited && (
-                    <p className="absolute right-1.5 top-1.5 text-xs text-gray-400">
+                    <p className="absolute right-1.5 top-1.5 text-xs ">
                       (Edited)
                     </p>
                   )}
@@ -65,18 +72,16 @@ const ReviewContainer = ({ reviews }: { reviews: ReviewType[] }) => {
                     width={40}
                   />
                   <div className="flex flex-col ">
-                    <p className="text-md capitalize text-gray-200">
-                      {userName}
-                    </p>
-                    <p className="text-xs text-gray-500">{userEmail}</p>
-                    <p className="mt-2 text-xs text-default-500">
+                    <p className="text-md capitalize">{userName}</p>
+                    <p className="text-xs ">{userEmail}</p>
+                    <p className="mt-2 text-xs ">
                       <ReviewStars star={+stars} />
                     </p>
                   </div>
                 </CardHeader>
-                <Divider />
+                <Divider className="bg-content1-500" />
 
-                <CardBody className="text-sm text-gray-300">
+                <CardBody className="text-sm">
                   <p className="">{content}</p>
                 </CardBody>
               </Card>
