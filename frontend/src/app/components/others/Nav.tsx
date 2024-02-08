@@ -25,14 +25,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useBreadcrumb } from "@/app/contexts/BreadCrumbProvider";
 import { useGetUser } from "@/app/hooks/useUser";
 import ThemeSelectorModal from "./ThemeSelectorModal";
-import { useTheme } from "@/app/contexts/ThemeContext";
 
 const Nav = () => {
   const router = useRouter();
   let pathname = usePathname();
   const queryClient = useQueryClient();
-  const { theme } = useTheme();
-  const bgTheme = theme.split("-")[1];
   const [cookies, setCookie, removeCookie] = useCookies();
   const {
     isOpen: selectThemeIsOpen,
@@ -119,7 +116,9 @@ const Nav = () => {
                 name="Jason Hughes"
                 size="sm"
                 src={`${
-                  user.image.path ? user.image.path : "/images/default-user.jpg"
+                  user.image?.path
+                    ? user.image.path
+                    : "/images/default-user.jpg"
                 }`}
               />
             </DropdownTrigger>

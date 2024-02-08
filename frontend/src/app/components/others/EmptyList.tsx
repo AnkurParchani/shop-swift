@@ -1,3 +1,4 @@
+import { useTheme } from "@/app/contexts/ThemeContext";
 import { Button } from "@nextui-org/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -21,6 +22,8 @@ export default function EmptyList({
   handleActionFn,
 }: EmptyListType) {
   const router = useRouter();
+  const { theme } = useTheme();
+  const bgTheme = theme.split("-")[1];
 
   return (
     <div className="flex flex-col items-center gap-4 px-4 py-10">
@@ -39,14 +42,20 @@ export default function EmptyList({
           <Button
             variant={actionButtonTxt ? "flat" : "solid"}
             onClick={() => router.back()}
-            color="primary"
+            className={`border border-content1-500 bg-transparent ${
+              bgTheme === "dark" ? "text-white" : "text-black"
+            }`}
           >
             Go Back
           </Button>
         )}
 
         {actionButtonTxt && (
-          <Button variant="solid" onClick={handleActionFn} color="primary">
+          <Button
+            variant="solid"
+            onClick={handleActionFn}
+            className="bg-content1-400 text-white"
+          >
             {actionButtonTxt}
           </Button>
         )}

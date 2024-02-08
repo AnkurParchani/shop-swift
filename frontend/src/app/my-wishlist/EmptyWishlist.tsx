@@ -12,7 +12,7 @@ const EmptyWishlist = () => {
           size="sm"
           variant="solid"
           color="secondary"
-          className="font-semibold"
+          className="bg-content1-400 text-white"
           onClick={() => router.push("/my-cart")}
         >
           My Cart
