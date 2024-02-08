@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { ChangeEventHandler, useState } from "react";
 import { Input } from "@nextui-org/react";
 import { EyeSlashFilledIcon } from "../others/EyeSlashFilledIcon";
 import { EyeFilledIcon } from "../others/EyeFilledIcon";
@@ -11,6 +11,8 @@ type InputPasswordType = {
   registerName?: string;
   label: string;
   size?: "md" | "sm" | "lg";
+  value?: string,
+  onChange?: ChangeEventHandler<HTMLInputElement>;
 };
 
 // For Password inside form
@@ -18,6 +20,8 @@ const InputPassword = ({
   register,
   registerName,
   size,
+  onChange,
+  value,
   label,
 }: InputPasswordType) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -26,9 +30,11 @@ const InputPassword = ({
 
   return (
     <Input
+    value={value}
       label={label}
       variant="bordered"
       size={size || "md"}
+      onChange={onChange}
       endContent={
         <button
           className="focus:outline-none"

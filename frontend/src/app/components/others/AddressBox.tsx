@@ -11,7 +11,7 @@ const AddressBox = ({
   children?: React.ReactNode;
 }) => {
   const { theme } = useTheme();
-  const bgColor = theme.split("-")[1];
+  const bgTheme = theme.split("-")[1];
   const {
     id,
     firstName,
@@ -30,7 +30,7 @@ const AddressBox = ({
     <Card
       key={id}
       className={`relative max-w-[400px] border-2 border-content1-500 bg-transparent ${
-        bgColor === "dark" ? "text-content1-100" : "text-black"
+        bgTheme === "dark" ? "text-content1-100" : "text-black"
       }`}
     >
       <CardHeader className="flex gap-3">

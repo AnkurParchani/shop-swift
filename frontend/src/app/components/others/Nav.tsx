@@ -139,7 +139,6 @@ const Nav = () => {
               >
                 My Cart
               </DropdownItem>
-
               <DropdownItem
                 onClick={() => {
                   router.push("/my-wishlist");
@@ -151,7 +150,6 @@ const Nav = () => {
               >
                 My Wishlist
               </DropdownItem>
-
               <DropdownItem
                 onClick={() => {
                   router.push("/my-addresses");
@@ -163,7 +161,6 @@ const Nav = () => {
               >
                 My Addresses
               </DropdownItem>
-
               <DropdownItem
                 onClick={() => {
                   router.push("/my-orders");
@@ -175,7 +172,6 @@ const Nav = () => {
               >
                 My Orders
               </DropdownItem>
-
               <DropdownItem
                 onClick={() => {
                   router.push("/my-reviews");
@@ -187,8 +183,7 @@ const Nav = () => {
               >
                 My Reviews
               </DropdownItem>
-
-              <DropdownItem onClick={selectThemeOnOpen}>
+              <DropdownItem key="theme" onClick={selectThemeOnOpen}>
                 <div className="flex items-center justify-between rounded-md bg-green-500 px-1.5 py-2 text-white">
                   <p>Change Theme</p>
                   <div>
@@ -200,11 +195,22 @@ const Nav = () => {
               </DropdownItem>
 
               <DropdownItem
-                onClick={handleLogout}
-                key="logout"
-                className="text-red-500"
+                key="settings"
+                className="-mt-2"
+                onClick={() => router.push("/settings")}
               >
-                Log Out
+                <p className="rounded-md bg-yellow-600 px-1.5 py-2 text-center text-white">
+                  Settings
+                </p>
+              </DropdownItem>
+              <DropdownItem
+                className="-mt-2"
+                key="logout"
+                onClick={handleLogout}
+              >
+                <p className=" rounded-md bg-red-500 px-1.5 py-2 text-center text-white">
+                  Logout
+                </p>
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>

@@ -16,7 +16,6 @@ import { useGetMyAddresses } from "../hooks/useAddress";
 import { useBreadcrumb } from "../contexts/BreadCrumbProvider";
 
 const Page = () => {
-  const { setPrevPages } = useBreadcrumb();
   const [address, setAddress] = useState<Address | null>();
   const [addressId, setAddressId] = useState<number>(0);
   const { data: addresses, isLoading, error } = useGetMyAddresses();

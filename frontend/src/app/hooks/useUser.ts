@@ -1,9 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getLoggedInUser, login, signup } from "../services/apiUsers";
 import { toast } from "react-toastify";
-import { FieldValues, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/navigation";
+import {
+  deleteAccount,
+  getLoggedInUser,
+  login,
+  signup,
+  updatePassword,
+} from "../services/apiUsers";
 
 // Getting the currently logged in user
 export const useGetUser = () => {
@@ -89,4 +95,30 @@ export const useLogin = () => {
   });
 
   return { mutation, handleSubmit, register, reset };
+};
+
+// Update password
+export const useUpdatePassword = () => {
+  const mutation = useMutation({
+    mutationFn: updatePassword,
+    onSuccess: () => {
+      toast("Your password has been updated", { type: "success" });
+    },
+    onError: (err: Error) => toast(err.message, { type: "error" }),
+  });
+
+  return mutation;
+};
+
+// Deleting account
+export const useDeleteMyAccount = () => {
+  const mutation = useMutation({
+    mutationFn: deleteAccount,
+    onSuccess: () => {
+      toast("Your account has been successfully deleted", { type: "success" });
+    },
+    onError: (err: Error) => toast(err.message, { type: "error" }),
+  });
+
+  return mutation;
 };

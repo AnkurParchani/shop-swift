@@ -66,28 +66,41 @@ export const signup = async (data: {
     return handleApiError(err);
   }
 };
-// export const signup = async (data: FieldValues, userImg: string | null) => {
-//   try {
-//     const res = await newRequest.post("/users/sign-up", data, {
-//       withCredentials: true,
-//     });
 
-//     // If there is user image
-//     if (res.data.status === "success" && userImg) {
-//       await newRequest.post(
-//         "/images/user",
-//         {
-//           path: userImg,
-//           userId: res.data.user.id,
-//         },
-//         { withCredentials: true },
-//       );
-//     }
+// Update password
+export const updatePassword = async (data: {
+  oldPassword: string;
+  passwordConfirm: string;
+  newPassword: string;
+}) => {
+  try {
+    const res = await newRequest.patch("/users/update-password", data, {
+      withCredentials: true,
+    });
 
-//     if (res.data.status === "success") {
-//       return res.data;
-//     }
-//   } catch (err) {
-//     return handleApiError(err);
-//   }
-// };
+    if (res.data.status === "success") {
+      return res.data;
+    }
+  } catch (err) {
+    return handleApiError(err);
+  }
+};
+
+// Delete Account request
+export const deleteAccount = async (data: {
+  confirmation: boolean;
+  password: string;
+}) => {
+  try {
+    const res = await newRequest.delete("/users/delete-me", {
+      data,
+      withCredentials: true,
+    });
+
+    if (res.data.status === "success") {
+      return res.data;
+    }
+  } catch (err) {
+    return handleApiError(err);
+  }
+};
