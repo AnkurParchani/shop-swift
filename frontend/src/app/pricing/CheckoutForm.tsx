@@ -10,12 +10,15 @@ import {
 } from "@stripe/react-stripe-js";
 import { CartItem } from "../../../global";
 import { useCreateOrder } from "../hooks/useOrders";
+import { useTheme } from "../contexts/ThemeContext";
 
 const CheckoutForm = ({ cart }: { cart: CartItem[] }) => {
   const router = useRouter();
   const stripe = useStripe();
   const elements = useElements();
   const createOrderMutation = useCreateOrder();
+  const { theme } = useTheme();
+  const bgTheme = theme.split("-")[1];
 
   const orders = cart.map((cartItem) => {
     const { itemId, quantity, color, size } = cartItem;
@@ -53,12 +56,18 @@ const CheckoutForm = ({ cart }: { cart: CartItem[] }) => {
   return (
     <form
       onSubmit={handlePaymentSubmit}
-      action=""
-      className="flex flex-col gap-3 rounded-md border-x-3 border-primary p-3"
+      className={`flex flex-col gap-3 rounded-md border-x-3 border-content1-500 p-3 ${
+        bgTheme !== "dark" && "bg-content1-700 "
+      }`}
     >
-      <LinkAuthenticationElement />
-      <PaymentElement />
-      <Button className="mt-2" color="primary" type="submit">
+      <PaymentElement className="rounded-sm" />
+
+      <Button
+        className={`mt-2 ${
+          bgTheme === "dark" ? "bg-content1-500" : "bg-green-600"
+        } text-white`}
+        type="submit"
+      >
         Buy now
       </Button>
     </form>
