@@ -226,7 +226,7 @@ const Nav = () => {
     <>
       <Navbar isBordered>
         <NavbarContent className="sm:hidden">
-          <Link href="/" className="font-bold text-inherit">
+          <Link href="/" className="font-bold text-inherit text-white">
             Shop_Swift
           </Link>
           <Input

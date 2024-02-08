@@ -128,7 +128,7 @@ const Page = () => {
       />
       <Button
         type="submit"
-        color="primary"
+        className="bg-content1-400 text-white"
         variant="solid"
         isDisabled={mutation.isPending}
         isLoading={mutation.isPending}

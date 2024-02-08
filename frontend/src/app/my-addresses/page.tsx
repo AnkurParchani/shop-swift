@@ -92,7 +92,7 @@ const Page = () => {
 
       <Button
         radius="sm"
-        className="mt-3 bg-content1-300"
+        className="mt-3 bg-content1-400 text-white"
         onPress={addAddressOnOpen}
       >
         Add new Address

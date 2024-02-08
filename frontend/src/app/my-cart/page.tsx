@@ -26,9 +26,12 @@ import BreadCrumb from "../components/others/BreadCrumb";
 import { CartItem } from "../../../global";
 import { useGetMyCart, useUpdateCart } from "../hooks/useCart";
 import { useBreadcrumb } from "../contexts/BreadCrumbProvider";
+import { useTheme } from "../contexts/ThemeContext";
 
 const Page = () => {
   const router = useRouter();
+  const { theme } = useTheme();
+  const bgTheme = theme.split("-")[1];
   const { setPrevPages } = useBreadcrumb();
   const { data: cart, isLoading, error } = useGetMyCart();
   const {
@@ -97,7 +100,12 @@ const Page = () => {
           )[0].path;
 
           return (
-            <Card key={cart.id} className="relative">
+            <Card
+              key={cart.id}
+              className={`relative max-w-[400px] border border-content1-300 bg-transparent ${
+                bgTheme === "dark" ? "text-foreground" : "text-background"
+              }`}
+            >
               <div className="absolute left-2 top-1 z-20 scale-125">
                 <input
                   type="checkbox"
@@ -148,27 +156,47 @@ const Page = () => {
                   </p>
 
                   <p className="mt-2 flex items-center gap-1 text-sm">
-                    <span className="text-green-400">₹{cart.price}</span>
-                    <span className="text-xs text-red-400 line-through">
+                    <span
+                      className={` ${
+                        bgTheme === "dark"
+                          ? "text-content1-400"
+                          : "text-content1-600"
+                      } `}
+                    >
+                      ₹{cart.price}
+                    </span>
+                    <span
+                      className={` ${
+                        bgTheme === "dark" ? "text-red-400" : "text-red-600"
+                      } text-xs line-through`}
+                    >
                       ₹{cart.item.originalPrice * cart.quantity}
                     </span>
-                    <span className="text-start text-xs text-primary">
+                    <span
+                      className={`text-start text-xs ${
+                        bgTheme === "dark"
+                          ? "text-content1-400"
+                          : "text-content1-600"
+                      }`}
+                    >
                       ({discount}% OFF)
                     </span>
                   </p>
                 </div>
               </CardBody>
-              <Divider />
+              <Divider className="bg-content1-500" />
               <CardFooter className="flex justify-end">
                 <Button
-                  className={`${!cart.isChecked && "opacity-30"}`}
+                  size="sm"
+                  className={`${
+                    !cart.isChecked && "opacity-30"
+                  } bg-content1-400 text-white`}
                   onPress={() => {
                     if (!cart.isChecked) return;
 
                     setCartId(cart.id);
                     addToCartOnOpen();
                   }}
-                  color="secondary"
                 >
                   Edit
                 </Button>
@@ -178,8 +206,7 @@ const Page = () => {
         })}
 
         <Button
-          className="flex justify-between"
-          color="secondary"
+          className="flex justify-between bg-content1-400 text-white"
           onPress={() => {
             setPrevPages([{ label: "Cart", link: "/my-cart" }]);
             router.push("/my-wishlist");

@@ -3,3 +3,4 @@
 
 - onPress={onClose} bug fix
 - all modals color
+- cart, seperate order

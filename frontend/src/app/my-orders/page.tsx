@@ -81,7 +81,9 @@ const Page = () => {
                 </div>
                 <div className="flex justify-between">
                   <p>Total Amount</p>
-                  <p className="font-semibold text-primary">₹{totalPrice}</p>
+                  <p className="text-default1-300 font-semibold">
+                    ₹{totalPrice}
+                  </p>
                 </div>
               </CardBody>
               <Divider className="bg-content1-500" />
