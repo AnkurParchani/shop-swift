@@ -24,6 +24,7 @@ import { useGetSingleOrder } from "@/app/hooks/useOrders";
 import { useGetMyReviews } from "@/app/hooks/useReviews";
 import AddReviewModal from "@/app/my-reviews/AddReviewModal";
 import { useState } from "react";
+import { useTheme } from "@/app/contexts/ThemeContext";
 
 type UseGetSingleOrderResult = {
   data: Order;
@@ -32,6 +33,8 @@ type UseGetSingleOrderResult = {
 
 const Page = ({ params }: { params: { orderId: string } }) => {
   const router = useRouter();
+  const { theme } = useTheme();
+  const bgTheme = theme.split("-")[1];
   const [reviewItemId, setReviewItemId] = useState(0);
   const { data: reviews } = useGetMyReviews();
   const { data: order, isLoading } = useGetSingleOrder(
@@ -53,10 +56,8 @@ const Page = ({ params }: { params: { orderId: string } }) => {
     <>
       <div className="mx-auto flex max-w-5xl flex-col gap-6 px-5 py-5">
         <div className="flex flex-col gap-2">
-          <div className="flex justify-between text-sm font-medium">
-            <p className="text-base font-semibold text-primary">
-              ORDER_ID: {order.id}
-            </p>
+          <div className="flex justify-between text-sm font-medium text-content1-400">
+            <p className="text-base font-semibold">ORDER_ID: {order.id}</p>
             <p>{formattedDate}</p>
           </div>
 
@@ -69,38 +70,43 @@ const Page = ({ params }: { params: { orderId: string } }) => {
             const totalPrice = (item?.discountedPrice ?? 0) * quantity;
             const mainItemImgPath =
               item?.images?.filter((img) => img.isItemMainImg)[0].path || "";
-            const isReviewed = reviews.find(
-              (review: Review) => review.itemId === itemId,
-            );
+            const isReviewed =
+              reviews &&
+              reviews.find((review: Review) => review.itemId === itemId);
 
             return (
-              <Card key={id}>
+              <Card
+                className={`border-2 border-content1-500 bg-transparent  ${
+                  bgTheme === "dark" ? "text-content1-100" : "text-black"
+                }`}
+                key={id}
+              >
                 <CardBody className="flex flex-row gap-4 text-xs">
                   <Image
                     height={1000}
                     width={1000}
                     alt="Item Image"
-                    className="h-auto w-24 rounded-md"
+                    className="h-32 w-24 rounded-md object-cover"
                     src={mainItemImgPath}
                     onClick={() => router.push(`/items/${itemId}`)}
                   />
 
                   <div className="flex w-full flex-col gap-1 capitalize">
                     <p className="font-semibold uppercase">{item?.company}</p>
-                    <p className="text-primary">{item?.name}</p>
+                    <p className="text-content1-400">{item?.name}</p>
                     <p>Model no. {item?.description.modelNumber}</p>
                     {color && <p>Color: {color}</p>}
                     {size && <p>Size: {size}</p>}
 
                     <div className="ml-auto mt-auto flex flex-col gap-0.5 text-right">
-                      <p className="text-yellow-400">Quantity: {quantity}</p>
+                      <p className="text-yellow-500">Quantity: {quantity}</p>
                       <p className="text-green-500">
                         Total amount: {totalPrice}
                       </p>
                     </div>
                   </div>
                 </CardBody>
-                <Divider />
+                <Divider className="bg-content1-500" />
                 <CardFooter className="flex justify-end">
                   {isReviewed ? (
                     <Button onPress={() => router.push("/my-reviews")}>
@@ -112,7 +118,7 @@ const Page = ({ params }: { params: { orderId: string } }) => {
                         addReviewOnOpen();
                         setReviewItemId(itemId);
                       }}
-                      color="primary"
+                      className="bg-content1-500 text-white"
                     >
                       Review
                     </Button>
@@ -125,17 +131,21 @@ const Page = ({ params }: { params: { orderId: string } }) => {
 
         <div className="flex flex-col gap-3 text-sm">
           <div>
-            <p className="mb-2 font-medium uppercase text-yellow-400">
+            <p className="mb-2 font-medium uppercase text-yellow-600">
               Delivered to:
             </p>
             <AddressBox address={order.address} />
           </div>
 
           <div className="mt-3">
-            <p className="mb-2 font-medium uppercase text-yellow-400">
+            <p className="mb-2 font-medium uppercase text-yellow-600">
               Updates Sent to:
             </p>
-            <Card className="flex flex-col gap-2 px-3 py-2">
+            <Card
+              className={`flex flex-col gap-2 rounded-md border-2 border-content1-500 bg-transparent px-3 py-2 ${
+                bgTheme === "dark" ? "text-foreground" : "text-black"
+              }`}
+            >
               <p className="flex items-center gap-2">
                 <FaPhoneAlt style={{ fontSize: "18px" }} />
                 <span>{order.address.phoneNumber}</span>
