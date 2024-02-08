@@ -19,9 +19,12 @@ import PricingBtn from "./PricingBtn";
 import NoProducts from "./NoProducts";
 import { useEffect } from "react";
 import { useBreadcrumb } from "@/app/contexts/BreadCrumbProvider";
+import { useTheme } from "@/app/contexts/ThemeContext";
 
 const Page = () => {
   const router = useRouter();
+  const { theme } = useTheme();
+  const bgTheme = theme.split("-")[1];
   const { setPrevPages } = useBreadcrumb();
   const { data: addresses } = useGetMyAddresses();
   const { data: cart } = useGetMyCart();
@@ -97,11 +100,12 @@ const Page = () => {
                 onClick={() => handleChangeDefaultAddress(id, address)}
               >
                 <Card
-                  className={`relative max-w-[400px] duration-100 ${
-                    isDeliveryAddress
-                      ? "border bg-transparent"
-                      : "cursor-pointer opacity-60 hover:opacity-80"
-                  }`}
+                  className={`relative max-w-[400px] border border-content1-500 bg-transparent duration-100 ${
+                    !isDeliveryAddress &&
+                    "cursor-pointer opacity-60 hover:opacity-80"
+                  }
+                    ${bgTheme === "dark" ? "text-foreground" : "text-black"}
+                  `}
                 >
                   <CardHeader className="flex gap-3">
                     <div
@@ -121,7 +125,7 @@ const Page = () => {
                       </p>
                     </div>
                   </CardHeader>
-                  <Divider />
+                  <Divider className="bg-content1-500" />
                   <CardBody className="flex flex-col gap-1 text-sm capitalize">
                     {flatNumber && <p>{flatNumber},</p>}
                     {street && <p>{street},</p>}
@@ -142,13 +146,18 @@ const Page = () => {
           } grid grid-cols-2 gap-3`}
         >
           <Button
-            color="secondary"
+            className={`border-content1-400 ${
+              bgTheme === "dark" ? "text-foreground" : "text-black"
+            }`}
             variant="bordered"
             onPress={() => router.push("/my-addresses")}
           >
             To Address Page
           </Button>
-          <Button color="secondary" onPress={addAddressOnOpen}>
+          <Button
+            className="bg-content1-600 text-white"
+            onPress={addAddressOnOpen}
+          >
             Add new Address
           </Button>
         </div>
