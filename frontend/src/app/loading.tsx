@@ -1,6 +1,6 @@
 "use client";
 
-import { Spinner, spinner } from "@nextui-org/react";
+import { Spinner } from "@nextui-org/react";
 import { useTheme } from "./contexts/ThemeContext";
 
 import Footer from "./components/others/Footer";
@@ -36,6 +36,7 @@ export default function Loading({ label }: { label?: string }) {
       spinnerColor = "default";
       break;
   }
+
   return (
     <>
       <div className="-mt-20 flex min-h-96 flex-col justify-center gap-5">
@@ -49,7 +50,7 @@ export default function Loading({ label }: { label?: string }) {
           {label || "Loading..."}
         </p>
       </div>
-      <Footer hasUser />
+      <Footer />
     </>
   );
 }

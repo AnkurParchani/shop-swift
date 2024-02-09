@@ -12,6 +12,7 @@ import ClearWishlistModal from "./ClearWishlistModal";
 import BreadCrumb from "../components/others/BreadCrumb";
 import { useBreadcrumb } from "../contexts/BreadCrumbProvider";
 import Error from "../error";
+import Footer from "../components/others/Footer";
 
 const Page = () => {
   const router = useRouter();
@@ -77,6 +78,8 @@ const Page = () => {
           onOpenChange={clearWishlistOnOpenChange}
         />
       )}
+
+      <Footer />
     </>
   );
 };

@@ -1,5 +1,6 @@
 "use client";
 
+import { useGetUser } from "@/app/hooks/useUser";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "react-router-dom";
@@ -17,7 +18,13 @@ type FooterLinkType = {
   blank?: boolean;
 };
 
-const Footer = ({ hasUser }: { hasUser: boolean }) => {
+const Footer = () => {
+  const { data: user } = useGetUser();
+
+  let hasUser: boolean;
+  if (user) hasUser = true;
+  else hasUser = false;
+
   return (
     <>
       <div className="mt-4 bg-[#111] px-5 py-6">

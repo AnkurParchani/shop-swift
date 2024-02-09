@@ -15,6 +15,7 @@ import NotFound from "@/app/not-found";
 
 import { useGetSingleItem } from "@/app/hooks/useItems";
 import { useTheme } from "@/app/contexts/ThemeContext";
+import Footer from "@/app/components/others/Footer";
 
 type PageType = {
   params: { itemId: string };
@@ -87,6 +88,8 @@ const Page = ({ params }: PageType) => {
 
         <SellerInfo sellerLink={extraDetails.visitLink} />
       </div>
+
+      <Footer />
     </>
   );
 };

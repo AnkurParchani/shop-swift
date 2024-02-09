@@ -17,6 +17,7 @@ import UpdatePasswordBox from "./UpdatePasswordBox";
 
 import { useTheme } from "../contexts/ThemeContext";
 import { useGetUser } from "../hooks/useUser";
+import Footer from "../components/others/Footer";
 
 const Page = () => {
   const { theme } = useTheme();
@@ -85,6 +86,8 @@ const Page = () => {
           onOpenChange={deleteAccountOnOpenChange}
         />
       )}
+
+      <Footer />
     </>
   );
 };

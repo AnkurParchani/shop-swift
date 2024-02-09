@@ -26,6 +26,7 @@ import { formatDate } from "@/app/utils/helpers";
 import { useGetSingleOrder } from "@/app/hooks/useOrders";
 import { useGetMyReviews } from "@/app/hooks/useReviews";
 import { useTheme } from "@/app/contexts/ThemeContext";
+import Footer from "@/app/components/others/Footer";
 
 type UseGetSingleOrderResult = {
   data: Order;
@@ -181,6 +182,8 @@ const Page = ({ params }: { params: { orderId: string } }) => {
           itemId={reviewItemId}
         />
       )}
+
+      <Footer />
     </>
   );
 };
