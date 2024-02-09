@@ -8,7 +8,6 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Input,
   Navbar,
   NavbarContent,
   NavbarItem,
@@ -17,17 +16,21 @@ import {
   NavbarMenuToggle,
   useDisclosure,
 } from "@nextui-org/react";
-import { CiSearch } from "react-icons/ci";
 import { toast } from "react-toastify";
 import { useCookies } from "react-cookie";
 import { usePathname, useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
-import { useBreadcrumb } from "@/app/contexts/BreadCrumbProvider";
-import { useGetUser } from "@/app/hooks/useUser";
+
 import ThemeSelectorModal from "../others/ThemeSelectorModal";
 import SearchBtn from "./SearchBtn";
 
+import { useBreadcrumb } from "@/app/contexts/BreadCrumbProvider";
+import { useGetUser } from "@/app/hooks/useUser";
+import { useTheme } from "@/app/contexts/ThemeContext";
+
 const Nav = () => {
+  const { theme } = useTheme();
+  const bgTheme = theme.split("-")[1];
   const router = useRouter();
   let pathname = usePathname();
   const queryClient = useQueryClient();
@@ -219,71 +222,33 @@ const Nav = () => {
     // If the user is not logged in
     <>
       <Navbar isBordered>
-        <NavbarContent className="sm:hidden">
+        <NavbarContent>
           <Link href="/" className="font-bold text-inherit text-white">
             Shop_Swift
           </Link>
-          <Input
-            classNames={{
-              base: "w-[10rem] sm:w-[20rem] h-10",
-              mainWrapper: "h-full",
-              input: "text-small",
-              inputWrapper:
-                "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-            }}
-            placeholder="Type to search..."
-            size="sm"
-            startContent={<CiSearch size={18} />}
-            type="search"
-          />
         </NavbarContent>
 
         <NavbarContent className="pr-3 sm:hidden" justify="center">
+          <SearchBtn />
           <NavbarMenuToggle />
         </NavbarContent>
 
-        <NavbarContent className="hidden gap-4 sm:flex" justify="center">
-          <Link href="/" className="font-bold text-inherit">
-            Shop_Swift
-          </Link>
-        </NavbarContent>
-
-        <div className="hidden sm:block">
-          <NavbarContent justify="end">
-            <NavbarItem>
-              <Button as={Link} color="primary" href="/sign-up" variant="flat">
-                Sign Up
-              </Button>
-            </NavbarItem>
-            <NavbarItem>
-              <Button as={Link} color="primary" href="/login" variant="solid">
-                Login
-              </Button>
-            </NavbarItem>
-            <NavbarMenuItem
-              onClick={selectThemeOnOpen}
-              key="changeTheme"
-              className="cursor-pointer text-white"
-            >
-              <p className="rounded-md bg-green-500 px-3 py-2 text-sm">
-                Change Theme
-              </p>
-            </NavbarMenuItem>
-          </NavbarContent>
-        </div>
-
-        <NavbarMenu className="bg-[#333] text-white">
-          <NavbarMenuItem>
+        <NavbarMenu className="max-h-40 bg-transparent text-white sm:hidden">
+          <NavbarMenuItem className="mt-2">
             <Link className="w-full" href="/login">
               Login
             </Link>
           </NavbarMenuItem>
-          <NavbarMenuItem>
+          <NavbarMenuItem className="mt-2">
             <Link className="w-full" href="/sign-up">
               Sign-up
             </Link>
           </NavbarMenuItem>
-          <NavbarMenuItem key="changeTheme" onClick={selectThemeOnOpen}>
+          <NavbarMenuItem
+            className="mt-2"
+            key="changeTheme"
+            onClick={selectThemeOnOpen}
+          >
             <div className="flex items-center justify-between text-base text-green-500">
               <p>Change Theme</p>
               <div>
@@ -294,6 +259,45 @@ const Nav = () => {
             </div>
           </NavbarMenuItem>
         </NavbarMenu>
+
+        <div className="hidden max-h-20 sm:block">
+          <NavbarContent justify="end" className="flex gap-2.5">
+            <SearchBtn />
+            <NavbarMenuItem
+              onClick={selectThemeOnOpen}
+              key="changeTheme"
+              className="cursor-pointer text-white"
+            >
+              <p className="rounded-md bg-green-500 px-2 py-2 text-sm">
+                Change Theme
+              </p>
+            </NavbarMenuItem>
+            <NavbarItem>
+              <Button
+                radius="sm"
+                as={Link}
+                className={`border border-content1-500 bg-transparent ${
+                  bgTheme === "dark" ? "text-white" : "text-black"
+                }`}
+                href="/sign-up"
+                variant="flat"
+              >
+                Sign Up
+              </Button>
+            </NavbarItem>
+            <NavbarItem>
+              <Button
+                radius="sm"
+                as={Link}
+                className="bg-content1-500 text-white"
+                href="/login"
+                variant="solid"
+              >
+                Login
+              </Button>
+            </NavbarItem>
+          </NavbarContent>
+        </div>
       </Navbar>
 
       {/* When changing theme modal is open */}
