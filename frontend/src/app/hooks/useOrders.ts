@@ -8,22 +8,22 @@ import { toast } from "react-toastify";
 
 // Getting all orders of the user
 export const useGetMyOrders = () => {
-  const { data, error, isLoading } = useQuery({
+  const { data, error, isLoading, refetch } = useQuery({
     queryFn: getMyOrders,
     queryKey: ["my-orders"],
   });
 
-  return { data, isLoading, error };
+  return { data, isLoading, error, refetch };
 };
 
 // Getting single items of a particular order
 export const useGetSingleOrder = (id: string) => {
-  const { data, error, isLoading } = useQuery({
+  const { data, error, isLoading, refetch } = useQuery({
     queryFn: () => getSingleOrder(id),
     queryKey: [`order-${id}`],
   });
 
-  return { data, isLoading, error };
+  return { data, isLoading, error, refetch };
 };
 
 // Creating an Order

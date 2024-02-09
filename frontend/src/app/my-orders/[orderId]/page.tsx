@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FaPhoneAlt } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
@@ -15,20 +16,22 @@ import {
 
 import Loading from "@/app/loading";
 import BreadCrumb from "@/app/components/others/BreadCrumb";
-import EmptyOrders from "../EmptyOrders";
 import AddressBox from "@/app/components/others/AddressBox";
+import AddReviewModal from "@/app/my-reviews/AddReviewModal";
+import Error from "@/app/error";
+import NotFound from "@/app/not-found";
 
 import { Order, Review } from "../../../../global";
 import { formatDate } from "@/app/utils/helpers";
 import { useGetSingleOrder } from "@/app/hooks/useOrders";
 import { useGetMyReviews } from "@/app/hooks/useReviews";
-import AddReviewModal from "@/app/my-reviews/AddReviewModal";
-import { useState } from "react";
 import { useTheme } from "@/app/contexts/ThemeContext";
 
 type UseGetSingleOrderResult = {
   data: Order;
   isLoading: boolean;
+  error: Error;
+  refetch: () => void;
 };
 
 const Page = ({ params }: { params: { orderId: string } }) => {
@@ -36,10 +39,17 @@ const Page = ({ params }: { params: { orderId: string } }) => {
   const { theme } = useTheme();
   const bgTheme = theme.split("-")[1];
   const [reviewItemId, setReviewItemId] = useState(0);
-  const { data: reviews } = useGetMyReviews();
-  const { data: order, isLoading } = useGetSingleOrder(
-    params.orderId,
-  ) as UseGetSingleOrderResult;
+  const {
+    data: reviews,
+    refetch: reviewRefetch,
+    error: reviewError,
+  } = useGetMyReviews();
+  const {
+    data: order,
+    isLoading,
+    error: singleOrderError,
+    refetch: singleOrderRefetch,
+  } = useGetSingleOrder(params.orderId) as UseGetSingleOrderResult;
   const {
     isOpen: addReviewIsOpen,
     onOpen: addReviewOnOpen,
@@ -48,7 +58,11 @@ const Page = ({ params }: { params: { orderId: string } }) => {
   } = useDisclosure();
 
   if (isLoading) return <Loading />;
-  if (!order) return <EmptyOrders />;
+  if (singleOrderError)
+    return <Error error={singleOrderError} reset={singleOrderRefetch} />;
+  if (reviewError) return <Error error={reviewError} reset={reviewRefetch} />;
+
+  if (!order) return <NotFound />;
 
   const formattedDate = formatDate(order.date);
 

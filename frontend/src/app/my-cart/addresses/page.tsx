@@ -1,6 +1,5 @@
 "use client";
 
-import BreadCrumb from "@/app/components/others/BreadCrumb";
 import { useRouter } from "next/navigation";
 import { useGetMyAddresses, useUpdateAddress } from "@/app/hooks/useAddress";
 import { useGetMyCart } from "@/app/hooks/useCart";
@@ -12,11 +11,15 @@ import {
   Divider,
   useDisclosure,
 } from "@nextui-org/react";
-import { Address } from "../../../../global";
 import { toast } from "react-toastify";
+
 import AddAddressForm from "@/app/my-addresses/AddAddressForm";
 import PricingBtn from "./PricingBtn";
 import NoProducts from "./NoProducts";
+import Error from "@/app/error";
+import BreadCrumb from "@/app/components/others/BreadCrumb";
+
+import { Address } from "../../../../global";
 import { useEffect } from "react";
 import { useBreadcrumb } from "@/app/contexts/BreadCrumbProvider";
 import { useTheme } from "@/app/contexts/ThemeContext";
@@ -26,8 +29,16 @@ const Page = () => {
   const { theme } = useTheme();
   const bgTheme = theme.split("-")[1];
   const { setPrevPages } = useBreadcrumb();
-  const { data: addresses } = useGetMyAddresses();
-  const { data: cart } = useGetMyCart();
+  const {
+    data: addresses,
+    refetch: myAddressesRefetch,
+    error: myAddressesError,
+  } = useGetMyAddresses();
+  const {
+    data: cart,
+    refetch: myCartRefetch,
+    error: myCartError,
+  } = useGetMyCart();
 
   const updateAddressMutation = useUpdateAddress();
   const {
@@ -41,6 +52,11 @@ const Page = () => {
   useEffect(() => {
     setPrevPages([{ label: "Cart", link: "/my-cart" }]);
   }, [setPrevPages]);
+
+  // If there's error in getting cart or addresses
+  if (myAddressesError)
+    return <Error error={myAddressesError} reset={myAddressesRefetch} />;
+  if (myCartError) return <Error error={myCartError} reset={myCartRefetch} />;
 
   // If there are no products in cart and someone has intentionally made a request to this page
   if (!cart || cart.length === 0) return <NoProducts />;

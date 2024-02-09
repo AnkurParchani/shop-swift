@@ -11,11 +11,12 @@ import { useRouter } from "next/navigation";
 import ClearWishlistModal from "./ClearWishlistModal";
 import BreadCrumb from "../components/others/BreadCrumb";
 import { useBreadcrumb } from "../contexts/BreadCrumbProvider";
+import Error from "../error";
 
 const Page = () => {
   const router = useRouter();
   const { setPrevPages } = useBreadcrumb();
-  const { data: wishlist, isLoading, error } = useGetMyWishlist();
+  const { data: wishlist, isLoading, error, refetch } = useGetMyWishlist();
   const {
     isOpen: clearWishlistIsOpen,
     onOpen: clearWishlistOnOpen,
@@ -23,7 +24,8 @@ const Page = () => {
   } = useDisclosure();
 
   if (isLoading) return <Loading />;
-  if (wishlist.length === 0 || !wishlist) return <EmptyWishlist />;
+  if (error) return <Error error={error} reset={refetch} />;
+  if (wishlist.length === 0) return <EmptyWishlist />;
 
   return (
     <>

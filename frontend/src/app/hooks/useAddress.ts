@@ -9,13 +9,13 @@ import { toast } from "react-toastify";
 
 // To get all the addresses of the user
 export const useGetMyAddresses = () => {
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch } = useQuery({
     queryFn: getMyAddresses,
     queryKey: ["my-address"],
     staleTime: 30000,
   });
 
-  return { data, isLoading, error };
+  return { data, isLoading, error, refetch };
 };
 
 // To add an address of the user

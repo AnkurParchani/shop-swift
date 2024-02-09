@@ -24,6 +24,7 @@ import { Review } from "../../../global";
 import { formatDate } from "../utils/helpers";
 import { useGetMyReviews } from "../hooks/useReviews";
 import { useTheme } from "../contexts/ThemeContext";
+import Error from "../error";
 
 const Page = () => {
   const router = useRouter();
@@ -31,7 +32,7 @@ const Page = () => {
   const bgTheme = theme.split("-")[1];
   const [review, setReview] = useState<Review | null>();
   const [reviewId, setReviewId] = useState<number>(0);
-  const { data: reviews, isLoading, error } = useGetMyReviews();
+  const { data: reviews, isLoading, error, refetch } = useGetMyReviews();
   const {
     isOpen: updateReviewIsOpen,
     onOpen: updateReviewOnOpen,
@@ -46,6 +47,7 @@ const Page = () => {
   } = useDisclosure();
 
   if (isLoading) return <Loading />;
+  if (error) return <Error error={error} reset={refetch} />;
   if (!reviews || !reviews.length) return <EmptyReviews />;
 
   return (

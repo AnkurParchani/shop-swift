@@ -9,12 +9,12 @@ import {
 
 // To get all your cart items
 export const useGetMyCart = () => {
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["my-cart"],
     queryFn: getMyCart,
   });
 
-  return { data, isLoading, error };
+  return { data, isLoading, error, refetch };
 };
 
 // To add item to user's cart

@@ -18,7 +18,7 @@ import { useBreadcrumb } from "../contexts/BreadCrumbProvider";
 
 const Page = () => {
   const { data: cart } = useGetMyCart();
-  const { data: address } = useGetMyAddresses();
+  const { data: addresses } = useGetMyAddresses();
   const { setPrevPages } = useBreadcrumb();
   const [clientSecret, setClientSecret] = useState("");
   const [checkoutIsLoading, setCheckoutIsLoading] = useState(true);
@@ -59,7 +59,7 @@ const Page = () => {
     ]);
   }, [setPrevPages]);
 
-  if (!cart || !cart.length || !address || !address.length)
+  if (!cart || !cart.length || !addresses || !addresses.length)
     return <IncompleteDetails />;
 
   if (checkoutIsLoading) return <p>Client secret loading...</p>;

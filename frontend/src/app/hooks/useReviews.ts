@@ -9,12 +9,12 @@ import { toast } from "react-toastify";
 
 // Getting all reviews of the user
 export const useGetMyReviews = () => {
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch } = useQuery({
     queryFn: getMyReviews,
     queryKey: ["my-reviews"],
   });
 
-  return { data, isLoading, error };
+  return { data, isLoading, error, refetch };
 };
 
 // Adding a new Review

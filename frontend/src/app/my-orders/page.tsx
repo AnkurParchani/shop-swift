@@ -17,14 +17,16 @@ import { Order } from "../../../global";
 import { formatDate } from "../utils/helpers";
 import { useTheme } from "../contexts/ThemeContext";
 import { useGetMyOrders } from "../hooks/useOrders";
+import Error from "../error";
 
 const Page = () => {
   const router = useRouter();
   const { theme } = useTheme();
   const bgTheme = theme.split("-")[1];
-  const { data: orders, isLoading } = useGetMyOrders();
+  const { data: orders, isLoading, refetch, error } = useGetMyOrders();
 
   if (isLoading) return <Loading />;
+  if (error) return <Error error={error} reset={refetch} />;
   if (!orders || orders.length === 0) return <EmptyOrders />;
 
   // Reversing the orders

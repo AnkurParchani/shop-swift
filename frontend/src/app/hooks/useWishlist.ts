@@ -9,12 +9,12 @@ import {
 
 // Getting all wishlist items
 export const useGetMyWishlist = () => {
-  const { data, error, isLoading } = useQuery({
+  const { data, error, isLoading, refetch } = useQuery({
     queryFn: getMyWishlist,
     queryKey: ["my-wishlist"],
   });
 
-  return { data, isLoading, error };
+  return { data, isLoading, error, refetch };
 };
 
 // Adding to wishlist

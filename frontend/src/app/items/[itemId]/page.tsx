@@ -1,7 +1,5 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { getSingleItem } from "@/app/services/apiItems";
 import Loading from "@/app/loading";
 import CarouselImgs from "@/app/components/items/CarouselImgs";
 import ReviewSummary from "./ReviewSummary";
@@ -12,6 +10,9 @@ import ExtraDetailsTable from "./ExtraDetailsTable";
 import SellerInfo from "./SellerInfo";
 import ItemConfigurations from "./ItemConfigurations";
 import ActionBtn from "./ActionBtn";
+import Error from "@/app/error";
+import NotFound from "@/app/not-found";
+
 import { useGetSingleItem } from "@/app/hooks/useItems";
 import { useTheme } from "@/app/contexts/ThemeContext";
 
@@ -22,10 +23,16 @@ type PageType = {
 const Page = ({ params }: PageType) => {
   const { theme } = useTheme();
   const bgTheme = theme.split("-")[1];
-  const { data: item, isLoading, error } = useGetSingleItem(params.itemId);
+  const {
+    data: item,
+    isLoading,
+    error,
+    refetch,
+  } = useGetSingleItem(params.itemId);
 
   if (isLoading) return <Loading />;
-  if (!item) return <p>No item found with this itemID</p>;
+  if (!item) return <NotFound />;
+  if (error) return <Error error={error} reset={refetch} />;
 
   const {
     images,

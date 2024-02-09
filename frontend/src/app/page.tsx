@@ -6,6 +6,8 @@ import { useSearchParams } from "react-router-dom";
 import FilterSortControls from "./components/others/FilterSortControls";
 import Loading from "./loading";
 import Footer from "./components/others/Footer";
+import Error from "./error";
+import EmptyList from "./components/others/EmptyList";
 
 import { useGetAllFilteredItems, useGetAllItems } from "./hooks/useItems";
 import { Item } from "../../global";
@@ -20,7 +22,12 @@ import "swiper/css/free-mode";
 
 export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { data: allItems, isLoading: allItemsIsLoading } = useGetAllItems();
+  const {
+    data: allItems,
+    isLoading: allItemsIsLoading,
+    error: allItemsError,
+    refetch: allItemsRefetch,
+  } = useGetAllItems();
   const {
     data: filteredItems,
     isLoading: filteredItemsIsLoading,
@@ -34,7 +41,18 @@ export default function Home() {
 
   if (filteredItemsIsLoading || allItemsIsLoading) return <Loading />;
 
-  if (filteredItems.length === 0) return <p>No items found</p>;
+  if (allItemsError)
+    return <Error error={allItemsError} reset={() => allItemsRefetch()} />;
+
+  if (filteredItems.length === 0)
+    return (
+      <EmptyList
+        description="Try again with different filters"
+        iconSrc="/icons/not-found.svg"
+        heading="No Items found"
+        backButton
+      />
+    );
 
   // Best sellers items (sort according to number of orders of an item)
   const bestSellerItems = filteredItems.sort(

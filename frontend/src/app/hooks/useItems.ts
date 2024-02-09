@@ -17,20 +17,20 @@ export const useGetAllFilteredItems = (searchParams: URLSearchParams) => {
 
 // Getting all the items (non-filtered)
 export const useGetAllItems = () => {
-  const { isLoading, error, data } = useQuery({
+  const { isLoading, error, data, refetch } = useQuery({
     queryKey: ["items"],
     queryFn: getItems,
   });
 
-  return { isLoading, error, data };
+  return { isLoading, error, data, refetch };
 };
 
 // Getting single item
 export const useGetSingleItem = (itemId: string) => {
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: [`item-${itemId}`],
     queryFn: () => getSingleItem(itemId),
   });
 
-  return { data, isLoading, error };
+  return { data, isLoading, error, refetch };
 };

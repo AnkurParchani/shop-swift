@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, CardFooter, useDisclosure } from "@nextui-org/react";
 
 import Loading from "../loading";
+import Error from "../error";
 import EmptyAddresses from "./EmptyAddresses";
 import AddAddressForm from "./AddAddressForm";
 import DeleteAddressModal from "./DeleteAddressModal";
@@ -13,12 +14,11 @@ import BreadCrumb from "../components/others/BreadCrumb";
 
 import { Address } from "../../../global";
 import { useGetMyAddresses } from "../hooks/useAddress";
-import { useBreadcrumb } from "../contexts/BreadCrumbProvider";
 
 const Page = () => {
   const [address, setAddress] = useState<Address | null>();
   const [addressId, setAddressId] = useState<number>(0);
-  const { data: addresses, isLoading, error } = useGetMyAddresses();
+  const { data: addresses, isLoading, error, refetch } = useGetMyAddresses();
   const {
     isOpen: addAddressIsOpen,
     onOpen: addAddressOnOpen,
@@ -39,6 +39,7 @@ const Page = () => {
   } = useDisclosure();
 
   if (isLoading) return <Loading />;
+  if (error) return <Error error={error} reset={refetch} />;
   if (addresses && addresses.length === 0) return <EmptyAddresses />;
 
   return (

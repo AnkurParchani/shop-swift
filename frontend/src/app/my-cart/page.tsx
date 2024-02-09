@@ -27,13 +27,14 @@ import { CartItem } from "../../../global";
 import { useGetMyCart, useUpdateCart } from "../hooks/useCart";
 import { useBreadcrumb } from "../contexts/BreadCrumbProvider";
 import { useTheme } from "../contexts/ThemeContext";
+import Error from "../error";
 
 const Page = () => {
   const router = useRouter();
   const { theme } = useTheme();
   const bgTheme = theme.split("-")[1];
   const { setPrevPages } = useBreadcrumb();
-  const { data: cart, isLoading, error } = useGetMyCart();
+  const { data: cart, isLoading, error, refetch } = useGetMyCart();
   const {
     isOpen: addToCartIsOpen,
     onOpen: addToCartOnOpen,
@@ -54,8 +55,8 @@ const Page = () => {
   }, [setPrevPages]);
 
   if (isLoading) return <Loading />;
-
-  if (cart.length === 0) return <EmptyCart />;
+  if (error) return <Error error={error} reset={refetch} />;
+  if (cart && cart.length === 0) return <EmptyCart />;
 
   const selectedItemsInCart =
     cart && cart.filter((cart: CartItem) => cart.isChecked === true);
