@@ -15,6 +15,7 @@ import { useGetMyCart } from "../hooks/useCart";
 import { useGetMyAddresses } from "../hooks/useAddress";
 import { handleApiError } from "../utils/handleApiError";
 import { useBreadcrumb } from "../contexts/BreadCrumbProvider";
+import Loading from "../loading";
 
 const Page = () => {
   const { data: cart } = useGetMyCart();
@@ -62,7 +63,8 @@ const Page = () => {
   if (!cart || !cart.length || !addresses || !addresses.length)
     return <IncompleteDetails />;
 
-  if (checkoutIsLoading) return <p>Client secret loading...</p>;
+  if (checkoutIsLoading)
+    return <Loading label="Payment Portal is loading..." />;
 
   const stripePromise = loadStripe(
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,

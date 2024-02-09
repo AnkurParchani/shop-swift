@@ -36,7 +36,6 @@ export default function Error({
         <h3 className="mb-2 text-center text-xs">
           Something went wrong, please try again!
         </h3>
-        {error.message && <h4>Error- {error.message}</h4>}
       </div>
 
       <div className="flex gap-3">
