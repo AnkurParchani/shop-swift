@@ -2,5 +2,13 @@
 - nav image error
 
 - onPress={onClose} bug fix
-- all modals color
-- cart, seperate order
+
+// Today's work
+search function finish 
+error page 
+not-found
+loading page
+responsiveness finish
+other misc. whatever you find
+
+leave - nextauth, animation, suspense

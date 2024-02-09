@@ -25,6 +25,13 @@ export type ExtraDetails = {
   size: string;
 };
 
+// Search functionality found items
+export type MatchedItem = {
+  item: Item;
+  searchValue: string;
+  matchedProperties: string[]; // Specify the type of matchedProperties
+};
+
 // For users
 export type User = {
   id: number;

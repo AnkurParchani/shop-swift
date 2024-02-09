@@ -38,13 +38,16 @@ function SortModal({
 
   return (
     <Modal
-      className="bg-[#333]"
+      classNames={{
+        body: "py-2",
+        closeButton: "hover:bg-white/5 active:bg-white/10",
+      }}
       backdrop="blur"
       isOpen={isOpen}
       onOpenChange={onOpenChange}
     >
       <ModalContent>
-        <ModalHeader className="text-content1-700 flex items-center gap-1">
+        <ModalHeader className="flex items-center gap-1 text-content1-700">
           <FaSort />
           Sort
         </ModalHeader>
@@ -106,7 +109,7 @@ function SortModalBtn({
     <Button
       onClick={onClick as MouseEventHandler<HTMLButtonElement>}
       className={`border-2 bg-transparent ${
-        currentlySelected ? "text-danger" : "text-white"
+        currentlySelected ? "text-danger" : "text-black"
       }`}
       radius="sm"
     >

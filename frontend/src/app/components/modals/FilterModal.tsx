@@ -31,8 +31,13 @@ const FilterModal = ({
   const [searchParams, setSearchParams] = useSearchParams();
   const categories =
     items &&
-    items.map(
-      (item) => item.category.charAt(0).toUpperCase() + item.category.slice(1),
+    Array.from(
+      new Set(
+        items.map(
+          (item) =>
+            item.category.charAt(0).toUpperCase() + item.category.slice(1),
+        ),
+      ),
     );
 
   const initialFilterOptions = {
@@ -96,17 +101,20 @@ const FilterModal = ({
 
   return (
     <Modal
-      className="bg-[#333]"
+      classNames={{
+        body: "py-2",
+        closeButton: "hover:bg-white/5 active:bg-white/10",
+      }}
       backdrop="blur"
       isOpen={isOpen}
       onOpenChange={onOpenChange}
     >
       <ModalContent>
-        <ModalHeader className="flex items-center gap-1 text-danger">
+        <ModalHeader className="flex items-center gap-1">
           <FaFilter />
           Filter
         </ModalHeader>
-        <ModalBody className="flex flex-col gap-3 text-white">
+        <ModalBody className="flex flex-col gap-3">
           <InputSelect
             label="Gender"
             key={`gender-${gender}`}
@@ -157,14 +165,16 @@ const FilterModal = ({
         </ModalBody>
         <ModalFooter>
           <Button
+            size="sm"
             onPress={handleResetFilters}
-            color="secondary"
+            color="danger"
             variant="solid"
             radius="sm"
           >
             Reset
           </Button>
           <Button
+            size="sm"
             onPress={handleSetFilter}
             color="success"
             variant="solid"

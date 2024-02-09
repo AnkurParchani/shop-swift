@@ -47,6 +47,7 @@ const Footer = ({ hasUser }: { hasUser: boolean }) => {
                 <FooterLink href="/my-reviews">Reviews</FooterLink>
                 <FooterLink href="/my-addresses">Addresses</FooterLink>
                 <FooterLink href="/my-cart">Cart</FooterLink>
+                <FooterLink href="/settings">Settings</FooterLink>
                 <FooterLink href="">Privacy Policy</FooterLink>
               </FooterPart>
             )}

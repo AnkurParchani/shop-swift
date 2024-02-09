@@ -24,7 +24,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { useBreadcrumb } from "@/app/contexts/BreadCrumbProvider";
 import { useGetUser } from "@/app/hooks/useUser";
-import ThemeSelectorModal from "./ThemeSelectorModal";
+import ThemeSelectorModal from "../others/ThemeSelectorModal";
+import SearchBtn from "./SearchBtn";
 
 const Nav = () => {
   const router = useRouter();
@@ -93,19 +94,7 @@ const Nav = () => {
         </NavbarContent>
 
         <NavbarContent as="div" className="items-center" justify="end">
-          <Input
-            classNames={{
-              base: "w-[10rem] sm:w-[20rem] h-10",
-              mainWrapper: "h-full",
-              input: "text-small",
-              inputWrapper:
-                "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-            }}
-            placeholder="Type to search..."
-            size="sm"
-            startContent={<CiSearch size={18} />}
-            type="search"
-          />
+          <SearchBtn />
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
               <Avatar
@@ -274,7 +263,7 @@ const Nav = () => {
             <NavbarMenuItem
               onClick={selectThemeOnOpen}
               key="changeTheme"
-              className="text-white"
+              className="cursor-pointer text-white"
             >
               <p className="rounded-md bg-green-500 px-3 py-2 text-sm">
                 Change Theme
