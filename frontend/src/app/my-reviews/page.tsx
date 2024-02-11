@@ -60,7 +60,7 @@ const Page = () => {
 
         <BreadCrumb curPage="Reviews" />
 
-        <div className="mt-4 flex flex-col gap-4">
+        <div className="mt-4 grid gap-4 md:grid-cols-2 lg:gap-8">
           {reviews.map((review: Review) => {
             const { id, item, itemId, content, date, isEdited, stars } = review;
             const mainItemImgPath =
@@ -70,8 +70,8 @@ const Page = () => {
             return (
               <Card
                 key={id}
-                className={`relative max-w-[400px] border border-content1-300 bg-transparent ${
-                  bgTheme === "dark" ? "text-foreground" : "text-background"
+                className={`relative mx-auto w-full border-2 border-content1-500 bg-transparent sm:w-11/12 ${
+                  bgTheme === "dark" ? "text-content1-100" : "text-black"
                 }`}
               >
                 <CardHeader className="flex items-start justify-between gap-2">

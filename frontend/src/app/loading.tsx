@@ -39,7 +39,7 @@ export default function Loading({ label }: { label?: string }) {
 
   return (
     <>
-      <div className="-mt-20 flex min-h-96 flex-col justify-center gap-5">
+      <div className="mt-20 flex min-h-72 flex-col items-center gap-5">
         {/* @ts-ignore */}
         <Spinner size="lg" color={spinnerColor} />
         <p

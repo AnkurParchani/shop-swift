@@ -52,41 +52,48 @@ const Page = ({ params }: PageType) => {
 
   return (
     <>
-      <CarouselImgs images={images} />
-      <div className="mx-auto mt-3 flex w-11/12 flex-col gap-1">
-        <b className="text-lg uppercase">{company}</b>
-        {category && (
-          <p
-            className={`-mt-1 text-sm font-medium capitalize  ${
-              bgTheme === "dark" ? "text-content1-200" : "text-content1-700"
-            }`}
-          >
-            {category}
-          </p>
-        )}
-        <p className="text-sm text-gray-500">{name}</p>
-        <ReviewSummary ratings={ratings} numReviews={numReviews} />
-        <PriceSummary
-          originalPrice={originalPrice}
-          discountedPrice={discountedPrice}
-        />
+      <div className="md:hidden">
+        <CarouselImgs images={images} />
+      </div>
+      <div className="mx-auto mt-3 flex w-11/12 flex-col gap-1 md:grid md:grid-cols-2">
+        <div className="hidden md:block">
+          <CarouselImgs images={images} />
+        </div>
+        <div>
+          <b className="text-lg uppercase">{company}</b>
+          {category && (
+            <p
+              className={`-mt-1 text-sm font-medium capitalize  ${
+                bgTheme === "dark" ? "text-content1-200" : "text-content1-700"
+              }`}
+            >
+              {category}
+            </p>
+          )}
+          <p className="text-sm text-gray-500">{name}</p>
+          <ReviewSummary ratings={ratings} numReviews={numReviews} />
+          <PriceSummary
+            originalPrice={originalPrice}
+            discountedPrice={discountedPrice}
+          />
 
-        <ItemConfigurations extraDetails={extraDetails} />
+          <ItemConfigurations extraDetails={extraDetails} />
 
-        <ActionBtn
-          itemDetails={{ discountedPrice, extraDetails, id: +params.itemId }}
-          itemId={params.itemId}
-        />
+          <ActionBtn
+            itemDetails={{ discountedPrice, extraDetails, id: +params.itemId }}
+            itemId={params.itemId}
+          />
 
-        <AboutBox about={about} />
-        <ReviewContainer reviews={reviews} />
-        <ExtraDetailsTable
-          category={category}
-          company={company}
-          description={description}
-        />
+          <AboutBox about={about} />
+          <ReviewContainer reviews={reviews} />
+          <ExtraDetailsTable
+            category={category}
+            company={company}
+            description={description}
+          />
 
-        <SellerInfo sellerLink={extraDetails.visitLink} />
+          <SellerInfo sellerLink={extraDetails.visitLink} />
+        </div>
       </div>
 
       <Footer />

@@ -90,124 +90,131 @@ const Page = () => {
           nextPages={["Addresses", "Payment"]}
         />
 
-        {sortedCart.map((cart: CartItem) => {
-          const discount = Math.round(
-            ((cart.item.originalPrice - cart.item.discountedPrice) /
-              cart.item.originalPrice) *
-              100,
-          );
-          const itemImgSrc = cart.item.images?.filter(
-            (img) => img.isItemMainImg === true,
-          )[0].path;
+        {selectedItemsInCart.length > 0 && (
+          <PriceSummary cart={selectedItemsInCart} />
+        )}
 
-          return (
-            <Card
-              key={cart.id}
-              className={`relative max-w-[400px] border border-content1-300 bg-transparent ${
-                bgTheme === "dark" ? "text-foreground" : "text-background"
-              }`}
-            >
-              <div className="absolute left-2 top-1 z-20 scale-125">
-                <input
-                  type="checkbox"
-                  onChange={(e) => handleToggleFromCheckout(e, cart)}
-                  className="accent-yellow-500"
-                  defaultChecked={cart.isChecked}
-                />
-              </div>
+        <div className="mt-4 grid grid-cols-1 gap-4">
+          {sortedCart.map((cart: CartItem) => {
+            const discount = Math.round(
+              ((cart.item.originalPrice - cart.item.discountedPrice) /
+                cart.item.originalPrice) *
+                100,
+            );
+            const itemImgSrc = cart.item.images?.filter(
+              (img) => img.isItemMainImg === true,
+            )[0].path;
 
-              <div
-                onClick={() => {
-                  setCartId(cart.id);
-                  removeFromCartOnOpen();
-                }}
-                className="absolute right-1.5 top-1.5 z-20 rounded-full bg-red-500 p-0.5 text-sm"
-              >
-                <RxCross2 />
-              </div>
-
-              <CardBody
-                className={`flex flex-row gap-3 ${
-                  !cart.isChecked && "opacity-30"
+            return (
+              <Card
+                key={cart.id}
+                className={`relative mx-auto w-full border-2 border-content1-500 bg-transparent sm:w-9/12 ${
+                  bgTheme === "dark" ? "text-content1-100" : "text-black"
                 }`}
               >
-                {itemImgSrc && (
-                  <Image
-                    alt="Item image"
-                    height={1000}
-                    src={itemImgSrc}
-                    className="h-28 w-[84px] rounded-md object-cover"
-                    width={1000}
+                <div className="absolute left-2 top-1 z-20 scale-125">
+                  <input
+                    type="checkbox"
+                    onChange={(e) => handleToggleFromCheckout(e, cart)}
+                    className="cursor-pointer accent-yellow-500"
+                    defaultChecked={cart.isChecked}
                   />
-                )}
-
-                <div className="flex flex-col gap-0.5">
-                  <p className="text-md font-semibold capitalize">
-                    {cart.item.company}
-                  </p>
-                  <p className="text-xs text-default-500">{cart.item.name}</p>
-                  <p className="mt-1 flex flex-col gap-1 text-xs">
-                    <span>Quantity: {cart.quantity}</span>
-                    {cart.size && (
-                      <span className="capitalize">Size: {cart.size}</span>
-                    )}
-                    {cart.color && (
-                      <span className="capitalize">Color: {cart.color}</span>
-                    )}
-                  </p>
-
-                  <p className="mt-2 flex items-center gap-1 text-sm">
-                    <span
-                      className={` ${
-                        bgTheme === "dark"
-                          ? "text-content1-400"
-                          : "text-content1-600"
-                      } `}
-                    >
-                      ₹{cart.price}
-                    </span>
-                    <span
-                      className={` ${
-                        bgTheme === "dark" ? "text-red-400" : "text-red-600"
-                      } text-xs line-through`}
-                    >
-                      ₹{cart.item.originalPrice * cart.quantity}
-                    </span>
-                    <span
-                      className={`text-start text-xs ${
-                        bgTheme === "dark"
-                          ? "text-content1-400"
-                          : "text-content1-600"
-                      }`}
-                    >
-                      ({discount}% OFF)
-                    </span>
-                  </p>
                 </div>
-              </CardBody>
-              <Divider className="bg-content1-500" />
-              <CardFooter className="flex justify-end">
-                <Button
-                  size="sm"
-                  className={`${
-                    !cart.isChecked && "opacity-30"
-                  } bg-content1-400 text-white`}
-                  onPress={() => {
-                    if (!cart.isChecked) return;
 
+                <div
+                  onClick={() => {
                     setCartId(cart.id);
-                    addToCartOnOpen();
+                    removeFromCartOnOpen();
                   }}
+                  className="absolute right-1.5 top-1.5 z-20 cursor-pointer rounded-full bg-red-500 p-0.5 text-sm text-white"
                 >
-                  Edit
-                </Button>
-              </CardFooter>
-            </Card>
-          );
-        })}
+                  <RxCross2 />
+                </div>
+
+                <CardBody
+                  className={`flex flex-row gap-3 ${
+                    !cart.isChecked && "opacity-30"
+                  }`}
+                >
+                  {itemImgSrc && (
+                    <Image
+                      alt="Item image"
+                      onClick={() => router.push(`/items/${cart.itemId}`)}
+                      height={1000}
+                      src={itemImgSrc}
+                      className="h-28 w-[84px] cursor-pointer rounded-md object-cover"
+                      width={1000}
+                    />
+                  )}
+
+                  <div className="flex flex-col gap-0.5">
+                    <p className="text-md font-semibold capitalize">
+                      {cart.item.company}
+                    </p>
+                    <p className="text-xs text-default-500">{cart.item.name}</p>
+                    <p className="mt-1 flex flex-col gap-1 text-xs">
+                      <span>Quantity: {cart.quantity}</span>
+                      {cart.size && (
+                        <span className="capitalize">Size: {cart.size}</span>
+                      )}
+                      {cart.color && (
+                        <span className="capitalize">Color: {cart.color}</span>
+                      )}
+                    </p>
+
+                    <p className="mt-2 flex items-center gap-1 text-sm">
+                      <span
+                        className={` ${
+                          bgTheme === "dark"
+                            ? "text-content1-400"
+                            : "text-content1-600"
+                        } `}
+                      >
+                        ₹{cart.price}
+                      </span>
+                      <span
+                        className={` ${
+                          bgTheme === "dark" ? "text-red-400" : "text-red-600"
+                        } text-xs line-through`}
+                      >
+                        ₹{cart.item.originalPrice * cart.quantity}
+                      </span>
+                      <span
+                        className={`text-start text-xs ${
+                          bgTheme === "dark"
+                            ? "text-content1-400"
+                            : "text-content1-600"
+                        }`}
+                      >
+                        ({discount}% OFF)
+                      </span>
+                    </p>
+                  </div>
+                </CardBody>
+                <Divider className="bg-content1-500" />
+                <CardFooter className="flex justify-end">
+                  <Button
+                    size="sm"
+                    className={`${
+                      !cart.isChecked && "opacity-30"
+                    } bg-content1-400 text-white`}
+                    onPress={() => {
+                      if (!cart.isChecked) return;
+
+                      setCartId(cart.id);
+                      addToCartOnOpen();
+                    }}
+                  >
+                    Edit
+                  </Button>
+                </CardFooter>
+              </Card>
+            );
+          })}
+        </div>
 
         <Button
-          className="flex justify-between bg-content1-400 text-white"
+          className="mb-24 flex justify-between bg-content1-400 text-white "
           onPress={() => {
             setPrevPages([{ label: "Cart", link: "/my-cart" }]);
             router.push("/my-wishlist");
@@ -220,10 +227,6 @@ const Page = () => {
           </span>
           <FaAngleRight />
         </Button>
-
-        {selectedItemsInCart.length > 0 && (
-          <PriceSummary cart={selectedItemsInCart} />
-        )}
       </div>
 
       {selectedItemsInCart.length > 0 && (

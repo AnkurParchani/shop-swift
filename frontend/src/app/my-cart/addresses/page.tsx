@@ -94,7 +94,7 @@ const Page = () => {
           Please choose an address for the shipment of your Order
         </p>
 
-        <div className="flex flex-col gap-4">
+        <div className="mt-4 grid gap-4 md:grid-cols-2 lg:gap-8">
           {sortedAddress?.map((address: Address) => {
             const {
               id,
@@ -111,18 +111,16 @@ const Page = () => {
             } = address;
 
             return (
-              <div
+              <Card
                 key={id}
-                onClick={() => handleChangeDefaultAddress(id, address)}
-              >
-                <Card
-                  className={`relative max-w-[400px] border border-content1-500 bg-transparent duration-100 ${
-                    !isDeliveryAddress &&
-                    "cursor-pointer opacity-60 hover:opacity-80"
-                  }
+                className={`relative mx-auto w-full border border-content1-500 bg-transparent duration-100 sm:w-11/12 ${
+                  !isDeliveryAddress &&
+                  "cursor-pointer opacity-60 hover:opacity-80"
+                }
                     ${bgTheme === "dark" ? "text-foreground" : "text-black"}
                   `}
-                >
+              >
+                <div onClick={() => handleChangeDefaultAddress(id, address)}>
                   <CardHeader className="flex gap-3">
                     <div
                       className={`h-8 w-8 rounded-md ${
@@ -150,8 +148,8 @@ const Page = () => {
                       {state}, {country}
                     </p>
                   </CardBody>
-                </Card>
-              </div>
+                </div>
+              </Card>
             );
           })}
         </div>
@@ -162,6 +160,7 @@ const Page = () => {
           } grid grid-cols-2 gap-3`}
         >
           <Button
+            radius="sm"
             className={`border-content1-400 ${
               bgTheme === "dark" ? "text-foreground" : "text-black"
             }`}
@@ -171,6 +170,7 @@ const Page = () => {
             To Address Page
           </Button>
           <Button
+            radius="sm"
             className="bg-content1-600 text-white"
             onPress={addAddressOnOpen}
           >

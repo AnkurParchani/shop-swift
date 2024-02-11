@@ -24,8 +24,8 @@ export default function Error({
   }, [error]);
 
   return (
-    <>
-      <div className="flex flex-col items-center gap-4 px-4 py-10">
+    <div className="flex min-h-screen flex-col">
+      <div className="flex flex-grow flex-col items-center gap-4 px-4 py-10">
         <div className="text-center">
           <Image
             src={"/icons/error.svg"}
@@ -60,8 +60,7 @@ export default function Error({
           </Button>
         </div>
       </div>
-
       <Footer />
-    </>
+    </div>
   );
 }

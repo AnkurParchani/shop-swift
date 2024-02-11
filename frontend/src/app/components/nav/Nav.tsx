@@ -29,9 +29,9 @@ import { useGetUser } from "@/app/hooks/useUser";
 import { useTheme } from "@/app/contexts/ThemeContext";
 
 const Nav = () => {
+  const router = useRouter();
   const { theme } = useTheme();
   const bgTheme = theme.split("-")[1];
-  const router = useRouter();
   let pathname = usePathname();
   const queryClient = useQueryClient();
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -233,7 +233,11 @@ const Nav = () => {
           <NavbarMenuToggle />
         </NavbarContent>
 
-        <NavbarMenu className="max-h-40 bg-transparent text-white sm:hidden">
+        <NavbarMenu
+          className={`max-h-40 border-b-3 border-gray-300 bg-transparent  sm:hidden ${
+            bgTheme === "dark" ? "text-white" : "text-black"
+          }`}
+        >
           <NavbarMenuItem className="mt-2">
             <Link className="w-full" href="/login">
               Login
@@ -245,7 +249,7 @@ const Nav = () => {
             </Link>
           </NavbarMenuItem>
           <NavbarMenuItem
-            className="mt-2"
+            className="mt-2 cursor-pointer"
             key="changeTheme"
             onClick={selectThemeOnOpen}
           >
@@ -276,9 +280,7 @@ const Nav = () => {
               <Button
                 radius="sm"
                 as={Link}
-                className={`border border-content1-500 bg-transparent ${
-                  bgTheme === "dark" ? "text-white" : "text-black"
-                }`}
+                className={`border border-content1-500 bg-transparent text-white`}
                 href="/sign-up"
                 variant="flat"
               >

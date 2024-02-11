@@ -101,7 +101,7 @@ const Page = ({ params }: { params: { orderId: string } }) => {
                     height={1000}
                     width={1000}
                     alt="Item Image"
-                    className="h-32 w-24 rounded-md object-cover"
+                    className="h-32 w-24 cursor-pointer rounded-md object-cover"
                     src={mainItemImgPath}
                     onClick={() => router.push(`/items/${itemId}`)}
                   />

@@ -53,6 +53,7 @@ const ThemeSelectorModal = ({
 
   function handleResetTheme() {
     setTheme("theme_purple-dark");
+    localStorage.setItem("theme", "theme_purple-dark");
     onClose();
   }
 
@@ -92,7 +93,7 @@ const ThemeSelectorModal = ({
               {/* For interface */}
               <div className="flex flex-col gap-2">
                 <p>Interface:</p>
-                <div className="grid grid-cols-4 items-center gap-1">
+                <div className="grid grid-cols-4 items-center gap-1 sm:grid-cols-5">
                   {interfaceThemeArr.map((color) => (
                     <InterfaceSelectorBtn
                       key={color.value}
@@ -176,7 +177,7 @@ function InterfaceSelectorBtn({
         interfaceColor === `theme_${value}`
           ? "border-yellow-500"
           : "border-transparent"
-      } rounded-xl border-2 p-1`}
+      } mx-auto rounded-xl border-2 p-1`}
     >
       <Button
         className={className}

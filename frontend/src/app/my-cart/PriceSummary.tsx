@@ -25,7 +25,7 @@ const PriceSummary = ({ cart }: { cart: CartItem[] }) => {
 
   return (
     <Card
-      className={`mb-24 border-l-2 border-r-2 border-content1-300 bg-transparent ${
+      className={`border-l-2 border-r-2 border-content1-300 bg-transparent ${
         bgTheme === "dark" ? "text-foreground" : "text-background"
       }`}
     >

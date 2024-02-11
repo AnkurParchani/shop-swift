@@ -44,7 +44,7 @@ const CarouselImgs = ({ images }: { images: ImageType[] }) => {
           <SwiperSlide key={img.id}>
             <Image
               src={img.path}
-              className="h-60 rounded-md object-cover"
+              className="h-60 rounded-md object-cover md:h-auto md:max-h-[461px]"
               alt="Item-img"
               height={1000}
               width={1000}
@@ -68,7 +68,7 @@ const CarouselImgs = ({ images }: { images: ImageType[] }) => {
               alt="Item-img"
               height={1000}
               width={1000}
-              className="h-20 rounded-sm object-cover"
+              className="h-20 cursor-pointer rounded-sm object-cover md:h-auto md:max-h-[166px]"
             />
           </SwiperSlide>
         ))}

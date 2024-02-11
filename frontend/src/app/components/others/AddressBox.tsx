@@ -29,7 +29,7 @@ const AddressBox = ({
   return (
     <Card
       key={id}
-      className={`relative max-w-[400px] border-2 border-content1-500 bg-transparent ${
+      className={`relative mx-auto w-full border-2 border-content1-500 bg-transparent ${
         bgTheme === "dark" ? "text-content1-100" : "text-black"
       }`}
     >

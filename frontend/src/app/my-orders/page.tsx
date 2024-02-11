@@ -47,7 +47,7 @@ const Page = () => {
 
         <BreadCrumb curPage="Orders" />
 
-        <div className="mt-4 flex flex-col gap-5">
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:gap-8">
           {reverseOrders.map((order: Order) => {
             const { date, id, orderItems } = order;
             const totalPrice = orderItems.reduce(
@@ -60,8 +60,8 @@ const Page = () => {
             return (
               <Card
                 key={id}
-                className={`relative max-w-[400px] border border-content1-300 bg-transparent text-sm ${
-                  bgTheme === "dark" ? "text-foreground" : "text-background"
+                className={`relative border-2 border-content1-500 bg-transparent ${
+                  bgTheme === "dark" ? "text-content1-100" : "text-black"
                 }`}
               >
                 <CardHeader>

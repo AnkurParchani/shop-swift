@@ -63,7 +63,7 @@ const Page = () => {
 
         <BreadCrumb curPage="Addresses" />
 
-        <div className="mt-4 flex flex-col gap-4 ">
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
           {addresses.map((address: Address) => (
             <AddressBox key={address.id} address={address}>
               <CardFooter className="flex justify-end gap-3">
