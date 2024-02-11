@@ -34,7 +34,7 @@ const ProductItem = ({ item }: { item: Item }) => {
       shadow="sm"
       key={id}
       isPressable={inStock}
-      className={`relative  ${
+      className={`relative max-w-fit  ${
         bgTheme === "dark"
           ? "bg-backround border border-content1-200 text-white"
           : "border border-content1-200 bg-gray-100 text-black"

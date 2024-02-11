@@ -35,6 +35,17 @@ function ProductSection({
         }}
         speed={2500}
         modules={[FreeMode]}
+        breakpoints={{
+          545: {
+            slidesPerView: 3,
+          },
+          750: {
+            slidesPerView: 4,
+          },
+          1028: {
+            slidesPerView: 5,
+          },
+        }}
       >
         {items.map((item: Item) => (
           <SwiperSlide key={item.id}>
@@ -59,7 +70,7 @@ function ImageSwiperSection({
 
   return (
     <Swiper
-      className="w-full rounded-md"
+      className=" w-full rounded-md"
       centeredSlides={true}
       spaceBetween={30}
       loop={true}
@@ -69,6 +80,17 @@ function ImageSwiperSection({
       }}
       speed={2000}
       modules={[FreeMode]}
+      breakpoints={{
+        545: {
+          slidesPerView: 2,
+        },
+        750: {
+          slidesPerView: 3,
+        },
+        1028: {
+          slidesPerView: 4,
+        },
+      }}
     >
       {items.map((item) => (
         <SwiperSlide key={item.imgPath} className="relative bg-black">
