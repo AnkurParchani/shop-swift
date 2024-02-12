@@ -27,7 +27,7 @@ app.use(express.json());
 // To implement CORS
 app.use(
   cors({
-    origin: "https://shop-swift-tau.vercel.app/",
+    origin: "https://shop-swift-tau.vercel.app",
     credentials: true,
   })
 );
