@@ -10,10 +10,16 @@ import "react-toastify/dist/ReactToastify.css";
 
 import BreadCrumbProvider from "./contexts/BreadCrumbProvider";
 import { useEffect, useState } from "react";
-import ThemeProvider, { useTheme } from "./contexts/ThemeContext";
+import ThemeProvider from "./contexts/ThemeContext";
 
 function Providers({ children }: { children: React.ReactNode }) {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        gcTime: 0,
+      },
+    },
+  });
   const [inBrowser, setInBrowser] = useState(false);
 
   // For Internal Error: Document is not defined

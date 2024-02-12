@@ -5,6 +5,7 @@ import Providers from "./Providers";
 import Nav from "./components/nav/Nav";
 import ThemeProvider from "./ThemeProvider";
 import NextTopLoader from "nextjs-toploader";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +24,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <ThemeProvider>
+            <ReactQueryDevtools />
             <Nav />
             <NextTopLoader color="pink" />
             {children}

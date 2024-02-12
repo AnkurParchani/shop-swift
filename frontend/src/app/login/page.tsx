@@ -40,7 +40,7 @@ const Page = () => {
         Login
       </Button>
 
-      <p className="text-center text-sm text-gray-400">
+      <p className="text-center text-sm">
         Don&apos;t have an account?{" "}
         <Link className="text-blue-500 hover:underline" href="/sign-up">
           Sign up

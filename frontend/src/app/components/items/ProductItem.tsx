@@ -38,7 +38,7 @@ const ProductItem = ({ item }: { item: Item }) => {
         bgTheme === "dark"
           ? "bg-backround border border-content1-200 text-white"
           : "border border-content1-200 bg-gray-100 text-black"
-      }`}
+      } ${!inStock && "opacity-50"}`}
       onClick={() => {
         if (inStock) {
           router.push(`/items/${id}`);
@@ -53,7 +53,7 @@ const ProductItem = ({ item }: { item: Item }) => {
 
       {inStock && <AddToWishlistBtn itemId={id} />}
 
-      <CardBody className={`overflow-visible p-0 ${!inStock && "opacity-50"}`}>
+      <CardBody className={`overflow-visible p-0`}>
         <Image
           shadow="sm"
           radius="lg"
@@ -62,11 +62,7 @@ const ProductItem = ({ item }: { item: Item }) => {
           src={image || "/images/no-product.png"}
         />
       </CardBody>
-      <CardFooter
-        className={`flex flex-col items-start gap-1 text-small ${
-          !inStock && "opacity-50"
-        }`}
-      >
+      <CardFooter className={`flex flex-col items-start gap-1 text-small`}>
         <b className="uppercase">{company}</b>
         <p
           className={`${

@@ -13,12 +13,12 @@ import {
 
 // Getting the currently logged in user
 export const useGetUser = () => {
-  const { data, error, isLoading } = useQuery({
+  const { data, error, isLoading, refetch } = useQuery({
     queryKey: ["user"],
     queryFn: getLoggedInUser,
   });
 
-  return { data, isLoading, error };
+  return { data, isLoading, error, refetch };
 };
 
 // Signup
@@ -65,24 +65,15 @@ export const useLogin = () => {
       toast("Logged in successfully", { type: "success" });
       reset();
 
-      // Setting the user in localstorage
-      localStorage.setItem(
-        "user",
-        JSON.stringify({ ...data.user, img: data.img || undefined }),
-      );
-
-      // For Nav's useEffect run
-      const storageEvent = new Event("storage");
-      window.dispatchEvent(storageEvent);
-
       // Setting the cookie
       setCookie("token", data.token);
 
       // Invalidating all the essential tags
       queryClient.invalidateQueries({
-        queryKey: ["my-wishlist"],
+        queryKey: ["user"],
       });
-      queryClient.refetchQueries({
+
+      queryClient.invalidateQueries({
         queryKey: ["my-wishlist"],
       });
 

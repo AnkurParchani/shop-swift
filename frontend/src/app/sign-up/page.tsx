@@ -94,7 +94,7 @@ const Page = () => {
       {!preImg && (
         <div
           onClick={() => userImgRef.current?.click()}
-          className="mx-auto cursor-pointer rounded-full border-2 border-gray-400 bg-gray-900 p-3 text-5xl"
+          className="mx-auto cursor-pointer rounded-full border-2 border-gray-400 p-3 text-5xl"
         >
           <HiOutlineCamera />
         </div>
@@ -135,7 +135,7 @@ const Page = () => {
       >
         Signup
       </Button>
-      <p className="text-center text-sm text-gray-400">
+      <p className="text-center text-sm">
         Already a memeber?{" "}
         <Link className="text-blue-500 hover:underline" href="/login">
           Login

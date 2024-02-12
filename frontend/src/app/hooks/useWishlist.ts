@@ -31,7 +31,6 @@ export const useAddToWishlist = () => {
       });
     },
     onError: (err: Error) => {
-      console.log();
       if (err.message === "Login first to continue") {
         router.push("/login");
       } else {
