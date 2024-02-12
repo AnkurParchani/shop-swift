@@ -4,12 +4,25 @@ import { Spinner } from "@nextui-org/react";
 import { useTheme } from "./contexts/ThemeContext";
 
 import Footer from "./components/others/Footer";
+import { useEffect, useState } from "react";
 
 export default function Loading({ label }: { label?: string }) {
+  const [defaultLoadingText, setDefaultLoadingText] = useState("Loading...");
   const { theme } = useTheme();
   const bgTheme = theme.split("-")[1];
   const color = theme.split("-")[0];
   let spinnerColor;
+
+  // Changing the text according to time of the loading
+  useEffect(() => {
+    setTimeout(() => {
+      setDefaultLoadingText("Apologies for the delay...");
+    }, 3000);
+
+    setTimeout(() => {
+      setDefaultLoadingText("Almost there, thank you for your patience...");
+    }, 7000);
+  }, []);
 
   // Changing the color of the spinner according to the selected theme
   switch (color) {
@@ -47,7 +60,7 @@ export default function Loading({ label }: { label?: string }) {
             bgTheme === "dark" ? "text-foreground" : "text-black"
           }`}
         >
-          {label || "Loading..."}
+          {label || defaultLoadingText}
         </p>
       </div>
       <Footer />

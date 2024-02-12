@@ -13,7 +13,6 @@ import { useGetMyWishlist } from "../hooks/useWishlist";
 import { WishlistItem } from "../../../global";
 import { useRouter } from "next/navigation";
 import { useBreadcrumb } from "../contexts/BreadCrumbProvider";
-import { useGetUser } from "../hooks/useUser";
 
 const Page = () => {
   const router = useRouter();
