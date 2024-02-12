@@ -11,10 +11,10 @@ import DeleteAddressModal from "./DeleteAddressModal";
 import UpdateAddressModal from "./UpdateAddressModal";
 import AddressBox from "../components/others/AddressBox";
 import BreadCrumb from "../components/others/BreadCrumb";
+import Footer from "../components/others/Footer";
 
 import { Address } from "../../../global";
 import { useGetMyAddresses } from "../hooks/useAddress";
-import Footer from "../components/others/Footer";
 
 const Page = () => {
   const [address, setAddress] = useState<Address | null>();

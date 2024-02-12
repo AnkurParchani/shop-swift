@@ -22,12 +22,12 @@ import PriceSummary from "./PriceSummary";
 import AddToCartForm from "./AddToCartForm";
 import CheckoutBtn from "./CheckoutBtn";
 import BreadCrumb from "../components/others/BreadCrumb";
+import Error from "../error";
 
 import { CartItem } from "../../../global";
 import { useGetMyCart, useUpdateCart } from "../hooks/useCart";
 import { useBreadcrumb } from "../contexts/BreadCrumbProvider";
 import { useTheme } from "../contexts/ThemeContext";
-import Error from "../error";
 
 const Page = () => {
   const router = useRouter();

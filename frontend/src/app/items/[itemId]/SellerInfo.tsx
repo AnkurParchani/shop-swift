@@ -8,9 +8,9 @@ const SellerInfo = ({ sellerLink }: { sellerLink: string }) => {
         <Link
           target="_blank"
           href={sellerLink}
-          className="capitalize text-blue-500 hover:underline"
+          className="text-blue-500 hover:underline"
         >
-          click here
+          Click here
         </Link>
       </div>
     </div>

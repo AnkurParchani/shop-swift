@@ -23,9 +23,13 @@ import { Address } from "../../../../global";
 import { useEffect } from "react";
 import { useBreadcrumb } from "@/app/contexts/BreadCrumbProvider";
 import { useTheme } from "@/app/contexts/ThemeContext";
+import { useGetUser } from "@/app/hooks/useUser";
 
 const Page = () => {
   const router = useRouter();
+  const { data: user } = useGetUser();
+  if (!user) router.push("/login");
+
   const { theme } = useTheme();
   const bgTheme = theme.split("-")[1];
   const { setPrevPages } = useBreadcrumb();

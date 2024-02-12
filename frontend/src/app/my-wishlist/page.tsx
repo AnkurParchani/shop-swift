@@ -4,15 +4,16 @@ import { Button, useDisclosure } from "@nextui-org/react";
 import WishlistItemCard from "./WishlistItemCard";
 import EmptyWishlist from "./EmptyWishlist";
 import Loading from "../loading";
+import ClearWishlistModal from "./ClearWishlistModal";
+import BreadCrumb from "../components/others/BreadCrumb";
+import Error from "../error";
+import Footer from "../components/others/Footer";
 
 import { useGetMyWishlist } from "../hooks/useWishlist";
 import { WishlistItem } from "../../../global";
 import { useRouter } from "next/navigation";
-import ClearWishlistModal from "./ClearWishlistModal";
-import BreadCrumb from "../components/others/BreadCrumb";
 import { useBreadcrumb } from "../contexts/BreadCrumbProvider";
-import Error from "../error";
-import Footer from "../components/others/Footer";
+import { useGetUser } from "../hooks/useUser";
 
 const Page = () => {
   const router = useRouter();

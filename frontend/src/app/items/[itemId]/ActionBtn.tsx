@@ -5,10 +5,11 @@ import { CiHeart } from "react-icons/ci";
 import { useAddToWishlist, useGetMyWishlist } from "@/app/hooks/useWishlist";
 import { useRouter } from "next/navigation";
 import { FaHeart } from "react-icons/fa6";
-import { CartItem, ExtraDetails, Item, WishlistItem } from "../../../../global";
+import { CartItem, Item, WishlistItem } from "../../../../global";
 import { useGetMyCart } from "@/app/hooks/useCart";
 import AddToCartForm from "@/app/my-cart/AddToCartForm";
 import { useTheme } from "@/app/contexts/ThemeContext";
+import { useGetUser } from "@/app/hooks/useUser";
 
 type ActionBtnType = {
   itemId: string;
@@ -19,8 +20,11 @@ const ActionBtn = ({ itemId, itemDetails }: ActionBtnType) => {
   const router = useRouter();
   const { theme } = useTheme();
   const bgTheme = theme.split("-")[1];
+
   const [isAddedInWishlist, setIsAddedInWishlist] = useState<boolean>(false);
   const [isAddedInCart, setIsAddedInCart] = useState<boolean>(false);
+
+  const { data: user } = useGetUser();
   const { data: wishlist } = useGetMyWishlist();
   const { data: cart } = useGetMyCart();
   const addToWishlistMutation = useAddToWishlist();
@@ -63,7 +67,13 @@ const ActionBtn = ({ itemId, itemDetails }: ActionBtnType) => {
         {/* If the item is added in cart the show button for "See my Cart" otherwise show "Add to Cart" */}
         {!isAddedInCart ? (
           <Button
-            onPress={addToCartOnOpen}
+            onPress={() => {
+              if (!user) {
+                router.push("/login");
+              } else {
+                addToCartOnOpen();
+              }
+            }}
             className="bg-content1-500 text-white"
             variant="solid"
           >

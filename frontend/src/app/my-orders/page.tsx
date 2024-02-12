@@ -12,13 +12,13 @@ import {
 import Loading from "../loading";
 import EmptyOrders from "./EmptyOrders";
 import BreadCrumb from "../components/others/BreadCrumb";
+import Error from "../error";
+import Footer from "../components/others/Footer";
 
 import { Order } from "../../../global";
 import { formatDate } from "../utils/helpers";
 import { useTheme } from "../contexts/ThemeContext";
 import { useGetMyOrders } from "../hooks/useOrders";
-import Error from "../error";
-import Footer from "../components/others/Footer";
 
 const Page = () => {
   const router = useRouter();

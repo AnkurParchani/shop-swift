@@ -8,18 +8,20 @@ import {
   Divider,
   useDisclosure,
 } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 
 import BreadCrumb from "../components/others/BreadCrumb";
 import Loading from "../loading";
 import Image from "next/image";
 import DeleteAccountModal from "./DeleteAccountModal";
 import UpdatePasswordBox from "./UpdatePasswordBox";
+import Footer from "../components/others/Footer";
 
 import { useTheme } from "../contexts/ThemeContext";
 import { useGetUser } from "../hooks/useUser";
-import Footer from "../components/others/Footer";
 
 const Page = () => {
+  const router = useRouter();
   const { theme } = useTheme();
   const bgTheme = theme.split("-")[1];
   const { data: user, error, isLoading } = useGetUser();
@@ -31,7 +33,7 @@ const Page = () => {
   } = useDisclosure();
 
   if (isLoading) <Loading />;
-  if (!user) return <p>Login first</p>;
+  if (!user) return router.push("/login");
 
   return (
     <>

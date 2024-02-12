@@ -6,6 +6,7 @@ import {
   getMyWishlist,
   removeFromWishlist,
 } from "../services/apiWishlist";
+import { useRouter } from "next/navigation";
 
 // Getting all wishlist items
 export const useGetMyWishlist = () => {
@@ -20,6 +21,7 @@ export const useGetMyWishlist = () => {
 // Adding to wishlist
 export const useAddToWishlist = () => {
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const mutation = useMutation({
     mutationFn: addToWishlist,
@@ -28,7 +30,14 @@ export const useAddToWishlist = () => {
         queryKey: ["my-wishlist"],
       });
     },
-    onError: (err: Error) => toast(err.message, { type: "error" }),
+    onError: (err: Error) => {
+      console.log();
+      if (err.message === "Login first to continue") {
+        router.push("/login");
+      } else {
+        toast(err.message, { type: "error" });
+      }
+    },
   });
 
   return mutation;

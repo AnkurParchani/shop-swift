@@ -19,6 +19,9 @@ export default function Error({
   const { theme } = useTheme();
   const bgTheme = theme.split("-")[1];
 
+  if (error.message === "Login first to continue") {
+    router.push("login");
+  }
   useEffect(() => {
     console.error(error);
   }, [error]);

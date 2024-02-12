@@ -20,13 +20,13 @@ import AddressBox from "@/app/components/others/AddressBox";
 import AddReviewModal from "@/app/my-reviews/AddReviewModal";
 import Error from "@/app/error";
 import NotFound from "@/app/not-found";
+import Footer from "@/app/components/others/Footer";
 
 import { Order, Review } from "../../../../global";
 import { formatDate } from "@/app/utils/helpers";
 import { useGetSingleOrder } from "@/app/hooks/useOrders";
 import { useGetMyReviews } from "@/app/hooks/useReviews";
 import { useTheme } from "@/app/contexts/ThemeContext";
-import Footer from "@/app/components/others/Footer";
 
 type UseGetSingleOrderResult = {
   data: Order;

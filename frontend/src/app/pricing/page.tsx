@@ -9,13 +9,13 @@ import BreadCrumb from "../components/others/BreadCrumb";
 import CheckoutForm from "./CheckoutForm";
 import newRequest from "../utils/newRequest";
 import ItemsSummary from "./ItemsSummary";
+import Loading from "../loading";
 
 import { CartItem } from "../../../global";
 import { useGetMyCart } from "../hooks/useCart";
 import { useGetMyAddresses } from "../hooks/useAddress";
 import { handleApiError } from "../utils/handleApiError";
 import { useBreadcrumb } from "../contexts/BreadCrumbProvider";
-import Loading from "../loading";
 
 const Page = () => {
   const { data: cart } = useGetMyCart();

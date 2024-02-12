@@ -19,13 +19,13 @@ import EmptyReviews from "./EmptyReviews";
 import ReviewStars from "../components/others/ReviewStars";
 import UpdateReviewModal from "./UpdateReviewModal";
 import DeleteReviewModal from "./DeleteReviewModal";
+import Error from "../error";
+import Footer from "../components/others/Footer";
 
 import { Review } from "../../../global";
 import { formatDate } from "../utils/helpers";
 import { useGetMyReviews } from "../hooks/useReviews";
 import { useTheme } from "../contexts/ThemeContext";
-import Error from "../error";
-import Footer from "../components/others/Footer";
 
 const Page = () => {
   const router = useRouter();
