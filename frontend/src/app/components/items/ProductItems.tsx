@@ -98,7 +98,7 @@ function ImageSwiperSection({
             src={item.imgPath}
             alt="Image"
             width={1000}
-            className={`h-32 rounded-md object-cover ${
+            className={`h-32 cursor-pointer rounded-md object-cover ${
               !item.inStock && "opacity-50"
             }`}
             objectFit="cover"

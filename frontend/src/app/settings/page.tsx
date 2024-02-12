@@ -19,12 +19,13 @@ import Footer from "../components/others/Footer";
 
 import { useTheme } from "../contexts/ThemeContext";
 import { useGetUser } from "../hooks/useUser";
+import Error from "../error";
 
 const Page = () => {
   const router = useRouter();
   const { theme } = useTheme();
   const bgTheme = theme.split("-")[1];
-  const { data: user, error, isLoading } = useGetUser();
+  const { data: user, error, isLoading, refetch } = useGetUser();
   const {
     isOpen: deleteAccountIsOpen,
     onOpen: deleteAccountOnOpen,
@@ -32,8 +33,9 @@ const Page = () => {
     onOpenChange: deleteAccountOnOpenChange,
   } = useDisclosure();
 
-  if (isLoading) <Loading />;
-  if (!user) return router.push("/login");
+  if (isLoading) return <Loading />;
+  if (error) return <Error error={error} reset={refetch} />;
+  if (!user) router.push("/login");
 
   return (
     <>

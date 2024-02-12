@@ -1,3 +1,5 @@
+# For local server (useless now 'cause the database has been shifted to supabase with different credentials)
+
 version: "3.8"
 services:
   db:

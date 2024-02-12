@@ -1,9 +1,12 @@
 "use client";
 
+import { useGetAllItems } from "@/app/hooks/useItems";
 import { useGetUser } from "@/app/hooks/useUser";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { Item } from "../../../../global";
 
 type FooterPartType = {
   children: React.ReactNode;
@@ -20,10 +23,27 @@ type FooterLinkType = {
 
 const Footer = () => {
   const { data: user } = useGetUser();
+  const { data: items } = useGetAllItems();
+  const [hasUser, setHasUser] = useState(false);
+  const [allItems, setAllItems] = useState(null);
 
-  let hasUser: boolean;
-  if (user) hasUser = true;
-  else hasUser = false;
+  // For the change in user state
+  useEffect(() => {
+    if (user) {
+      setHasUser(true);
+    } else {
+      setHasUser(false);
+    }
+  }, [user]);
+
+  // For change in item's state
+  useEffect(() => {
+    if (items) {
+      setAllItems(items);
+    } else {
+      setAllItems(null);
+    }
+  }, [items]);
 
   return (
     <>
@@ -34,16 +54,16 @@ const Footer = () => {
             <FooterPart heading="Online shopping">
               <FooterLink changeParam={{ gender: "male" }}>Men</FooterLink>
               <FooterLink changeParam={{ gender: "female" }}>Women</FooterLink>
-              <FooterLink changeParam={{ category: "clothes" }}>
-                Clothes
-              </FooterLink>
-              <FooterLink changeParam={{ category: "shoes" }}>Shoes</FooterLink>
-              <FooterLink changeParam={{ category: "sunglasses" }}>
-                Sunglasses
-              </FooterLink>
-              <FooterLink changeParam={{ category: "watches" }}>
-                Watches
-              </FooterLink>
+
+              {items &&
+                items.map((item: Item) => (
+                  <FooterLink
+                    key={item.id}
+                    changeParam={{ category: item.category }}
+                  >
+                    {item.category}
+                  </FooterLink>
+                ))}
             </FooterPart>
 
             {/* For Site Map */}
@@ -70,13 +90,13 @@ const Footer = () => {
               <FooterLink blank href="https://www.twitter.com">
                 Twitter
               </FooterLink>
-              <FooterLink href="">Privacy Policy</FooterLink>
+              <FooterLink href="/privacy-policy">Privacy Policy</FooterLink>
             </FooterPart>
 
             {/* Address */}
             <FooterPart fullWidth heading="Registered office Addresses">
               <div className="flex flex-col gap-0.5 text-gray-300 ">
-                <p>EdenEmpire Inc.</p>
+                <p>ShopSwift Inc.</p>
                 <p>456 Business Boulevard, Suite 789,</p>
                 <p>Corporate Plaza,</p>
                 <p>Cityville, XY 78901,</p>
@@ -87,7 +107,7 @@ const Footer = () => {
 
           <div className="mt-5 flex items-end justify-between text-xs text-yellow-200">
             <Image
-              src="/images/default-user.jpg"
+              src="/images/logo.png"
               alt="Brand img"
               height={1000}
               width={1000}
@@ -127,7 +147,7 @@ function FooterLink({ children, changeParam, href, blank }: FooterLinkType) {
     <>
       {changeParam ? (
         <p
-          className="cursor-pointer text-gray-300 hover:text-primary hover:underline"
+          className="cursor-pointer capitalize text-gray-300 hover:text-primary hover:underline"
           onClick={() => setSearchParams({ ...changeParam, prevSearchParams })}
         >
           {children}

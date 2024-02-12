@@ -15,8 +15,8 @@ import { toast } from "react-toastify";
 
 import AddAddressForm from "@/app/my-addresses/AddAddressForm";
 import PricingBtn from "./PricingBtn";
-import NoProducts from "./NoProducts";
 import Error from "@/app/error";
+import EmptyCart from "../EmptyCart";
 import BreadCrumb from "@/app/components/others/BreadCrumb";
 
 import { Address } from "../../../../global";
@@ -63,7 +63,7 @@ const Page = () => {
   if (myCartError) return <Error error={myCartError} reset={myCartRefetch} />;
 
   // If there are no products in cart and someone has intentionally made a request to this page
-  if (!cart || cart.length === 0) return <NoProducts />;
+  if (!cart || cart.length === 0) return <EmptyCart />;
 
   // Sorting the address according the the isDeliveryAddress = true
   const sortedAddress = addresses?.sort((a: Address, b: Address) =>
