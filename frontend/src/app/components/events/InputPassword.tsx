@@ -11,7 +11,7 @@ type InputPasswordType = {
   registerName?: string;
   label: string;
   size?: "md" | "sm" | "lg";
-  value?: string,
+  value?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
 };
 
@@ -30,7 +30,7 @@ const InputPassword = ({
 
   return (
     <Input
-    value={value}
+      value={value}
       label={label}
       variant="bordered"
       size={size || "md"}

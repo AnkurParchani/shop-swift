@@ -4,6 +4,7 @@ import "./globals.css";
 import Providers from "./Providers";
 import Nav from "./components/nav/Nav";
 import ThemeProvider from "./ThemeProvider";
+import NextTopLoader from "nextjs-toploader";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +24,7 @@ export default function RootLayout({
         <Providers>
           <ThemeProvider>
             <Nav />
+            <NextTopLoader color="pink" />
             {children}
           </ThemeProvider>
         </Providers>

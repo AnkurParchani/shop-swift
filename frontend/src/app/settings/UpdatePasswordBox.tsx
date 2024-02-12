@@ -37,7 +37,7 @@ const UpdatePasswordBox = () => {
 
   return (
     <Card
-      className={`relative mt-3 border-2 border-content1-500 bg-transparent  ${
+      className={`relative mt-3 border-2 border-content1-500 bg-transparent sm:max-w-sm  ${
         bgTheme === "dark" ? "text-foreground" : "text-black"
       }`}
     >

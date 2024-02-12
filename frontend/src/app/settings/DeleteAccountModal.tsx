@@ -40,7 +40,7 @@ const DeleteAccountModal = ({
       {
         onSuccess: () => {
           router.push("/");
-          onClose()
+          onClose();
         },
       },
     );
@@ -53,6 +53,7 @@ const DeleteAccountModal = ({
       onOpenChange={onOpenChange}
       classNames={{
         body: "py-2",
+        base: "bg-gray-900 dark:bg-gray-900 text-[#a8b0d3]",
         closeButton: "hover:bg-white/5 active:bg-white/10",
       }}
     >

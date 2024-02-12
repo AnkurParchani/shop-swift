@@ -46,7 +46,7 @@ const Page = () => {
           <Image
             src={user.image?.path || "/images/default-user.jpg"}
             alt="User-Img"
-            className="m-auto h-20 w-auto cursor-pointer rounded-full"
+            className="m-auto h-20 w-auto rounded-full"
             height={1000}
             width={1000}
           />
@@ -63,7 +63,7 @@ const Page = () => {
         >
           <CardHeader className="flex gap-3">Delete Account</CardHeader>
           <Divider className="bg-red-500" />
-          <CardBody className="flex flex-col gap-2 text-sm ">
+          <CardBody className="flex flex-col gap-2 text-sm font-semibold">
             <p>You will NOT be able to retrieve any of your data</p>
           </CardBody>
           <Divider className="bg-red-500" />
