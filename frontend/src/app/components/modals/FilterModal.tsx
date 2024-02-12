@@ -166,7 +166,7 @@ const FilterModal = ({
         <ModalFooter>
           <Button
             size="sm"
-            onPress={handleResetFilters}
+            onClick={() => handleResetFilters()}
             color="danger"
             variant="solid"
             radius="sm"
@@ -175,8 +175,9 @@ const FilterModal = ({
           </Button>
           <Button
             size="sm"
-            onPress={handleSetFilter}
+            onClick={() => handleSetFilter()}
             color="success"
+            className="text-white"
             variant="solid"
             radius="sm"
           >

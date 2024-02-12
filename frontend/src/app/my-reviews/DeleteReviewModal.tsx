@@ -60,7 +60,7 @@ const DeleteReviewModal = ({
               <Button
                 color="danger"
                 variant="solid"
-                onPress={handleDeleteReview}
+                onPress={() => handleDeleteReview()}
               >
                 Delete
               </Button>

@@ -78,14 +78,14 @@ const RemoveFromCartModal = ({
               <Button
                 color="danger"
                 variant="flat"
-                onPress={handleRemoveItemFromCart}
+                onPress={() => handleRemoveItemFromCart()}
               >
                 Permanently Remove
               </Button>
               <Button
                 color="warning"
                 variant="solid"
-                onPress={handleSendToWishlist}
+                onPress={() => handleSendToWishlist()}
               >
                 Send to Wishlist
               </Button>

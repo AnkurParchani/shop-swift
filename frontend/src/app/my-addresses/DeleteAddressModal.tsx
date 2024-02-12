@@ -60,7 +60,7 @@ const DeleteAddressModal = ({
               <Button
                 color="danger"
                 variant="solid"
-                onPress={handleDeleteAddress}
+                onPress={() => handleDeleteAddress()}
               >
                 Delete
               </Button>
