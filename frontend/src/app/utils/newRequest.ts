@@ -13,7 +13,7 @@ if (typeof document !== "undefined") {
 // Appending the cookie in every request
 const newRequest = axios.create({
   withCredentials: true,
-  baseURL: "http://127.0.0.1:8000",
+  baseURL: "https://shop-swift-r0ci.onrender.com",
   headers: {
     "Access-Control-Allow-Origin": "*",
     "Content-Type": "application/json",
