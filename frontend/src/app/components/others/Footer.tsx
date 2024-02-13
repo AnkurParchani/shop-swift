@@ -5,7 +5,7 @@ import { useGetUser } from "@/app/hooks/useUser";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { Item } from "../../../../global";
 
 type FooterPartType = {
@@ -27,15 +27,7 @@ const Footer = () => {
   const [hasUser, setHasUser] = useState(false);
 
   const categories =
-    items &&
-    Array.from(
-      new Set(
-        items.map(
-          (item: Item) =>
-            item.category.charAt(0).toUpperCase() + item.category.slice(1),
-        ),
-      ),
-    );
+    items && Array.from(new Set(items.map((item: Item) => item.category)));
 
   // For the change in user state
   useEffect(() => {
@@ -77,7 +69,7 @@ const Footer = () => {
                 <FooterLink href="/my-addresses">Addresses</FooterLink>
                 <FooterLink href="/my-cart">Cart</FooterLink>
                 <FooterLink href="/settings">Settings</FooterLink>
-                <FooterLink href="">Privacy Policy</FooterLink>
+                <FooterLink href="/privacy-policy">Privacy Policy</FooterLink>
               </FooterPart>
             )}
 
