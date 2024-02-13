@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Item } from "../../../../global";
+import { useRouter } from "next/navigation";
 
 type FooterPartType = {
   children: React.ReactNode;
@@ -24,6 +25,7 @@ type FooterLinkType = {
 const Footer = () => {
   const { data: user } = useGetUser();
   const { data: items } = useGetAllItems();
+  const router = useRouter();
   const [hasUser, setHasUser] = useState(false);
 
   const categories =
@@ -105,6 +107,7 @@ const Footer = () => {
               alt="Brand img"
               height={1000}
               width={1000}
+              onClick={() => router.push("/")}
               className="h-14 w-auto rounded-full"
             />
             <div>

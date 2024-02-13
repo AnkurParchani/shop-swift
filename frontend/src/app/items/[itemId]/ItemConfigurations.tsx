@@ -10,7 +10,7 @@ const ItemConfigurations = ({ extraDetails }: ConfigurationType) => {
   return (
     <div className=" flex flex-col gap-2 py-4">
       {colors && colors.length > 0 && (
-        <div className="flex gap-1">
+        <div className="flex items-center gap-1">
           <span className="font-semibold">Colors: </span>
           {colors?.map((color) => {
             return (
