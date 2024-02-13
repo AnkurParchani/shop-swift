@@ -25,7 +25,17 @@ const Footer = () => {
   const { data: user } = useGetUser();
   const { data: items } = useGetAllItems();
   const [hasUser, setHasUser] = useState(false);
-  const [allItems, setAllItems] = useState(null);
+
+  const categories =
+    items &&
+    Array.from(
+      new Set(
+        items.map(
+          (item: Item) =>
+            item.category.charAt(0).toUpperCase() + item.category.slice(1),
+        ),
+      ),
+    );
 
   // For the change in user state
   useEffect(() => {
@@ -35,15 +45,6 @@ const Footer = () => {
       setHasUser(false);
     }
   }, [user]);
-
-  // For change in item's state
-  useEffect(() => {
-    if (items) {
-      setAllItems(items);
-    } else {
-      setAllItems(null);
-    }
-  }, [items]);
 
   return (
     <>
@@ -56,13 +57,13 @@ const Footer = () => {
               <FooterLink changeParam={"gender=male"}>Men</FooterLink>
               <FooterLink changeParam={"gender=female"}>Women</FooterLink>
 
-              {allItems &&
-                items.map((item: Item) => (
+              {categories &&
+                categories.map((category: string) => (
                   <FooterLink
-                    key={item.id}
-                    changeParam={`category=${item.category}`}
+                    key={category}
+                    changeParam={`category=${category}`}
                   >
-                    {item.category}
+                    {category}
                   </FooterLink>
                 ))}
             </FooterPart>
