@@ -71,7 +71,7 @@ const Page = () => {
                   </div>
                 </CardHeader>
                 <Divider className="bg-content1-500" />
-                <CardBody className="flex flex-col gap-1">
+                <CardBody className="flex flex-col gap-1 text-sm">
                   <div className="flex justify-between">
                     <p>Items Ordered</p>
                     <p className="font-semibold">{orderItems.length}</p>

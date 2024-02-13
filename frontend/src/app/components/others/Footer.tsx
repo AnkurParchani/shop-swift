@@ -1,13 +1,11 @@
 "use client";
 
+import { useGetAllItems } from "@/app/hooks/useItems";
+import { useGetUser } from "@/app/hooks/useUser";
 import Image from "next/image";
 import Link from "next/link";
-
-import { useGetAllItems } from "@/app/hooks/useItems";
-import { useRouter } from "next/navigation";
-import { useGetUser } from "@/app/hooks/useUser";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { Item } from "../../../../global";
 
 type FooterPartType = {
@@ -24,7 +22,6 @@ type FooterLinkType = {
 };
 
 const Footer = () => {
-  const router = useRouter();
   const { data: user } = useGetUser();
   const { data: items } = useGetAllItems();
   const [hasUser, setHasUser] = useState(false);
@@ -54,15 +51,16 @@ const Footer = () => {
         <div className="mx-auto max-w-6xl ">
           <div className="grid grid-cols-2 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {/* Online shopping footer part */}
-            <FooterPart heading="Online shopping">
-              <FooterLink changeParam={{ gender: "male" }}>Men</FooterLink>
-              <FooterLink changeParam={{ gender: "female" }}>Women</FooterLink>
 
-              {items &&
+            <FooterPart heading="Online shopping">
+              <FooterLink changeParam={"gender=male"}>Men</FooterLink>
+              <FooterLink changeParam={"gender=female"}>Women</FooterLink>
+
+              {allItems &&
                 items.map((item: Item) => (
                   <FooterLink
                     key={item.id}
-                    changeParam={{ category: item.category }}
+                    changeParam={`category=${item.category}`}
                   >
                     {item.category}
                   </FooterLink>
@@ -114,8 +112,7 @@ const Footer = () => {
               alt="Brand img"
               height={1000}
               width={1000}
-              className="h-14 w-auto cursor-pointer rounded-full"
-              onClick={() => router.push("/")}
+              className="h-14 w-auto rounded-full"
             />
             <div>
               <p>CIN: U123456789</p>
@@ -144,22 +141,20 @@ function FooterPart({ children, heading, fullWidth }: FooterPartType) {
 
 // Footer Link
 function FooterLink({ children, changeParam, href, blank }: FooterLinkType) {
-  const router = useRouter();
   const [searchParams, setSearchParams] = useSearchParams();
-  const prevSearchParams = Object.fromEntries(searchParams);
 
   return (
     <>
       {changeParam ? (
-        <p
+        <Link
           className="cursor-pointer capitalize text-gray-300 hover:text-primary hover:underline"
+          href={`/?${changeParam}`}
           onClick={() => {
-            router.push("/");
-            setSearchParams({ ...changeParam, prevSearchParams });
+            setSearchParams(`${changeParam}`);
           }}
         >
           {children}
-        </p>
+        </Link>
       ) : (
         <Link
           className="cursor-pointer text-gray-300 hover:text-primary hover:underline"

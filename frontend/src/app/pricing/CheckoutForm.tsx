@@ -1,6 +1,5 @@
-import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import { Button } from "@nextui-org/react";
 import {
   PaymentElement,
@@ -12,7 +11,7 @@ import { useCreateOrder } from "../hooks/useOrders";
 import { useTheme } from "../contexts/ThemeContext";
 
 const CheckoutForm = ({ cart }: { cart: CartItem[] }) => {
-  const router = useRouter();
+  const [paymentIsLoading, setPaymentIsLoading] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
   const createOrderMutation = useCreateOrder();
@@ -37,6 +36,7 @@ const CheckoutForm = ({ cart }: { cart: CartItem[] }) => {
       return;
     }
 
+    setPaymentIsLoading(true);
     const { error } = await stripe.confirmPayment({
       elements,
       redirect: "if_required",
@@ -48,6 +48,8 @@ const CheckoutForm = ({ cart }: { cart: CartItem[] }) => {
     } else {
       createOrderMutation.mutate({ orders });
     }
+
+    setPaymentIsLoading(false);
   };
 
   return (
@@ -60,13 +62,15 @@ const CheckoutForm = ({ cart }: { cart: CartItem[] }) => {
       <PaymentElement className="rounded-sm" />
 
       <Button
-        disabled={createOrderMutation.isPending}
+        disabled={createOrderMutation.isPending || paymentIsLoading}
         className={`mt-2 ${
           bgTheme === "dark" ? "bg-content1-500" : "bg-green-600"
         } text-white`}
         type="submit"
       >
-        {createOrderMutation.isPending ? "Processing payment..." : "Buy now"}
+        {createOrderMutation.isPending || paymentIsLoading
+          ? "Processing payment..."
+          : "Buy now"}
       </Button>
     </form>
   );

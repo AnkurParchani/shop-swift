@@ -21,7 +21,7 @@ import "swiper/css";
 import "swiper/css/free-mode";
 
 export default function Home() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const {
     data: allItems,
     isLoading: allItemsIsLoading,
@@ -46,12 +46,15 @@ export default function Home() {
 
   if (filteredItems.length === 0)
     return (
-      <EmptyList
-        description="Try again with different filters"
-        iconSrc="/icons/not-found.svg"
-        heading="No Items found"
-        backButton
-      />
+      <>
+        <EmptyList
+          description="Try again with different filters"
+          iconSrc="/icons/not-found.svg"
+          heading="No Items found"
+          backButton
+        />
+        <Footer />
+      </>
     );
 
   // Best sellers items (sort according to number of orders of an item)
