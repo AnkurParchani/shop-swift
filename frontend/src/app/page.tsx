@@ -114,7 +114,6 @@ export default function Home() {
                 };
               })}
             />
-
             {/* Male items carousel */}
             {maleItems.length > 0 && (
               <ProductSection

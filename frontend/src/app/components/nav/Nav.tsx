@@ -17,6 +17,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { usePathname, useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
@@ -30,9 +31,11 @@ import { useTheme } from "@/app/contexts/ThemeContext";
 
 const Nav = () => {
   const router = useRouter();
+  const navigate = useNavigate();
+  let pathname = usePathname();
+
   const { theme } = useTheme();
   const bgTheme = theme.split("-")[1];
-  let pathname = usePathname();
   const queryClient = useQueryClient();
   const [cookies, setCookie, removeCookie] = useCookies();
   const {
@@ -85,6 +88,9 @@ const Nav = () => {
 
     // Removing the cookie
     removeCookie("token");
+
+    navigate("/");
+    location.reload();
   }
 
   const navJSX = user ? (

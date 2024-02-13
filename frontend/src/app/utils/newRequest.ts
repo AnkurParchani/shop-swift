@@ -14,6 +14,7 @@ if (typeof document !== "undefined") {
 const newRequest = axios.create({
   withCredentials: true,
   baseURL: "https://shop-swift-r0ci.onrender.com",
+  // baseURL: "http://127.0.0.1:8000",
   headers: {
     "Access-Control-Allow-Origin": "*",
     "Content-Type": "application/json",

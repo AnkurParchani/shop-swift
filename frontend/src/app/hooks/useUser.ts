@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { useCookies } from "react-cookie";
@@ -10,6 +10,7 @@ import {
   signup,
   updatePassword,
 } from "../services/apiUsers";
+import { useNavigate } from "react-router-dom";
 
 // Getting the currently logged in user
 export const useGetUser = () => {
@@ -24,16 +25,14 @@ export const useGetUser = () => {
 // Signup
 export const useSignup = () => {
   const router = useRouter();
+  const navigate = useNavigate();
   const { register, handleSubmit, reset } = useForm();
   const [cookies, setCookie] = useCookies();
 
   const mutation = useMutation({
     mutationFn: signup,
     onSuccess: (data) => {
-      // Showing success notification and resetting the form
-      toast("Signed up successfully", { type: "success" });
       reset();
-
       // Removing the temporary user-img from localStorage
       localStorage.removeItem("user-img");
 
@@ -41,7 +40,11 @@ export const useSignup = () => {
       setCookie("token", data.token);
 
       // Redirection to home page
-      router.push("/");
+      navigate("/");
+      location.reload();
+
+      // Showing success notification and resetting the form
+      toast("Signed up successfully", { type: "success" });
     },
     onError: (err) => {
       toast(err.message, { type: "error", theme: "dark" });
@@ -53,32 +56,23 @@ export const useSignup = () => {
 
 // Login
 export const useLogin = () => {
-  const router = useRouter();
-  const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const { register, handleSubmit, reset } = useForm();
   const [cookies, setCookie] = useCookies();
 
   const mutation = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      // Showing success notification and resetting the form
-      toast("Logged in successfully", { type: "success" });
       reset();
-
       // Setting the cookie
       setCookie("token", data.token);
 
-      // Invalidating all the essential tags
-      queryClient.invalidateQueries({
-        queryKey: ["user"],
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: ["my-wishlist"],
-      });
-
       // Redirection to home page
-      router.push("/");
+      navigate("/");
+      location.reload();
+
+      // Showing success notification and resetting the form
+      toast("Logged in successfully", { type: "success" });
     },
     onError: (err) => {
       toast(err.message, { type: "error", theme: "dark" });

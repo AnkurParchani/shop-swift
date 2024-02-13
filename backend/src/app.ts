@@ -31,6 +31,12 @@ app.use(
     credentials: true,
   })
 );
+// app.use(
+//   cors({
+//     origin: "http://localhost:3000",
+//     credentials: true,
+//   })
+// );
 
 // For reading cookies
 app.use(cookieParser());
@@ -47,9 +53,9 @@ app.use("/images", imgRoutes);
 app.use("/stripe", stripeRoutes);
 
 // Undefined Routes
-app.use("*", (req: Request, res: Response, next: NextFunction) => {
-  next(new AppError(404, "No route found with this endpoint"));
-});
+// app.use("*", (req: Request, res: Response, next: NextFunction) => {
+//   next(new AppError(404, "No route found with this endpoint"));
+// });
 
 // Global error handling
 app.use(

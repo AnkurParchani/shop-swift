@@ -27,8 +27,8 @@ import { useGetUser } from "@/app/hooks/useUser";
 
 const Page = () => {
   const router = useRouter();
-  const { data: user } = useGetUser();
-  if (!user) router.push("/login");
+  const { data: user, isLoading } = useGetUser();
+  if (!isLoading && !user) router.push("/login");
 
   const { theme } = useTheme();
   const bgTheme = theme.split("-")[1];

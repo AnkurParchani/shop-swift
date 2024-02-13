@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { FieldValues } from "react-hook-form";
 import { Button } from "@nextui-org/react";
 import { HiOutlineCamera } from "react-icons/hi2";
+import { RxCrossCircled } from "react-icons/rx";
 
 import InputPassword from "../components/events/InputPassword";
 import AuthFormTemplate from "../components/form/AuthFormTemplate";
@@ -29,13 +30,13 @@ const Page = () => {
 
   const { mutation, handleSubmit, register } = useSignup();
 
+  // Adding the user img to the database
   const handleAddUserImg = async (e: ChangeEvent<HTMLInputElement>) => {
     // If there is problem with uploading the img
     if (!e.target?.files?.[0])
       return toast("Something went wrong while uploading the image", {
         type: "error",
       });
-
     // Removing the old image
     if (preImg) {
       await supabase.storage.from("users").remove([preImg]);
@@ -44,7 +45,6 @@ const Page = () => {
 
     const { name } = e.target.files[0];
     const imgName = `${Math.random()}-${name}`.replaceAll("/", "");
-
     const imgPath = `${supabaseUrl}/storage/v1/object/public/users/${imgName}`;
 
     // Uploading the img to supabase database
@@ -56,14 +56,19 @@ const Page = () => {
       return toast("Something went wrong while uploading the image", {
         type: "error",
       });
-
     // Setting the image as temp storage
     localStorage.setItem("user-img", imgName);
 
     toast("Img uploaded", { type: "info" });
-
     setUserImg(imgPath);
   };
+
+  // If the user wants to delete the image
+  async function removeUserImg() {
+    if (preImg) await supabase.storage.from("users").remove([preImg]);
+    localStorage.removeItem("user-img");
+    setUserImg(null);
+  }
 
   // The onSubmit function for react-hook-form that will call mutate on react query
   const onSubmit = (data: FieldValues) =>
@@ -101,14 +106,20 @@ const Page = () => {
       )}
 
       {userImg && (
-        <Image
-          onClick={() => userImgRef.current?.click()}
-          src={userImg}
-          alt="User-Img"
-          className="m-auto h-20 w-auto cursor-pointer rounded-full"
-          height={1000}
-          width={1000}
-        />
+        <div className="relative mx-auto w-fit">
+          <Image
+            onClick={() => userImgRef.current?.click()}
+            src={userImg}
+            alt="User-Img"
+            className="m-auto h-20 w-auto cursor-pointer rounded-full"
+            height={1000}
+            width={1000}
+          />
+          <RxCrossCircled
+            onClick={removeUserImg}
+            className="absolute -right-1 bottom-0 cursor-pointer rounded-full bg-red-500 text-2xl text-white"
+          />
+        </div>
       )}
 
       <InputText label="Name" register={register} registerName="name" />

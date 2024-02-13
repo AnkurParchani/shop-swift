@@ -22,6 +22,12 @@ export default function Loading({ label }: { label?: string }) {
     setTimeout(() => {
       setDefaultLoadingText("Almost there, thank you for your patience...");
     }, 7000);
+
+    setTimeout(() => {
+      setDefaultLoadingText(
+        "Our database is currently undergoing maintenance. It will be back up shortly. Please bear with us, this may take up to a minute or two.",
+      );
+    }, 12000);
   }, []);
 
   // Changing the color of the spinner according to the selected theme
@@ -56,7 +62,7 @@ export default function Loading({ label }: { label?: string }) {
         {/* @ts-ignore */}
         <Spinner size="lg" color={spinnerColor} />
         <p
-          className={`text-center ${
+          className={`px-4 text-center ${
             bgTheme === "dark" ? "text-foreground" : "text-black"
           }`}
         >

@@ -1,9 +1,11 @@
 "use client";
 
-import { useGetAllItems } from "@/app/hooks/useItems";
-import { useGetUser } from "@/app/hooks/useUser";
 import Image from "next/image";
 import Link from "next/link";
+
+import { useGetAllItems } from "@/app/hooks/useItems";
+import { useRouter } from "next/navigation";
+import { useGetUser } from "@/app/hooks/useUser";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Item } from "../../../../global";
@@ -22,6 +24,7 @@ type FooterLinkType = {
 };
 
 const Footer = () => {
+  const router = useRouter();
   const { data: user } = useGetUser();
   const { data: items } = useGetAllItems();
   const [hasUser, setHasUser] = useState(false);
@@ -111,7 +114,8 @@ const Footer = () => {
               alt="Brand img"
               height={1000}
               width={1000}
-              className="h-14 w-auto rounded-full"
+              className="h-14 w-auto cursor-pointer rounded-full"
+              onClick={() => router.push("/")}
             />
             <div>
               <p>CIN: U123456789</p>
