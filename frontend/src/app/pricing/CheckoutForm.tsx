@@ -46,9 +46,7 @@ const CheckoutForm = ({ cart }: { cart: CartItem[] }) => {
       console.error(error);
       toast("Payment failed. Please try again.", { type: "error" });
     } else {
-      toast("Payment successful", { type: "success" });
       createOrderMutation.mutate({ orders });
-      router.push("/my-orders");
     }
   };
 
@@ -62,12 +60,13 @@ const CheckoutForm = ({ cart }: { cart: CartItem[] }) => {
       <PaymentElement className="rounded-sm" />
 
       <Button
+        disabled={createOrderMutation.isPending}
         className={`mt-2 ${
           bgTheme === "dark" ? "bg-content1-500" : "bg-green-600"
         } text-white`}
         type="submit"
       >
-        Buy now
+        {createOrderMutation.isPending ? "Processing payment..." : "Buy now"}
       </Button>
     </form>
   );

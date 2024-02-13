@@ -5,6 +5,7 @@ import {
   getSingleOrder,
 } from "../services/apiOrders";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 // Getting all orders of the user
 export const useGetMyOrders = () => {
@@ -28,13 +29,16 @@ export const useGetSingleOrder = (id: string) => {
 
 // Creating an Order
 export const useCreateOrder = () => {
+  const router = useRouter();
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: createOrder,
     onSuccess: () => {
+      toast("Payment successful", { type: "success" });
+
       queryClient.invalidateQueries({ queryKey: ["my-orders"] });
-      queryClient.refetchQueries({ queryKey: ["my-orders"] });
+      router.push("/my-orders");
     },
     onError: (err: Error) => toast(err.message, { type: "error" }),
   });

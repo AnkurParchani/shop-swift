@@ -1,4 +1,5 @@
 import EmptyList from "../components/others/EmptyList";
+import Footer from "../components/others/Footer";
 import AddAddressForm from "./AddAddressForm";
 import { useDisclosure } from "@nextui-org/react";
 
@@ -15,6 +16,8 @@ const EmptyAddresses = () => {
         actionButtonTxt="Add Address"
         handleActionFn={onOpen}
       />
+
+      <Footer />
 
       {isOpen && (
         <AddAddressForm

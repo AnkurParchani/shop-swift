@@ -144,6 +144,7 @@ function FooterPart({ children, heading, fullWidth }: FooterPartType) {
 
 // Footer Link
 function FooterLink({ children, changeParam, href, blank }: FooterLinkType) {
+  const router = useRouter();
   const [searchParams, setSearchParams] = useSearchParams();
   const prevSearchParams = Object.fromEntries(searchParams);
 
@@ -152,7 +153,10 @@ function FooterLink({ children, changeParam, href, blank }: FooterLinkType) {
       {changeParam ? (
         <p
           className="cursor-pointer capitalize text-gray-300 hover:text-primary hover:underline"
-          onClick={() => setSearchParams({ ...changeParam, prevSearchParams })}
+          onClick={() => {
+            router.push("/");
+            setSearchParams({ ...changeParam, prevSearchParams });
+          }}
         >
           {children}
         </p>
