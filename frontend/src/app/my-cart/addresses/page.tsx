@@ -24,6 +24,7 @@ import { useEffect } from "react";
 import { useBreadcrumb } from "@/app/contexts/BreadCrumbProvider";
 import { useTheme } from "@/app/contexts/ThemeContext";
 import { useGetUser } from "@/app/hooks/useUser";
+import Loading from "@/app/loading";
 
 const Page = () => {
   const router = useRouter();
@@ -37,10 +38,12 @@ const Page = () => {
     data: addresses,
     refetch: myAddressesRefetch,
     error: myAddressesError,
+    isLoading: myAddressIsLoading,
   } = useGetMyAddresses();
   const {
     data: cart,
     refetch: myCartRefetch,
+    isLoading: myCartIsLoading,
     error: myCartError,
   } = useGetMyCart();
 
@@ -57,7 +60,8 @@ const Page = () => {
     setPrevPages([{ label: "Cart", link: "/my-cart" }]);
   }, [setPrevPages]);
 
-  // If there's error in getting cart or addresses
+  if (myCartIsLoading || myAddressIsLoading)
+    return <Loading label="Details are loading..." />;
   if (myAddressesError)
     return <Error error={myAddressesError} reset={myAddressesRefetch} />;
   if (myCartError) return <Error error={myCartError} reset={myCartRefetch} />;

@@ -34,6 +34,7 @@ export const useCreateOrder = () => {
     mutationFn: createOrder,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["my-orders"] });
+      queryClient.refetchQueries({ queryKey: ["my-orders"] });
     },
     onError: (err: Error) => toast(err.message, { type: "error" }),
   });

@@ -18,8 +18,8 @@ import { handleApiError } from "../utils/handleApiError";
 import { useBreadcrumb } from "../contexts/BreadCrumbProvider";
 
 const Page = () => {
-  const { data: cart } = useGetMyCart();
-  const { data: addresses } = useGetMyAddresses();
+  const { data: cart, isLoading: cartIsLoading } = useGetMyCart();
+  const { data: addresses, isLoading: addressIsLoading } = useGetMyAddresses();
   const { setPrevPages } = useBreadcrumb();
   const [clientSecret, setClientSecret] = useState("");
   const [checkoutIsLoading, setCheckoutIsLoading] = useState(true);
@@ -60,11 +60,12 @@ const Page = () => {
     ]);
   }, [setPrevPages]);
 
-  if (!cart || !cart.length || !addresses || !addresses.length)
-    return <IncompleteDetails />;
-
   if (checkoutIsLoading)
     return <Loading label="Payment Portal is loading..." />;
+  if (cartIsLoading || addressIsLoading)
+    return <Loading label="Details are loading..." />;
+  if (!cart || !cart.length || !addresses || !addresses.length)
+    return <IncompleteDetails />;
 
   const stripePromise = loadStripe(
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,

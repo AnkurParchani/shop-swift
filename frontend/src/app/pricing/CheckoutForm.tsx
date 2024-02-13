@@ -3,7 +3,6 @@ import { toast } from "react-toastify";
 import { FormEvent } from "react";
 import { Button } from "@nextui-org/react";
 import {
-  LinkAuthenticationElement,
   PaymentElement,
   useElements,
   useStripe,
