@@ -37,7 +37,7 @@ const Nav = () => {
   let pathname = usePathname();
 
   const { theme } = useTheme();
-  const [itemsInCart, setItemsInCart] = useState();
+  const [itemsInCart, setItemsInCart] = useState(0);
   const bgTheme = theme.split("-")[1];
   const queryClient = useQueryClient();
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -55,10 +55,15 @@ const Nav = () => {
 
   useEffect(() => {
     if (cart) {
-      refetch();
       setItemsInCart(cart.length);
     }
-  }, [cart, cart?.length, refetch, cartIsLoading]);
+  }, [cart]);
+
+  useEffect(() => {
+    if (!cartIsLoading) {
+      refetch();
+    }
+  }, [cartIsLoading, refetch]);
 
   let label: string;
   switch (pathname) {
@@ -168,7 +173,7 @@ const Nav = () => {
                 {/* My Cart */}
                 <div className="flex items-center justify-between">
                   <p>My Cart</p>
-                  {itemsInCart && (
+                  {itemsInCart > 0 && (
                     <p className="rounded-full bg-red-500 px-2 text-[12px] text-white">
                       {itemsInCart}
                     </p>
