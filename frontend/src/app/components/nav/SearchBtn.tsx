@@ -14,7 +14,7 @@ const SearchBtn = () => {
   const bgTheme = theme.split("-")[1];
   const [searchText, setSearchText] = useState("");
   const [foundItems, setFoundItems] = useState<MatchedItem[] | undefined>();
-  const { data: items } = useGetAllItems();
+  const { data: items, isLoading: itemsIsLoading } = useGetAllItems();
 
   // Function to get the searchItems
   useEffect(() => {
@@ -35,6 +35,7 @@ const SearchBtn = () => {
           label: "",
         }}
         placeholder="Type to search..."
+        disabled={itemsIsLoading}
         size="sm"
         value={searchText}
         startContent={<CiSearch className="text-black" size={18} />}

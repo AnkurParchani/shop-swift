@@ -39,7 +39,12 @@ const Nav = () => {
   const bgTheme = theme.split("-")[1];
   const queryClient = useQueryClient();
   const [cookies, setCookie, removeCookie] = useCookies();
-  const { data: cart } = useGetMyCart();
+  const { data: cart, isLoading } = useGetMyCart();
+  const { data: user } = useGetUser();
+
+  console.log("Cart loading state ", isLoading);
+  console.log("Logging cart length", cart?.length);
+
   const {
     isOpen: selectThemeIsOpen,
     onOpen: selectThemeOnOpen,
@@ -47,7 +52,6 @@ const Nav = () => {
     onOpenChange: selectThemeOnOpenChange,
   } = useDisclosure();
 
-  const { data: user, isLoading, error } = useGetUser();
   const { setPrevPages } = useBreadcrumb();
 
   let label: string;
