@@ -41,7 +41,7 @@ const Nav = () => {
   const bgTheme = theme.split("-")[1];
   const queryClient = useQueryClient();
   const [cookies, setCookie, removeCookie] = useCookies();
-  const { data: cart, isLoading: cartIsLoading } = useGetMyCart();
+  const { data: cart, isLoading: cartIsLoading, refetch } = useGetMyCart();
   const { data: user } = useGetUser();
 
   const {
@@ -55,9 +55,10 @@ const Nav = () => {
 
   useEffect(() => {
     if (cart) {
+      refetch();
       setItemsInCart(cart.length);
     }
-  }, [cart, cart?.length, cartIsLoading]);
+  }, [cart, cart?.length, refetch, cartIsLoading]);
 
   let label: string;
   switch (pathname) {
