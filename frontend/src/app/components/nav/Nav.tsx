@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   Avatar,
@@ -29,7 +28,6 @@ import SearchBtn from "./SearchBtn";
 import { useBreadcrumb } from "@/app/contexts/BreadCrumbProvider";
 import { useGetUser } from "@/app/hooks/useUser";
 import { useTheme } from "@/app/contexts/ThemeContext";
-import { useGetMyCart } from "@/app/hooks/useCart";
 
 const Nav = () => {
   const router = useRouter();
@@ -37,11 +35,9 @@ const Nav = () => {
   let pathname = usePathname();
 
   const { theme } = useTheme();
-  const [itemsInCart, setItemsInCart] = useState(0);
   const bgTheme = theme.split("-")[1];
   const queryClient = useQueryClient();
   const [cookies, setCookie, removeCookie] = useCookies();
-  const { data: cart, isLoading: cartIsLoading, refetch } = useGetMyCart();
   const { data: user } = useGetUser();
 
   const {
@@ -52,18 +48,6 @@ const Nav = () => {
   } = useDisclosure();
 
   const { setPrevPages } = useBreadcrumb();
-
-  useEffect(() => {
-    if (cart) {
-      setItemsInCart(cart.length);
-    }
-  }, [cart]);
-
-  useEffect(() => {
-    if (!cartIsLoading) {
-      refetch();
-    }
-  }, [cartIsLoading, refetch]);
 
   let label: string;
   switch (pathname) {
@@ -122,27 +106,20 @@ const Nav = () => {
         <NavbarContent as="div" className="items-center" justify="end">
           <SearchBtn />
           <Dropdown placement="bottom-end">
-            <DropdownTrigger className="relative">
-              <div>
-                <Avatar
-                  isBordered
-                  as="button"
-                  className="transition-transform"
-                  color="secondary"
-                  name="Jason Hughes"
-                  size="sm"
-                  src={`${
-                    user.image?.path
-                      ? user.image.path
-                      : "/images/default-user.jpg"
-                  }`}
-                />
-                {itemsInCart && (
-                  <p className="absolute -bottom-1 -right-1 rounded-full bg-red-500 px-1 text-xs text-white">
-                    {itemsInCart}
-                  </p>
-                )}
-              </div>
+            <DropdownTrigger>
+              <Avatar
+                isBordered
+                as="button"
+                className="transition-transform"
+                color="secondary"
+                name="Jason Hughes"
+                size="sm"
+                src={`${
+                  user.image?.path
+                    ? user.image.path
+                    : "/images/default-user.jpg"
+                }`}
+              />
             </DropdownTrigger>
 
             <DropdownMenu aria-label="Profile Actions" variant="flat">
@@ -170,15 +147,7 @@ const Nav = () => {
                 }}
                 key="cart"
               >
-                {/* My Cart */}
-                <div className="flex items-center justify-between">
-                  <p>My Cart</p>
-                  {itemsInCart > 0 && (
-                    <p className="rounded-full bg-red-500 px-2 text-[12px] text-white">
-                      {itemsInCart}
-                    </p>
-                  )}
-                </div>
+                My Cart
               </DropdownItem>
               <DropdownItem
                 onClick={() => {
