@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   Avatar,
@@ -36,14 +37,12 @@ const Nav = () => {
   let pathname = usePathname();
 
   const { theme } = useTheme();
+  const [itemsInCart, setItemsInCart] = useState();
   const bgTheme = theme.split("-")[1];
   const queryClient = useQueryClient();
   const [cookies, setCookie, removeCookie] = useCookies();
-  const { data: cart, isLoading } = useGetMyCart();
+  const { data: cart, isLoading: cartIsLoading } = useGetMyCart();
   const { data: user } = useGetUser();
-
-  console.log("Cart loading state ", isLoading);
-  console.log("Logging cart length", cart?.length);
 
   const {
     isOpen: selectThemeIsOpen,
@@ -53,6 +52,12 @@ const Nav = () => {
   } = useDisclosure();
 
   const { setPrevPages } = useBreadcrumb();
+
+  useEffect(() => {
+    if (cart) {
+      setItemsInCart(cart.length);
+    }
+  }, [cart, cart?.length, cartIsLoading]);
 
   let label: string;
   switch (pathname) {
@@ -126,9 +131,9 @@ const Nav = () => {
                       : "/images/default-user.jpg"
                   }`}
                 />
-                {cart?.length > 0 && (
+                {itemsInCart && (
                   <p className="absolute -bottom-1 -right-1 rounded-full bg-red-500 px-1 text-xs text-white">
-                    {cart.length}
+                    {itemsInCart}
                   </p>
                 )}
               </div>
@@ -162,9 +167,9 @@ const Nav = () => {
                 {/* My Cart */}
                 <div className="flex items-center justify-between">
                   <p>My Cart</p>
-                  {cart?.length > 0 && (
+                  {itemsInCart && (
                     <p className="rounded-full bg-red-500 px-2 text-[12px] text-white">
-                      {cart.length}
+                      {itemsInCart}
                     </p>
                   )}
                 </div>
