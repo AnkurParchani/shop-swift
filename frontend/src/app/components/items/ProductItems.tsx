@@ -12,13 +12,31 @@ import { Item } from "../../../../global";
 function ProductSection({
   items,
   heading,
+  halfWidth,
   delay,
 }: {
   items: Item[];
   heading: string;
   delay?: number;
+  halfWidth?: boolean;
 }) {
   SwiperCore.use([Autoplay, FreeMode]);
+  const inFullWidth = {
+    545: {
+      slidesPerView: 3,
+    },
+    750: {
+      slidesPerView: 4,
+    },
+    1028: {
+      slidesPerView: 5,
+    },
+  };
+  const inHalfWidth = {
+    545: {
+      slidesPerView: 3,
+    },
+  };
 
   return (
     <div className="flex flex-col gap-2">
@@ -35,17 +53,7 @@ function ProductSection({
         }}
         speed={2500}
         modules={[FreeMode]}
-        breakpoints={{
-          545: {
-            slidesPerView: 3,
-          },
-          750: {
-            slidesPerView: 4,
-          },
-          1028: {
-            slidesPerView: 5,
-          },
-        }}
+        breakpoints={halfWidth ? inHalfWidth : inFullWidth}
       >
         {items.map((item: Item) => (
           <SwiperSlide key={item.id}>

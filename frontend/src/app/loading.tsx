@@ -21,13 +21,13 @@ export default function Loading({ label }: { label?: string }) {
 
     setTimeout(() => {
       setDefaultLoadingText("Almost there, thank you for your patience...");
-    }, 7000);
+    }, 8000);
 
     setTimeout(() => {
       setDefaultLoadingText(
-        "Our database is currently undergoing maintenance. It will be back up shortly. Please bear with us, this may take up to a minute or two.",
+        "Our server is currently undergoing maintenance. It will be back up shortly. Please bear with us, this may take anywhere from one to five minutes.",
       );
-    }, 12000);
+    }, 15000);
   }, []);
 
   // Changing the color of the spinner according to the selected theme

@@ -25,18 +25,18 @@ configDotenv({ path: ".env" });
 app.use(express.json());
 
 // To implement CORS
-app.use(
-  cors({
-    origin: "https://shop-swift-tau.vercel.app",
-    credentials: true,
-  })
-);
 // app.use(
 //   cors({
-//     origin: "http://localhost:3000",
+//     origin: "https://shop-swift-tau.vercel.app",
 //     credentials: true,
 //   })
 // );
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 // For reading cookies
 app.use(cookieParser());

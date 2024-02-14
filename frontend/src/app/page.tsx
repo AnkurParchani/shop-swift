@@ -100,7 +100,7 @@ export default function Home() {
             {/* Items with highest stars (4 and 5) */}
             {highRatedItems.length > 0 && (
               <ProductSection
-                delay={2500}
+                delay={5000}
                 heading="Highest Rated"
                 items={highRatedItems}
               />
@@ -108,7 +108,7 @@ export default function Home() {
 
             {/* All Image of all items carousel */}
             <ImageSwiperSection
-              delay={2000}
+              delay={3000}
               items={allItems.map((item: Item) => {
                 return {
                   imgPath: item.image,
@@ -120,7 +120,7 @@ export default function Home() {
             {/* Male items carousel */}
             {maleItems.length > 0 && (
               <ProductSection
-                delay={6000}
+                delay={9000}
                 heading="For Men"
                 items={maleItems}
               />
@@ -129,7 +129,7 @@ export default function Home() {
             {/* Female items carousel */}
             {femaleItems.length > 0 && (
               <ProductSection
-                delay={5000}
+                delay={9000}
                 heading="For Women"
                 items={femaleItems}
               />
@@ -153,7 +153,7 @@ export default function Home() {
             {/* Unisex items carousel */}
             {unisexItems.length > 0 && (
               <ProductSection
-                delay={4000}
+                delay={9000}
                 heading="Unisex"
                 items={unisexItems}
               />

@@ -12,10 +12,12 @@ import ItemConfigurations from "./ItemConfigurations";
 import ActionBtn from "./ActionBtn";
 import Error from "@/app/error";
 import NotFound from "@/app/not-found";
-
-import { useGetSingleItem } from "@/app/hooks/useItems";
-import { useTheme } from "@/app/contexts/ThemeContext";
 import Footer from "@/app/components/others/Footer";
+
+import { useGetAllItems, useGetSingleItem } from "@/app/hooks/useItems";
+import { useTheme } from "@/app/contexts/ThemeContext";
+import { ProductSection } from "@/app/components/items/ProductItems";
+import { Item } from "../../../../global";
 
 type PageType = {
   params: { itemId: string };
@@ -30,10 +32,18 @@ const Page = ({ params }: PageType) => {
     error,
     refetch,
   } = useGetSingleItem(params.itemId);
+  const { data: items } = useGetAllItems();
 
   if (isLoading) return <Loading />;
   if (!item) return <NotFound />;
   if (error) return <Error error={error} reset={refetch} />;
+
+  const similarItems =
+    items &&
+    items.filter(
+      (singleItem: Item) =>
+        singleItem.category === item.category && singleItem.id !== item.id,
+    );
 
   const {
     images,
@@ -91,6 +101,15 @@ const Page = ({ params }: PageType) => {
             company={company}
             description={description}
           />
+
+          {similarItems && (
+            <ProductSection
+              halfWidth
+              delay={4000}
+              heading="View Similar Items"
+              items={similarItems}
+            />
+          )}
 
           <SellerInfo sellerLink={extraDetails.visitLink} />
         </div>

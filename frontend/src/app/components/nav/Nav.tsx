@@ -28,6 +28,7 @@ import SearchBtn from "./SearchBtn";
 import { useBreadcrumb } from "@/app/contexts/BreadCrumbProvider";
 import { useGetUser } from "@/app/hooks/useUser";
 import { useTheme } from "@/app/contexts/ThemeContext";
+import { useGetMyCart } from "@/app/hooks/useCart";
 
 const Nav = () => {
   const router = useRouter();
@@ -38,6 +39,7 @@ const Nav = () => {
   const bgTheme = theme.split("-")[1];
   const queryClient = useQueryClient();
   const [cookies, setCookie, removeCookie] = useCookies();
+  const { data: cart } = useGetMyCart();
   const {
     isOpen: selectThemeIsOpen,
     onOpen: selectThemeOnOpen,
@@ -105,26 +107,44 @@ const Nav = () => {
         <NavbarContent as="div" className="items-center" justify="end">
           <SearchBtn />
           <Dropdown placement="bottom-end">
-            <DropdownTrigger>
-              <Avatar
-                isBordered
-                as="button"
-                className="transition-transform"
-                color="secondary"
-                name="Jason Hughes"
-                size="sm"
-                src={`${
-                  user.image?.path
-                    ? user.image.path
-                    : "/images/default-user.jpg"
-                }`}
-              />
+            <DropdownTrigger className="relative">
+              <div>
+                <Avatar
+                  isBordered
+                  as="button"
+                  className="transition-transform"
+                  color="secondary"
+                  name="Jason Hughes"
+                  size="sm"
+                  src={`${
+                    user.image?.path
+                      ? user.image.path
+                      : "/images/default-user.jpg"
+                  }`}
+                />
+                {cart?.length > 0 && (
+                  <p className="absolute -bottom-1 -right-1 rounded-full bg-red-500 px-1 text-xs text-white">
+                    {cart.length}
+                  </p>
+                )}
+              </div>
             </DropdownTrigger>
 
             <DropdownMenu aria-label="Profile Actions" variant="flat">
               <DropdownItem key="profile" className="h-14 gap-2">
                 <p className="font-semibold">Signed in as</p>
                 <p className="font-semibold">{user.email}</p>
+              </DropdownItem>
+              <DropdownItem
+                onClick={() => {
+                  router.push("/");
+                  if (pathname !== "/") {
+                    setPrevPages([{ label, link: pathname }]);
+                  }
+                }}
+                key="home"
+              >
+                Home
               </DropdownItem>
               <DropdownItem
                 onClick={() => {
@@ -135,7 +155,15 @@ const Nav = () => {
                 }}
                 key="cart"
               >
-                My Cart
+                {/* My Cart */}
+                <div className="flex items-center justify-between">
+                  <p>My Cart</p>
+                  {cart?.length > 0 && (
+                    <p className="rounded-full bg-red-500 px-2 text-[12px] text-white">
+                      {cart.length}
+                    </p>
+                  )}
+                </div>
               </DropdownItem>
               <DropdownItem
                 onClick={() => {
